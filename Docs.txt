@@ -1,0 +1,245 @@
+from sentiment_generation.get_sentiments import get_Quick_sentiment --->gives a sentiment review on a particular statement
+from sentiment_generation.get_sentiments import get_sentiment_from_website_each_feedback_sentiment ---> gives the sentiment rate and in wordings how tne customer feels about the product
+from sentiment_generation.get_sentiments import get_sentiment_from_website_overall_summary ---> gives an entire summary of the product and how cutomers feel about it , also gives the pros and cons of the product that the customer jas mentioned
+from sentiment_generation.get_sentiments import get_analytical_customer_sentiments ---> gives a visual representation on the sentiments of the customers on a particular Products
+from sentiment_generation.get_sentiments import get_Sentiment_Audio_file --->gives the sentiment of an audio file
+
+from sentiment_generation.product_comparisons import compare_product_on_reviews --->compares same product reviews on diferent brand and returns a summary
+
+==============================> Available functions
+
+class instances
+
+from sentiment_generation.get_sentiments import SentimentConfig
+
+SentConfig = SentimentConfig(
+    Use_Local_Sentiment_LLM = True / False, #Default
+    Use_Local_General_LLM = True / False, #Optional
+    Use_Groq_API = True / False, #Optional
+    Use_Open_API = True / False, #Optional
+    Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest", #default LLM
+    Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0", #Default LLM
+    Local_General_LLM_kwargs = {    #Optional
+        'temperature':0.1,
+        'top_p':1
+    } ,
+    Groq_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    OpenAi_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    Groq_LLM = "llama3-8b-8192" #Default
+    OpenAI_LLM = "GPT-3.5" #Default
+)
+
+Quick_sentiment = SentConfig.get_Quick_sentiment(
+    Use_Local_Sentiment_LLM = True / False, #Default
+    Use_Local_General_LLM = True / False, #Optional
+    Use_Groq_API = True / False, #Optional
+    Use_Open_API = True / False, #Optional
+    Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest", #default LLM
+    Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0", #Default LLM
+    Local_General_LLM_kwargs = {    #Optional
+        'temperature':0.1,
+        'top_p':1
+    } ,
+    Groq_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    OpenAi_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    Groq_LLM = "llama3-8b-8192" #Default
+    OpenAI_LLM = "GPT-3.5" #Default
+
+    Groq_label = ['Positive','Netural','Negative'] #Default , Can be set to numbers like [1,0,-1]
+    OpenAi_label = ['Positive','Netural','Negative'] #Default , Can be set to numbers like [1,0,-1]
+    text_message = "text message that needed to be analysed" or ["msg1","msg2","msg3"] ---> If multiple messages given na iterate through them
+)
+--->Returns(
+    {
+        "Sentiment_label" : "Positive / Negative / Netural"
+        "Score" : "Floating Value"
+    }
+)
+
+Sentiments_of_Customers = SentConfig.get_sentiment_from_website_each_feedback_sentiment(
+    Use_Local_Sentiment_LLM = True / False, #Default
+    Use_Local_General_LLM = True / False, #Optional
+    Use_Groq_API = True / False, #Optional
+    Use_Open_API = True / False, #Optional
+    Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest", #default LLM
+    Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0", #Default LLM
+    Local_General_LLM_kwargs = {    #Optional
+        'temperature':0.1,
+        'top_p':1
+    } ,
+    Groq_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    OpenAi_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    Groq_LLM = "llama3-8b-8192" #Default
+    OpenAI_LLM = "GPT-3.5" #Default
+
+    Groq_label = ['Positive','Netural','Negative'] #Default , Can be set to numbers like [1,0,-1]
+    OpenAi_label = ['Positive','Netural','Negative'] #Default , Can be set to numbers like [1,0,-1]
+    target_website = "Website_link" or ['Website_link1','Website_link2','Website_link3']
+)
+--->Returns(
+    [
+    {
+        "Review" : "The Content of the review",
+        "Sentiment_label" : "Positive / Negative / Netural",
+        "Score" : "Floating Value"
+    },
+    {
+        "Review" : "The Content of the review",
+        "Sentiment_label" : "Positive / Negative / Netural",
+        "Score" : "Floating Value"
+    },
+    {
+        "Review" : "The Content of the review",
+        "Sentiment_label" : "Positive / Negative / Netural",
+        "Score" : "Floating Value"
+    },....
+    ]
+)
+
+Summarized_FeedBack_from_cust_on_particular_product = SentConfig.get_sentiment_from_website_overall_summary(
+    Use_Local_Sentiment_LLM = True / False, #Default
+    Use_Local_General_LLM = True / False, #Optional
+    Use_Groq_API = True / False, #Optional
+    Use_Open_API = True / False, #Optional
+    Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest", #default LLM
+    Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0", #Default LLM
+    Local_General_LLM_kwargs = {    #Optional
+        'temperature':0.1,
+        'top_p':1
+    } ,
+    Groq_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    OpenAi_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    Groq_LLM = "llama3-8b-8192" #Default
+    OpenAI_LLM = "GPT-3.5" #Default
+
+    target_website = "Website_link" 
+)
+
+--->Returns(
+    {
+    "Result":
+        "Summary:
+
+        The overall sentiment of the reviews is mostly positive, with customers praising the dishwasher's efficiency, 
+        quiet operation, and cleaning performance. Key pros mentioned include:
+
+        * Quiet and efficient operation
+        * Effective cleaning and removal of food residue
+        * Ample capacity and adjustable racks
+        * Energy efficiency and minimal water usage
+        * Simple controls and easy operation
+
+        Notable drawbacks mentioned include:
+
+        * Some users find the cycles to be too long
+        * Drying performance could be improved
+        * Build quality is not exceptional, especially for the price
+        * Some users experienced issues with the top rack holding cups securely
+
+        One reviewer reported a disappointing experience with the dishwasher stopping working after just three months, 
+        with poor customer service.
+
+        Overall Rating: 4.2/5
+
+        The majority of reviewers are satisfied with their purchase, citing its effectiveness, efficiency, and 
+        value for the price. However, some users have noted some drawbacks, particularly with drying performance and build quality."
+    }
+)
+
+Analytical_review = SentConfig.get_analytical_customer_sentiments(
+    Use_Local_Sentiment_LLM = True / False, #Default
+    Use_Local_General_LLM = True / False, #Optional
+    Use_Groq_API = True / False, #Optional
+    Use_Open_API = True / False, #Optional
+    Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest", #default LLM
+    Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0", #Default LLM
+    Local_General_LLM_kwargs = {    #Optional
+        'temperature':0.1,
+        'top_p':1
+    } ,
+    Groq_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    OpenAi_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    Groq_LLM = "llama3-8b-8192", #Default
+    OpenAI_LLM = "GPT-3.5", #Default
+
+    Graph_Config = {
+        Use_Bar_chart_visualize = True / False, --->Displays the Sentiments by the total number pf frequencies
+        Use_pie_chart_visualize = True / False, --->Displays the Sentiments by the total number pf frequencies
+        Use_sidebyside_bar_chart_visualize = True / False, --->Can be applied to two brands on same product or two different product
+        target_website_single_visualization = "Website_link" , ---> For Single visualization
+        target_website_Multi_visualization = {  ---> when Use_sidebyside_bar_chart_visualize = True , this field is mandatory 
+            prd1 = 'Website_link1',
+            prd2 = 'Website_link2',
+            prd3 = 'Website_link3'....
+        }
+    }
+)
+--->Returns(
+    Graph visualizations
+)
+
+Audio_Sentiment = SentConfig.get_Sentiment_Audio_file(
+    Use_Local_Sentiment_LLM = True / False, #Default
+    Use_Local_General_LLM = True / False, #Optional
+    Use_Groq_API = True / False, #Optional
+    Use_Open_API = True / False, #Optional
+    Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest", #default LLM
+    Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0", #Default LLM
+    Local_General_LLM_kwargs = {    #Optional
+        'temperature':0.1,
+        'top_p':1
+    } ,
+    Groq_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    OpenAi_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    Groq_LLM = "llama3-8b-8192" #Default
+    OpenAI_LLM = "GPT-3.5" #Default
+
+    Audio_File_path = "path1" or ["path1","path2","path3"]
+)
+--->Returns(
+    [
+    {
+        "Review" : "The Content of the review",
+        "Sentiment_label" : "Positive / Negative / Netural",
+        "Score" : "Floating Value"
+    },
+    {
+        "Review" : "The Content of the review",
+        "Sentiment_label" : "Positive / Negative / Netural",
+        "Score" : "Floating Value"
+    },
+    {
+        "Review" : "The Content of the review",
+        "Sentiment_label" : "Positive / Negative / Netural",
+        "Score" : "Floating Value"
+    },....
+    ]
+)
+
+Compared_product_analysis_report = SentConfig.compare_product_on_reviews(
+    Use_Local_Sentiment_LLM = True / False, #Default
+    Use_Local_General_LLM = True / False, #Optional
+    Use_Groq_API = True / False, #Optional
+    Use_Open_API = True / False, #Optional
+    Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest", #default LLM
+    Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0", #Default LLM
+    Local_General_LLM_kwargs = {    #Optional
+        'temperature':0.1,
+        'top_p':1
+    } ,
+    Groq_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    OpenAi_API = "API_KEY", #Optional --->prompt the llm properly to get the targeeting sentiment output
+    Groq_LLM = "llama3-8b-8192" #Default
+    OpenAI_LLM = "GPT-3.5" #Default
+
+    target_website_Multi_visualization = { 
+            prd1 = 'Website_link1',
+            prd2 = 'Website_link2',
+            prd3 = 'Website_link3'....
+        }
+)
+--->Returns(
+    {
+    "Result": "Summary:....."
+    }
+)
