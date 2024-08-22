@@ -1,11 +1,13 @@
-from sentiment_generation.get_sentiments import get_Quick_sentiment --->gives a sentiment review on a particular statement
+from sentiment_generation.get_sentiments import get_Quick_sentiment --->gives a sentiment review on a particular statement ---Done
 from sentiment_generation.get_sentiments import get_sentiment_from_website_each_feedback_sentiment ---> gives the sentiment rate and in wordings how tne customer feels about the product
 from sentiment_generation.get_sentiments import get_sentiment_from_website_overall_summary ---> gives an entire summary of the product and how cutomers feel about it , also gives the pros and cons of the product that the customer jas mentioned
 from sentiment_generation.get_sentiments import get_analytical_customer_sentiments ---> gives a visual representation on the sentiments of the customers on a particular Products
 from sentiment_generation.get_sentiments import get_Sentiment_Audio_file --->gives the sentiment of an audio file
 
-from sentiment_generation.product_comparisons import compare_product_on_reviews --->compares same product reviews on diferent brand and returns a summary
+from sentiment_generation.get_sentiments import compare_product_on_reviews --->compares same product reviews on diferent brand and returns a summary
 
+##Get Sentiment from image
+##MuiltLanguage Support
 ==============================> Available functions
 
 class instances
@@ -162,16 +164,12 @@ Analytical_review = SentConfig.get_analytical_customer_sentiments(
     Groq_LLM = "llama3-8b-8192", #Default
     OpenAI_LLM = "GPT-3.5", #Default
 
+    target_website, 
+    Multi_Website_Visualization = False,
     Graph_Config = {
-        Use_Bar_chart_visualize = True / False, --->Displays the Sentiments by the total number pf frequencies
-        Use_pie_chart_visualize = True / False, --->Displays the Sentiments by the total number pf frequencies
-        Use_sidebyside_bar_chart_visualize = True / False, --->Can be applied to two brands on same product or two different product
-        target_website_single_visualization = "Website_link" , ---> For Single visualization
-        target_website_Multi_visualization = {  ---> when Use_sidebyside_bar_chart_visualize = True , this field is mandatory 
-            prd1 = 'Website_link1',
-            prd2 = 'Website_link2',
-            prd3 = 'Website_link3'....
-        }
+        'Use_Bar_chart_visualize' : True, 
+        'Use_pie_chart_visualize' : True, 
+        'Use_sidebyside_bar_chart_visualize' : False   
     }
 )
 --->Returns(
@@ -232,11 +230,7 @@ Compared_product_analysis_report = SentConfig.compare_product_on_reviews(
     Groq_LLM = "llama3-8b-8192" #Default
     OpenAI_LLM = "GPT-3.5" #Default
 
-    target_website_Multi_visualization = { 
-            prd1 = 'Website_link1',
-            prd2 = 'Website_link2',
-            prd3 = 'Website_link3'....
-        }
+    target_websites = ['Website_link1','Website_link2','Website_link3']
 )
 --->Returns(
     {

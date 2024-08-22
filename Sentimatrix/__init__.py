@@ -1,0 +1,1 @@
+from .sentiment_generation import SentConfig
