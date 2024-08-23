@@ -1,5 +1,5 @@
 from sentiment_generation.get_sentiments import get_Quick_sentiment --->gives a sentiment review on a particular statement ---Done
-from sentiment_generation.get_sentiments import get_sentiment_from_website_each_feedback_sentiment ---> gives the sentiment rate and in wordings how tne customer feels about the product
+from sentiment_generation.get_sentiments import get_sentiment_from_website_each_feedback_sentiment ---> gives the sentiment rate and in wordings how the customer feels about the product / Give the user option to use groq api
 from sentiment_generation.get_sentiments import get_sentiment_from_website_overall_summary ---> gives an entire summary of the product and how cutomers feel about it , also gives the pros and cons of the product that the customer jas mentioned
 from sentiment_generation.get_sentiments import get_analytical_customer_sentiments ---> gives a visual representation on the sentiments of the customers on a particular Products
 from sentiment_generation.get_sentiments import get_Sentiment_Audio_file --->gives the sentiment of an audio file
@@ -8,6 +8,9 @@ from sentiment_generation.get_sentiments import compare_product_on_reviews --->c
 
 ##Get Sentiment from image
 ##MuiltLanguage Support
+###Try and automate to get the local Scrapper API Key
+##add new review patterns and get them
+##need to change params over loading logic
 ==============================> Available functions
 
 class instances
