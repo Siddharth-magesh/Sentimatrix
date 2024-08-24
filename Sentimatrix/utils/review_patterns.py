@@ -93,5 +93,6 @@ review_patterns = [
     {'tag': 'p', 'attrs': {'class': 'feedback-review-summary'}},
     {'tag': 'span', 'attrs': {'class': 'customer-review-comment'}},
     {'tag': 'div', 'attrs': {'class': 'customer-opinion-summary'}},
-    {'tag': 'p', 'attrs': {'class': 'feedback-review-body'}}
+    {'tag': 'p', 'attrs': {'class': 'feedback-review-body'}},
+    {'tag': 'div', 'attrs': {'class': 'a-section celwidget'}}
 ]
