@@ -20,6 +20,10 @@ def Generation_Pipeline(
     if device_map.lower() == "auto":
         device_map = check_cuda_availability()
 
+    if (device_map.lower() != "auto" and device_map.lower() != "cpu" and device_map.lower() != "cuda"):
+        device_map = check_cuda_availability()
+        print("The Device Map Should be either set to 'auto' , 'cuda' or 'cpu' ")
+
     if Use_Local_Sentiment_LLM == True:
         pipe = pipeline(
             TASK_TYPE,
