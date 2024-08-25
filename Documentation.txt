@@ -1,0 +1,47 @@
+Sentimatrix Documentation
+Overview
+Sentimatrix is an advanced sentiment analysis platform designed to provide comprehensive insights into text, web content, and audio data. Leveraging a combination of local and API-based sentiment analysis models, web scraping techniques, and multi-language support, Sentimatrix aims to deliver accurate and actionable sentiment insights across various data sources.
+
+Features
+Sentiment Analysis
+Text Sentiment Analysis: Provides sentiment scores and classifications for input text messages. This feature supports bulk processing of multiple texts to gauge overall sentiment trends.
+
+Audio Sentiment Analysis: Analyzes sentiment from audio files by converting them to text and then applying sentiment analysis models. Supported audio format is .wav.
+
+Web Scraping and Sentiment Analysis
+Review Scraping: Fetches and processes product reviews from e-commerce websites. Users can configure scraping patterns to adapt to different website structures.
+
+Sentiment from Website Feedback: Extracts feedback from product pages and evaluates the sentiment of each review. Supports integration with both local sentiment models and API-based solutions.
+
+Multi-Site Scraping: Enables sentiment analysis across multiple product pages simultaneously, providing comparative insights into customer feedback from different sources.
+
+Configuration and Customization
+Local and API-Based Models: Users can choose between local large language models and various sentiment analysis APIs, including Groq API and Hugging Face API, to tailor the sentiment analysis according to their needs.
+
+Dynamic Review Patterns: Allows dynamic addition and management of review patterns for web scraping, enabling customization for different websites.
+
+Data Visualization
+Visualizations: Provides graphical representations of sentiment data, including bar charts, pie charts, histograms, box plots, and violin plots. These visualizations help users understand sentiment distributions and trends.
+Multi-Language Support
+Language Detection and Analysis: Supports sentiment analysis for texts in multiple languages, broadening the scope of sentiment insights for diverse user bases.
+Usage Notes
+API Keys: To utilize API-based features, users need to obtain API keys for Groq, Hugging Face, and any other relevant services. Ensure to retrieve the user-agent string from WhatIsMyBrowser for accurate scraping and API requests.
+
+Local LLM Dependencies: Local sentiment analysis models depend on system resources. Performance may vary based on hardware specifications.
+
+Audio File Format: Ensure audio files are converted to .wav format before analysis.
+
+Functionality Updates: Some features, such as get_sentiment_from_website_overall_summary and compare_product_on_reviews, are in development and may receive updates in future releases.
+
+Installation
+To install Sentimatrix, follow the installation instructions provided in the project repository. Ensure that all dependencies, including required APIs and libraries, are properly configured.
+
+Getting Started
+Refer to the usage guide for step-by-step instructions on how to set up and use the various features of Sentimatrix. Sample code and configuration examples are available to help users get started with the platform.
+
+Future Work
+Enhanced Features: Ongoing development includes improvements to sentiment analysis accuracy, additional data visualization options, and expanded language support.
+
+API Integration: Future updates may include new API integrations and expanded support for third-party sentiment analysis services.
+
+For more information and updates, visit the project repository and follow the latest developments.

@@ -66,9 +66,10 @@ Sent = SentConfig(
 target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
 result = Sent.get_sentiment_from_website_each_feedback_sentiment(
     target_website=target,
-    Use_Scraper_API=True,
-    get_Groq_Review= False,
-    Scraper_api_key=""
+    Use_Local_Scraper=True,
+    Use_Scraper_API=False,
+    get_Groq_Review= True,
+    Groq_API=""
 )
 
 print(result)'''

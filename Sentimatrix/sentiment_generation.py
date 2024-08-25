@@ -18,22 +18,42 @@ from Sentimatrix.utils.save_to_csv import save_reviews_to_csv
 
 class SentConfig:
     """
-    Main Class that Contains the Following Sentiment Analysis Functions
+    Main Class for Configuring and Performing Sentiment Analysis.
 
-    Constructor Function : Takes the initial Values
+    This class provides functionality for sentiment analysis using various methods and models,
+    including local sentiment models, general models, APIs, and web scraping tools.
 
-    Function_Name : get_Quick_sentiment
+    Constructor:
+    - Initializes the class with the following configuration options:
+        - Use_Local_Sentiment_LLM (bool): Flag to use a local sentiment analysis model.
+        - Use_Local_General_LLM (bool): Flag to use a local general-purpose language model.
+        - Use_Groq_API (bool): Flag to use the Groq API.
+        - Use_Open_API (bool): Flag to use the OpenAI API.
+        - Use_Local_Scraper (bool): Flag to use a local web scraper.
+        - Use_Scraper_API (bool): Flag to use a web scraper API.
+        - Local_Sentiment_LLM (str): Identifier for the local sentiment analysis model.
+        - Local_General_LLM (str): Identifier for the local general-purpose language model.
+        - Local_General_LLM_kwargs (dict): Configuration parameters for the local general-purpose model.
+        - Groq_API (str): API key or URL for the Groq API.
+        - OpenAi_API (str): API key or URL for the OpenAI API.
+        - HuggingFace_API (str): API key or URL for the Hugging Face API.
+        - Local_api_key (str): API key for local services.
+        - Scraper_api_key (str): API key for the web scraper.
+        - Groq_LLM (str): Identifier for the Groq LLM model.
+        - OpenAI_LLM (str): Identifier for the OpenAI LLM model.
+        - device_map (str): Device configuration for model inference.
 
-    Function_Name : get_sentiment_from_website_each_feedback_sentiment
-
-    Function_Name : get_sentiment_from_website_overall_summary
-
-    Function_Name : get_analytical_customer_sentiments
-
-    Function_Name : get_Sentiment_Audio_file
-
-    Function_Name : compare_product_on_reviews
-
+    Methods:
+    - get_Quick_sentiment: Analyzes sentiment for a given text message quickly.
+    - get_sentiment_from_website_each_feedback_sentiment: Analyzes sentiment of individual feedback from a website.
+    - get_sentiment_from_website_overall_summary: Provides an overall sentiment summary from a website.
+    - get_analytical_customer_sentiments: Analyzes customer sentiments from various sources for deeper insights.
+    - get_Sentiment_Audio_file: Extracts sentiment from an audio file by converting it to text and analyzing it.
+    - compare_product_on_reviews: Compares sentiment of reviews between two products or services.
+    - get_Sentiment_Image_file: Extracts sentiment from an image by converting it to text and analyzing it.
+    - Multi_language_Sentiment: Translates a text message to a default language and analyzes its sentiment.
+    - Config_Local_Scraper: Configures the local web scraper by adding or retrieving review patterns.
+    - Save_reviews_to_CSV: Saves the fetched reviews to a CSV file.
     """
     def __init__(
             self,
@@ -58,6 +78,11 @@ class SentConfig:
             OpenAI_LLM = "GPT-3.5",
             device_map = "auto"
     ):
+        """
+        Initializes the SentConfig class with configuration options for sentiment analysis
+        and web scraping. Sets various flags and parameters for using local LLMs, APIs, and scrapers.
+        """
+
         self.Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM
         self.Use_Local_General_LLM = Use_Local_General_LLM
         self.Use_Groq_API = Use_Groq_API
@@ -146,6 +171,48 @@ class SentConfig:
             Local_LLM_Max_Input_Tokens = 300
 
     ):
+        """
+        Fetches reviews from specified websites and performs sentiment analysis on each review.
+        Supports different methods for fetching and analyzing reviews, including local LLMs and APIs.
+        Returns sentiment analysis results for the fetched reviews, optionally including additional comments from other LLMs.
+
+        Parameters:
+        - target_website: A string or list of strings representing the websites to fetch reviews from.
+        - Use_Local_Sentiment_LLM: Boolean indicating whether to use the local sentiment LLM.
+        - Use_Local_General_LLM: Boolean indicating whether to use the local general LLM.
+        - Use_Local_Scraper: Boolean indicating whether to use a local scraper.
+        - Use_Scraper_API: Boolean indicating whether to use a scraper API.
+        - Use_Groq_API: Boolean indicating whether to use the Groq API.
+        - Use_Open_API: Boolean indicating whether to use the OpenAI API.
+        - Local_Sentiment_LLM: The specific local sentiment model to use.
+        - Local_General_LLM: The specific local general model to use.
+        - Local_General_LLM_kwargs: Additional arguments for the local general LLM.
+        - Groq_API: API key for the Groq API.
+        - OpenAi_API: API key for OpenAI.
+        - HuggingFace_API: API key for Hugging Face.
+        - Scraper_api_key: API key for the scraper service.
+        - Local_api_key: API key for the local API.
+        - Groq_LLM: Model identifier for Groq LLM.
+        - OpenAI_LLM: Model identifier for OpenAI LLM.
+        - device_map: Specifies the device to run the model on (e.g., "cpu" or "cuda").
+        - get_Groq_Review: Boolean indicating whether to get additional comments from Groq LLM.
+        - get_OpenAI_review: Boolean indicating whether to get additional comments from OpenAI.
+        - get_localLLM_review: Boolean indicating whether to get additional comments from the local LLM.
+        - Groq_LLM_Temperature: Temperature setting for the Groq LLM.
+        - Groq_LLM_Max_Tokens: Maximum tokens for the Groq LLM.
+        - Groq_LLM_Max_Input_Tokens: Maximum input tokens for the Groq LLM.
+        - Groq_LLM_top_p: Top-p value for the Groq LLM.
+        - Groq_LLM_stream: Boolean indicating whether to use streaming for Groq LLM.
+        - OpenAI_LLM_Temperature: Temperature setting for the OpenAI LLM.
+        - OpenAI_LLM_Max_Tokens: Maximum tokens for the OpenAI LLM.
+        - OpenAI_LLM_stream: Boolean indicating whether to use streaming for OpenAI LLM.
+        - OpenAI_LLM_Max_Input_Tokens: Maximum input tokens for the OpenAI LLM.
+        - Local_LLM_Max_Input_Tokens: Maximum input tokens for the local LLM.
+
+        Returns:
+        - Sentiment analysis results for the fetched reviews, optionally with additional comments from Groq, OpenAI, or local LLMs.
+        """
+
         Use_Local_Scraper = Use_Local_Scraper if Use_Local_Scraper is not None else self.Use_Local_Scraper
         Use_Scraper_API = Use_Scraper_API if Use_Scraper_API is not None else self.Use_Scraper_API
         Scraper_api_key = Scraper_api_key if Scraper_api_key is not None else self.Scraper_api_key
@@ -342,6 +409,45 @@ class SentConfig:
             OpenAI_LLM_Max_Input_Tokens = 300,
             Local_LLM_Max_Input_Tokens = 300
     ):
+        """
+        Fetches reviews from a specified website and generates an overall sentiment summary.
+        Uses various methods for sentiment analysis and summarization, depending on the available options and configurations.
+
+        Parameters:
+        - target_website: The website from which to fetch reviews.
+        - Use_Local_Sentiment_LLM: Boolean indicating whether to use the local sentiment LLM for initial sentiment analysis.
+        - Use_Local_General_LLM: Boolean indicating whether to use a local general LLM for summarization.
+        - Use_Local_Scraper: Boolean indicating whether to use a local scraper to fetch reviews.
+        - Use_Scraper_API: Boolean indicating whether to use a scraper API for fetching reviews.
+        - Use_Groq_API: Boolean indicating whether to use the Groq API for summarization.
+        - Use_Open_API: Boolean indicating whether to use the OpenAI API for summarization.
+        - Local_Sentiment_LLM: Model identifier for the local sentiment LLM.
+        - Local_General_LLM: Model identifier for the local general LLM used for summarization.
+        - Local_General_LLM_kwargs: Additional arguments for the local general LLM.
+        - Groq_API: API key for the Groq API.
+        - OpenAi_API: API key for the OpenAI API.
+        - HuggingFace_API: API key for Hugging Face.
+        - Scraper_api_key: API key for the scraper service.
+        - Local_api_key: API key for the local API.
+        - Groq_LLM: Model identifier for the Groq LLM.
+        - OpenAI_LLM: Model identifier for the OpenAI LLM.
+        - device_map: Device to run the model on (e.g., "cpu" or "cuda").
+        - Groq_LLM_Temperature: Temperature setting for the Groq LLM.
+        - Groq_LLM_Max_Tokens: Maximum tokens for the Groq LLM.
+        - Groq_LLM_Max_Input_Tokens: Maximum input tokens for the Groq LLM.
+        - Groq_LLM_top_p: Top-p value for the Groq LLM.
+        - Groq_LLM_stream: Boolean indicating whether to use streaming for Groq LLM.
+        - OpenAI_LLM_Temperature: Temperature setting for the OpenAI LLM.
+        - OpenAI_LLM_Max_Tokens: Maximum tokens for the OpenAI LLM.
+        - OpenAI_LLM_stream: Boolean indicating whether to use streaming for OpenAI LLM.
+        - OpenAI_LLM_Max_Input_Tokens: Maximum input tokens for the OpenAI LLM.
+        - Local_LLM_Max_Input_Tokens: Maximum input tokens for the local LLM.
+
+        Returns:
+        - Summarized sentiment results based on the selected summarization method (Groq API, OpenAI API, or local general LLM).
+        - Error message if no reviews were fetched or no LLM inference method is selected.
+        """
+
         Use_Local_Scraper = Use_Local_Scraper if Use_Local_Scraper is not None else self.Use_Local_Scraper
         Use_Scraper_API = Use_Scraper_API if Use_Scraper_API is not None else self.Use_Scraper_API
         Scraper_api_key = Scraper_api_key if Scraper_api_key is not None else self.Scraper_api_key
@@ -426,6 +532,30 @@ class SentConfig:
             device_map = "auto",
             Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest"
     ):
+        """
+        Fetches reviews from a specified website and performs sentiment analysis, followed by optional visualization of the results.
+        Uses a local sentiment LLM for sentiment analysis and can generate various types of visualizations based on user preferences.
+
+        Parameters:
+        - target_website: The website from which to fetch reviews.
+        - Use_Local_Scraper: Boolean indicating whether to use a local scraper to fetch reviews.
+        - Use_Scraper_API: Boolean indicating whether to use a scraper API for fetching reviews.
+        - Scraper_api_key: API key for the scraper service.
+        - Local_api_key: API key for the local API.
+        - Use_Local_Sentiment_LLM: Boolean indicating whether to use the local sentiment LLM for analysis.
+        - Use_Bar_chart_visualize: Boolean indicating whether to generate a bar chart visualization of sentiment distribution.
+        - Use_pie_chart_visualize: Boolean indicating whether to generate a pie chart visualization of sentiment distribution.
+        - Use_violin_plot_visualize: Boolean indicating whether to generate a violin plot visualization of sentiment distribution.
+        - Use_box_plot_visualize: Boolean indicating whether to generate a box plot visualization of sentiment distribution.
+        - Use_histogram_visualize: Boolean indicating whether to generate a histogram visualization of sentiment scores.
+        - device_map: Device to run the model on (e.g., "cpu" or "cuda").
+        - Local_Sentiment_LLM: Model identifier for the local sentiment LLM.
+
+        Returns:
+        - Sentiment visualizations based on the selected options (bar chart, pie chart, violin plot, box plot, or histogram).
+        - Error message if no reviews were fetched.
+        """
+
         Use_Local_Scraper = Use_Local_Scraper if Use_Local_Scraper is not None else self.Use_Local_Scraper
         Use_Scraper_API = Use_Scraper_API if Use_Scraper_API is not None else self.Use_Scraper_API
         Scraper_api_key = Scraper_api_key if Scraper_api_key is not None else self.Scraper_api_key
@@ -474,6 +604,19 @@ class SentConfig:
             Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest",
             device_map = "auto"
     ):
+        """
+        Analyzes the sentiment of text extracted from an audio file.
+
+        Parameters:
+        - Audio_File_path (str): The path to the audio file to be analyzed.
+        - Use_Local_Sentiment_LLM (bool): Indicates whether to use a local sentiment analysis model.
+        - Local_Sentiment_LLM (str): The identifier for the local sentiment model.
+        - device_map (str): The device configuration for model inference.
+
+        Returns:
+        - sentiment: The sentiment analysis result of the text extracted from the audio file.
+        """
+
         Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
         Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
         device_map = device_map if device_map is not None else self.device_map
@@ -524,6 +667,44 @@ class SentConfig:
         OpenAI_LLM_Max_Input_Tokens = 300,
         Local_LLM_Max_Input_Tokens = 300 
     ):
+        """
+        Compares product reviews from two different websites using sentiment analysis and other configurations.
+
+        Parameters:
+        - target_website1 (str): The URL of the first website to fetch reviews from.
+        - target_website2 (str): The URL of the second website to fetch reviews from.
+        - Use_Local_Sentiment_LLM (bool): Indicates whether to use a local sentiment analysis model.
+        - Use_Local_General_LLM (bool): Indicates whether to use a local general-purpose LLM.
+        - Use_Local_Scraper (bool): Indicates whether to use a local web scraper.
+        - Use_Scraper_API (bool): Indicates whether to use an external scraper API.
+        - Use_Groq_API (bool): Indicates whether to use the Groq API for LLM.
+        - Use_Open_API (bool): Indicates whether to use the OpenAI API.
+        - Local_Sentiment_LLM (str): Identifier for the local sentiment analysis model.
+        - Local_General_LLM (str): Identifier for the local general-purpose LLM.
+        - Local_General_LLM_kwargs (dict): Parameters for the local general-purpose LLM.
+        - Groq_API (str): API key for Groq LLM.
+        - OpenAi_API (str): API key for OpenAI.
+        - HuggingFace_API (str): API key for HuggingFace.
+        - Scraper_api_key (str): API key for the scraper service.
+        - Local_api_key (str): API key for the local services.
+        - Groq_LLM (str): Identifier for the Groq LLM.
+        - OpenAI_LLM (str): Identifier for the OpenAI LLM.
+        - device_map (str): Device configuration for model inference.
+        - Groq_LLM_Temperature (float): Temperature setting for Groq LLM.
+        - Groq_LLM_Max_Tokens (int): Maximum number of tokens for Groq LLM.
+        - Groq_LLM_Max_Input_Tokens (int): Maximum input tokens for Groq LLM.
+        - Groq_LLM_top_p (float): Top-p setting for Groq LLM.
+        - Groq_LLM_stream (bool): Streaming option for Groq LLM.
+        - OpenAI_LLM_Temperature (float): Temperature setting for OpenAI LLM.
+        - OpenAI_LLM_Max_Tokens (int): Maximum number of tokens for OpenAI LLM.
+        - OpenAI_LLM_stream (bool): Streaming option for OpenAI LLM.
+        - OpenAI_LLM_Max_Input_Tokens (int): Maximum input tokens for OpenAI LLM.
+        - Local_LLM_Max_Input_Tokens (int): Maximum input tokens for local LLM.
+
+        Returns:
+        - compared_reviews: The result of comparing reviews from the two websites.
+        """
+
         Use_Local_Scraper = Use_Local_Scraper if Use_Local_Scraper is not None else self.Use_Local_Scraper
         Use_Scraper_API = Use_Scraper_API if Use_Scraper_API is not None else self.Use_Scraper_API
         Scraper_api_key = Scraper_api_key if Scraper_api_key is not None else self.Scraper_api_key
@@ -582,10 +763,6 @@ class SentConfig:
         else:
             print("Error : Coundnt find Reviews in either one of the sites")
 
-        print(final_resulted_output1)
-        print('\n\n------------')
-        print(final_resulted_output1)
-
         if final_resulted_output1 and final_resulted_output2:
             compared_reviews = compare_reviews_local(
                         reviews1=final_resulted_output1,
@@ -612,6 +789,22 @@ class SentConfig:
             device_map = "auto",
             Image_to_Text_Model = None
     ):
+        """
+        Analyzes the sentiment of text extracted from an image file.
+
+        Parameters:
+        - Image_File_path (str): The path to the image file to be analyzed.
+        - Custom_Prompt (str): Custom prompt for the image-to-text model.
+        - Main_Prompt (str): Main prompt to be used for text extraction.
+        - Use_Local_Sentiment_LLM (bool): Indicates whether to use a local sentiment analysis model.
+        - Local_Sentiment_LLM (str): Identifier for the local sentiment model.
+        - device_map (str): The device configuration for model inference.
+        - Image_to_Text_Model (str): Identifier for the image-to-text model.
+
+        Returns:
+        - result: A dictionary containing the extracted text and its sentiment, or an error message if text extraction fails.
+        """
+
         Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
         Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
         device_map = device_map if device_map is not None else self.device_map
@@ -641,9 +834,20 @@ class SentConfig:
             text_message,
             Use_Local_Sentiment_LLM = True,
             Local_Sentiment_LLM = None,
-            device_map = None,
-            
+            device_map = None        
     ):
+        """
+        Analyzes sentiment for a given text message by first translating it to a common language.
+
+        Parameters:
+        - text_message (str): The text message to analyze sentiment for.
+        - Use_Local_Sentiment_LLM (bool): Indicates whether to use a local sentiment analysis model.
+        - Local_Sentiment_LLM (str): The identifier for the local sentiment model.
+        - device_map (str): The device configuration for model inference.
+
+        Returns:
+        - result: A list containing the original text, translated text, and sentiment analysis result. If translation fails, an error message is printed. If no message is provided, an error message is printed.
+        """
         Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
         Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
         device_map = device_map if device_map is not None else self.device_map
@@ -669,6 +873,17 @@ class SentConfig:
             tag = None,
             attrs = None,
     ):
+        """
+        Configures the local web scraper by adding or retrieving review patterns.
+
+        Parameters:
+        - action (str): Specifies the action to perform ('add' or 'get').
+        - tag (str, optional): The HTML tag to add for review scraping.
+        - attrs (dict, optional): Attributes associated with the tag for review scraping.
+
+        Returns:
+        - result: The retrieved review patterns if the action is 'get'. If an invalid action is provided, an error message is printed.
+        """
         if action=='add':
             if tag and attrs:
                 add_review_pattern(tag=tag,attrs=attrs)
@@ -686,6 +901,20 @@ class SentConfig:
             Use_Local_Sentiment_LLM = None,
             Use_Local_Scraper = None
     ):
+        """
+        Fetches reviews from a website and saves them to a CSV file.
+
+        Parameters:
+        - target_site (str): The URL of the website to fetch reviews from.
+        - output_dir (str): The directory where the CSV file will be saved.
+        - file_name (str): The name of the CSV file to save the reviews.
+        - Use_Local_Sentiment_LLM (bool, optional): Indicates whether to use a local sentiment analysis model.
+        - Use_Local_Scraper (bool, optional): Indicates whether to use a local web scraper.
+
+        Returns:
+        - None: Reviews are saved to a CSV file. If reviews cannot be fetched or saved, no return value is provided.
+        """
+
         Use_Local_Scraper = Use_Local_Scraper if Use_Local_Scraper is not None else self.Use_Local_Scraper
         Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
         Fetched_reviews = self.get_sentiment_from_website_each_feedback_sentiment(
