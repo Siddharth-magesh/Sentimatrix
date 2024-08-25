@@ -179,7 +179,7 @@ Sent = SentConfig(
     Use_Local_Scraper=True,
     Use_Groq_API=True,
     Use_Local_Sentiment_LLM=True,
-    Groq_API='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'
+    Groq_API=''
 )
 targetsite1 = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
 targetsite2 = 'https://www.amazon.in/dp/B0CV9S7ZV6/ref=sspa_dk_detail_0?pd_rd_i=B0CV9S7ZV6&pd_rd_w=NpSRY&content-id=amzn1.sym.413ef885-ae1b-472f-afa4-d683cda6ad0d&pf_rd_p=413ef885-ae1b-472f-afa4-d683cda6ad0d&pf_rd_r=GRXQN1BT3J6P2EZE1H0A&pd_rd_wg=PUaeb&pd_rd_r=c8d3b191-000c-4133-bed6-1e56985c6d28&s=computers&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw&th=1'
@@ -189,3 +189,46 @@ result = Sent.compare_product_on_reviews(
 )
 
 print(result)'''
+
+#UnitTest for get_Sentiment_Image_file --->Done , But Need to be Executed and Tested
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Scraper=True,
+    Use_Local_Sentiment_LLM=True
+)
+image_path = ''
+result = Sent.get_Sentiment_Image_file(Image_File_path=image_path,Image_to_Text_Model='microsoft/Florence-2-large')
+
+print(result)'''
+
+#unitTest for Multi_language_Sentiment --->Done , can be integrated to various tasks
+'''from Sentimatrix.sentiment_generation import SentConfig
+SENT = SentConfig(
+    Use_Local_Sentiment_LLM=True
+)
+message = 'நான் இந்த தயாரிப்பை வெறுக்கிறேன்'
+result = SENT.Multi_language_Sentiment(message)
+
+print(result)'''
+
+#unitTest for Config_Local_Scraper --->Done
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig()
+result = Sent.Config_Local_Scraper(action='get')
+print(result)'''
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig()
+Sent.Config_Local_Scraper(action='add',tag='div',attrs={'class': 'a-section celwidget review'})'''
+
+#unitTest for Save_reviews_to_CSV ---> Done , Need to be Fixed
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Scraper=True,
+    Use_Local_Sentiment_LLM=True
+)
+target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+Sent.Save_reviews_to_CSV(
+    target_site=target,
+    output_dir=r'',
+    file_name='review.csv'
+)'''
