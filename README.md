@@ -96,16 +96,6 @@ sent = SentConfig(
 )
 ```
 
-Here's a detailed documentation for your `Sentimatrix` project, including descriptions of the functionalities and sample code for usage. This documentation also addresses parameters like `Use_Scraper_API` and `Scraper_api_key`.
-
----
-
-# Sentimatrix Documentation
-
-## Overview
-
-`Sentimatrix` is a sentiment analysis and web scraping toolkit designed to analyze and visualize sentiments from various sources, including text, audio, and images. It offers integration with local and remote sentiment analysis models and web scrapers.
-
 ## Functionalities
 
 ### 1. **Quick Sentiment Analysis**
