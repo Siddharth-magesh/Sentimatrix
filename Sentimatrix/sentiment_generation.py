@@ -11,6 +11,10 @@ from Sentimatrix.utils.Structured_Sentiment import Struct_Generation_Pipeline_Vi
 from Sentimatrix.utils.visualization import plot_sentiment_box_plot , plot_sentiment_distribution , plot_sentiment_histograms , plot_sentiment_pie_chart , plot_sentiment_violin_plot
 from Sentimatrix.utils.wav_to_text import audio_to_text
 from Sentimatrix.utils.llm_inference.groq_inference import compare_reviews_local
+from Sentimatrix.utils.llm_inference.Florence_2_text import Convert_Image_to_Text
+from Sentimatrix.utils.text_translation import Translate_text
+from Sentimatrix.utils.web_scraper import add_review_pattern , get_review_patterns
+from Sentimatrix.utils.save_to_csv import save_reviews_to_csv
 
 class SentConfig:
     """
@@ -596,3 +600,100 @@ class SentConfig:
             return compared_reviews
         else:
             print("Error : Sentiment Generation Error")
+
+
+    def get_Sentiment_Image_file(
+            self,
+            Image_File_path = None,
+            Custom_Prompt = None,
+            Main_Prompt = '<MORE_DETAILED_CAPTION>',
+            Use_Local_Sentiment_LLM = True,
+            Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest",
+            device_map = "auto",
+            Image_to_Text_Model = None
+    ):
+        Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
+        Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
+        device_map = device_map if device_map is not None else self.device_map
+
+        if Image_File_path :
+            if Image_to_Text_Model == 'microsoft/Florence-2-large':
+                Extracted_Text = Convert_Image_to_Text(
+                    image_path=Image_File_path,
+                    text_input=Custom_Prompt,
+                    task_prompt=Main_Prompt
+                )
+                if Extracted_Text:
+                    sentiment = self.get_Quick_sentiment(
+                        text_message=Extracted_Text,
+                        Use_Local_Sentiment_LLM=Use_Local_Sentiment_LLM,
+                        Local_Sentiment_LLM = Local_Sentiment_LLM,
+                        device_map=device_map
+                    )
+                    return [{'Extracted_Text':Extracted_Text},sentiment]
+                else:
+                    print("Error : Couldn't Extract any text")
+        else:
+            print("Error : Image path Not Provided")
+
+    def Multi_language_Sentiment(
+            self,
+            text_message,
+            Use_Local_Sentiment_LLM = True,
+            Local_Sentiment_LLM = None,
+            device_map = None,
+            
+    ):
+        Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
+        Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
+        device_map = device_map if device_map is not None else self.device_map
+
+        if text_message:
+            translated_text = Translate_text(message=text_message)
+            if translated_text:
+                sentiment = self.get_Quick_sentiment(
+                        text_message=translated_text,
+                        Use_Local_Sentiment_LLM=Use_Local_Sentiment_LLM,
+                        Local_Sentiment_LLM = Local_Sentiment_LLM,
+                        device_map=device_map
+                    )
+                return [{'Original Text':text_message},{'Translated Text':translated_text},sentiment]
+            else:
+                    print("Error : Couldn't Translate any text")
+        else:
+            print("Error : No message Recieved")
+
+    def Config_Local_Scraper(
+            self,
+            action,
+            tag = None,
+            attrs = None,
+    ):
+        if action=='add':
+            if tag and attrs:
+                add_review_pattern(tag=tag,attrs=attrs)
+        elif action=='get':
+            result = get_review_patterns()
+            return result
+        else:
+            print("Error : Invalid Action (Either Set to 'add' or 'get')")
+
+    def Save_reviews_to_CSV(
+            self,
+            target_site,
+            output_dir,
+            file_name,
+            Use_Local_Sentiment_LLM = None,
+            Use_Local_Scraper = None
+    ):
+        Use_Local_Scraper = Use_Local_Scraper if Use_Local_Scraper is not None else self.Use_Local_Scraper
+        Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
+        Fetched_reviews = self.get_sentiment_from_website_each_feedback_sentiment(
+            target_website=target_site,
+             Use_Local_Sentiment_LLM = True,
+             Use_Local_Scraper=True,
+             get_Groq_Review = False,
+             get_OpenAI_review = False,
+             get_localLLM_review = False
+        )
+        save_reviews_to_csv(reviews=Fetched_reviews,output_dir=output_dir,file_name=file_name)

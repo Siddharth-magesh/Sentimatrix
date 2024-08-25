@@ -6,12 +6,6 @@ from sentiment_generation.get_sentiments import get_Sentiment_Audio_file --->giv
 
 from sentiment_generation.get_sentiments import compare_product_on_reviews --->compares same product reviews on diferent brand and returns a summary 
 
-##Get Sentiment from image
-##MuiltLanguage Support
-##add new review patterns and get them
-##need to change params over loading logic
-##Add Functions that helps to Save to CSV local
-##Add Other LLMS API Like OPENAI , MISTRAL , LOCAL_LLM
 
 #For Review comparisons do some math functions and then pass to llm
 ==============================> Available functions
