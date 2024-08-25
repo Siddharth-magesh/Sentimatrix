@@ -1,20 +1,32 @@
-from Sentimatrix.utils.Quick_Sentiment import Generation_Pipeline
-from Sentimatrix.utils.web_scraper import Fetch_Reviews
-from Sentimatrix.utils.Structured_Sentiment import Struct_Generation_Pipeline
-from Sentimatrix.utils.llm_inference.groq_inference import Groq_inference_list 
-from Sentimatrix.utils.llm_inference.openai_inference import OpenAI_inference_list
-from Sentimatrix.utils.llm_inference.localLLM_inference import LocalLLM_inference_list
-from Sentimatrix.utils.llm_inference.groq_inference import summarize_reviews
-from Sentimatrix.utils.llm_inference.openai_inference import summarize_reviews_openai
-from Sentimatrix.utils.llm_inference.localLLM_inference import summarize_reviews_local
-from Sentimatrix.utils.Structured_Sentiment import Struct_Generation_Pipeline_Visual
-from Sentimatrix.utils.visualization import plot_sentiment_box_plot , plot_sentiment_distribution , plot_sentiment_histograms , plot_sentiment_pie_chart , plot_sentiment_violin_plot
-from Sentimatrix.utils.wav_to_text import audio_to_text
-from Sentimatrix.utils.llm_inference.groq_inference import compare_reviews_local
-from Sentimatrix.utils.llm_inference.Florence_2_text import Convert_Image_to_Text
-from Sentimatrix.utils.text_translation import Translate_text
-from Sentimatrix.utils.web_scraper import add_review_pattern , get_review_patterns
-from Sentimatrix.utils.save_to_csv import save_reviews_to_csv
+
+from .utils.Quick_Sentiment import Generation_Pipeline
+from .utils.web_scraper import Fetch_Reviews, add_review_pattern, get_review_patterns
+from .utils.Structured_Sentiment import Struct_Generation_Pipeline, Struct_Generation_Pipeline_Visual
+from .utils.llm_inference.groq_inference import (
+    Groq_inference_list,
+    summarize_reviews,
+    compare_reviews_local
+)
+from .utils.llm_inference.openai_inference import (
+    OpenAI_inference_list,
+    summarize_reviews_openai
+)
+from .utils.llm_inference.localLLM_inference import (
+    LocalLLM_inference_list,
+    summarize_reviews_local
+)
+from .utils.visualization import (
+    plot_sentiment_box_plot,
+    plot_sentiment_distribution,
+    plot_sentiment_histograms,
+    plot_sentiment_pie_chart,
+    plot_sentiment_violin_plot
+)
+from .utils.wav_to_text import audio_to_text
+from .utils.text_translation import Translate_text
+from .utils.save_to_csv import save_reviews_to_csv
+from .utils.llm_inference.Florence_2_text import Convert_Image_to_Text
+
 
 class SentConfig:
     """

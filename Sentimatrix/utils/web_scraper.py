@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from Sentimatrix.utils.review_patterns import review_patterns
+from .review_patterns import review_patterns
 
 def Fetch_Reviews(url : str , Use_Local_Scraper : bool , Use_Scraper_API : bool , Scraper_api_key : str , Local_api_key : str):
     """

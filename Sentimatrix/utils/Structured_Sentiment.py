@@ -3,7 +3,7 @@ import warnings
 import logging
 import transformers
 from transformers import pipeline, AutoTokenizer
-from Sentimatrix.utils.device_compactability_check import check_cuda_availability
+from .device_compactability_check import check_cuda_availability
 
 # Suppresses TensorFlow and ONEDNN optimization warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'

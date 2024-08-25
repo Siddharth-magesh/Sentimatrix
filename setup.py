@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
     name='Sentimatrix',
-    version='0.1.0',
+    version='0.1.2',
     description='Advanced sentiment analysis platform for text, web content, audio data and Image data',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -14,9 +14,10 @@ setup(
     url='https://github.com/Siddharth-magesh/Sentimatrix', 
     packages=find_packages(),
     install_requires=[
+        'numpy',
         'transformers',
         'Pillow',
-        'torch',
+        'torch==2.3.1',
         'groq',
         'openai',
         'deep_translator',
@@ -26,6 +27,7 @@ setup(
         'SpeechRecognition',
         'requests',
         'beautifulsoup4',
+        'accelerate',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
