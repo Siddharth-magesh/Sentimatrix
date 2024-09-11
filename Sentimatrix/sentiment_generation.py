@@ -384,6 +384,13 @@ class SentConfig:
             else:
                 print("No valid review source selected.")
                 return None
+        else:
+            if final_resulted_output:
+                return final_resulted_output
+            elif final_resulted_output_of_all_sites:
+                return final_resulted_output_of_all_sites
+            else:
+                print("Couldn't Fetch the Reviews and Sentiment Genration Failed")
 
         return "Function Didnt Properly Execute"
 

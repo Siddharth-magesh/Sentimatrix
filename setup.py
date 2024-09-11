@@ -5,16 +5,16 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
     name='Sentimatrix',
-    version='0.1.2',
+    version='0.1.4',
     description='Advanced sentiment analysis platform for text, web content, audio data and Image data',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Siddharth Magesh',
     author_email='siddharthmagesh007@gmail.com',
-    url='https://github.com/Siddharth-magesh/Sentimatrix', 
+    url='https://github.com/Siddharth-magesh/Sentimatrix',
     packages=find_packages(),
     install_requires=[
-        'numpy',
+        'numpy==1.26.4',
         'transformers',
         'Pillow',
         'torch==2.3.1',
