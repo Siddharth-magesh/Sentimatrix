@@ -1,4 +1,4 @@
-#Quick Sentiment Unit Test -->Worked
+# Quick Sentiment Unit Test -->Worked
 '''from Sentimatrix.sentiment_generation import SentConfig
 
 Sent = SentConfig(
@@ -9,7 +9,7 @@ sentiment_result = Sent.get_Quick_sentiment(text_message=sentiments,device_map="
 
 print(sentiment_result)'''
 
-#Initial Test For Web Scraper -->Worked
+# Initial Test For Web Scraper -->Worked
 '''from Sentimatrix.utils.web_scraper import ReviewScraper
 
 scraper = ReviewScraper(Use_Local_Scraper=True)
@@ -33,7 +33,7 @@ scraper.add_review_pattern('div', {'class': 'new-review-class'})
 current_patterns = scraper.get_review_patterns()
 print("Current review patterns:", current_patterns)'''
 
-#Final WebScraper Test -->Worked
+# Final WebScraper Test -->Worked
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Scraper_API = True,
@@ -42,7 +42,7 @@ Sent = SentConfig(
 Sent.get_sentiment_from_website_each_feedback_sentiment('https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1')
 '''
 
-#Initial Website Sentiment Test without groq --> Worked Without using Scraper API also
+# Initial Website Sentiment Test without groq --> Worked Without using Scraper API also
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Sentiment_LLM= True,
@@ -57,7 +57,7 @@ result = Sent.get_sentiment_from_website_each_feedback_sentiment(
 
 print(result)'''
 
-#Initial Website Sentiment Test without groq --> Worked With using Scraper API also
+# Initial Website Sentiment Test without groq --> Worked With using Scraper API also
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Sentiment_LLM= True,
@@ -74,7 +74,7 @@ result = Sent.get_sentiment_from_website_each_feedback_sentiment(
 
 print(result)'''
 
-#Multi Site Scraper
+# Multi Site Scraper
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Sentiment_LLM= True,
@@ -89,7 +89,7 @@ result = Sent.get_sentiment_from_website_each_feedback_sentiment(
 
 print(result)'''
 
-#Final UnitTest For get_sentiment_from_website_each_feedback_sentiment -->Works For Single Site and Multisite
+# Final UnitTest For get_sentiment_from_website_each_feedback_sentiment -->Works For Single Site and Multisite
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Groq_API=True,
@@ -106,7 +106,7 @@ result = Sent.get_sentiment_from_website_each_feedback_sentiment(
 
 print(result)'''
 
-#UnitTest For get_sentiment_from_website_each_feedback_sentiment Using Local LLM --> Done ,Infernce result is bad
+# UnitTest For get_sentiment_from_website_each_feedback_sentiment Using Local LLM --> Done ,Infernce result is bad
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Groq_API=True,
@@ -122,20 +122,24 @@ result = Sent.get_sentiment_from_website_each_feedback_sentiment(
 
 print(result)'''
 
-#UnitTest for get_sentiment_from_website_overall_summary using Groq
+# UnitTest for get_sentiment_from_website_overall_summary using Groq
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Groq_API=True,
-    Use_Local_Scraper=True,
+    Use_Local_Scraper=False,
+    Use_Scraper_API=True,
+    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
     Groq_API=""
 )
-target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+target = 'https://www.amazon.com/dp/B0B9MYQ1W1/ref=sspa_dk_detail_4?psc=1&pd_rd_i=B0B9MYQ1W1&pd_rd_w=uR0Qm&content-id=amzn1.sym.7446a9d1-25fe-4460-b135-a60336bad2c9&pf_rd_p=7446a9d1-25fe-4460-b135-a60336bad2c9&pf_rd_r=FT61ZXKDX7WCHVB8BQ26&pd_rd_wg=dRCyO&pd_rd_r=d8984c14-110a-4ff7-ba32-2ba58196ef03&s=apparel&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw'
 result = Sent.get_sentiment_from_website_overall_summary(
-    target_website=target
+    target_website=target,
+    Groq_LLM_Max_Tokens=500,
+    Groq_LLM_Max_Input_Tokens=1000
 )
 print(result)'''
 
-#UnitTest for get_sentiment_from_website_overall_summary using Groq
+# UnitTest for get_sentiment_from_website_overall_summary using Groq
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_General_LLM=True,
@@ -147,7 +151,7 @@ result = Sent.get_sentiment_from_website_overall_summary(
 )
 print(result)'''
 
-#UnitTest for get_analytical_customer_sentiments -->Done
+# UnitTest for get_analytical_customer_sentiments -->Done
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Scraper=True,
@@ -163,7 +167,7 @@ result = Sent.get_analytical_customer_sentiments(
     Use_violin_plot_visualize=True
 )'''
 
-#UnitTest for get_Sentiment_Audio_file --->Done
+# UnitTest for get_Sentiment_Audio_file --->Done
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Scraper=True,
@@ -174,7 +178,7 @@ result = Sent.get_Sentiment_Audio_file(audio_path)
 
 print(result)'''
 
-#UnitTest for compare_product_on_reviews --->Done Value Fetch was good , but llm didnt perform well
+# UnitTest for compare_product_on_reviews --->Done Value Fetch was good , but llm didnt perform well
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Scraper=True,
@@ -191,7 +195,7 @@ result = Sent.compare_product_on_reviews(
 
 print(result)'''
 
-#UnitTest for get_Sentiment_Image_file --->Done , But Need to be Executed and Tested
+# UnitTest for get_Sentiment_Image_file --->Done , But Need to be Executed and Tested
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Scraper=True,
@@ -202,7 +206,7 @@ result = Sent.get_Sentiment_Image_file(Image_File_path=image_path,Image_to_Text_
 
 print(result)'''
 
-#unitTest for Multi_language_Sentiment --->Done , can be integrated to various tasks
+# unitTest for Multi_language_Sentiment --->Done , can be integrated to various tasks
 '''from Sentimatrix.sentiment_generation import SentConfig
 SENT = SentConfig(
     Use_Local_Sentiment_LLM=True
@@ -212,7 +216,7 @@ result = SENT.Multi_language_Sentiment(message)
 
 print(result)'''
 
-#unitTest for Config_Local_Scraper --->Done
+# unitTest for Config_Local_Scraper --->Done
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig()
 result = Sent.Config_Local_Scraper(action='get')
@@ -221,7 +225,7 @@ print(result)'''
 Sent = SentConfig()
 Sent.Config_Local_Scraper(action='add',tag='div',attrs={'class': 'a-section celwidget review'})'''
 
-#unitTest for Save_reviews_to_CSV ---> Done , Need to be Fixed
+# unitTest for Save_reviews_to_CSV ---> Done , Need to be Fixed
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Scraper=True,

@@ -67,28 +67,29 @@ class SentConfig:
     - Config_Local_Scraper: Configures the local web scraper by adding or retrieving review patterns.
     - Save_reviews_to_CSV: Saves the fetched reviews to a CSV file.
     """
+
     def __init__(
             self,
-            Use_Local_Sentiment_LLM = True,
-            Use_Local_General_LLM = False,
-            Use_Groq_API = False,
-            Use_Open_API = False,
-            Use_Local_Scraper = False,
-            Use_Scraper_API = False,
-            Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest",
-            Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-            Local_General_LLM_kwargs = {
-                    'temperature':0.1,
-                    'top_p':1
-                } ,
-            Groq_API = "",
-            OpenAi_API = "",
-            HuggingFace_API = "",
-            Local_api_key = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
-            Scraper_api_key = None,
-            Groq_LLM = "llama3-8b-8192",
-            OpenAI_LLM = "GPT-3.5",
-            device_map = "auto"
+            Use_Local_Sentiment_LLM=True,
+            Use_Local_General_LLM=False,
+            Use_Groq_API=False,
+            Use_Open_API=False,
+            Use_Local_Scraper=False,
+            Use_Scraper_API=False,
+            Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
+            Local_General_LLM="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+            Local_General_LLM_kwargs={
+                'temperature': 0.1,
+                'top_p': 1
+            },
+            Groq_API="",
+            OpenAi_API="",
+            HuggingFace_API="",
+            Local_api_key='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+            Scraper_api_key=None,
+            Groq_LLM="llama3-8b-8192",
+            OpenAI_LLM="GPT-3.5",
+            device_map="auto"
     ):
         """
         Initializes the SentConfig class with configuration options for sentiment analysis
@@ -113,14 +114,12 @@ class SentConfig:
         self.OpenAI_LLM = OpenAI_LLM
         self.device_map = device_map
 
-        
-
     def get_Quick_sentiment(
             self,
             text_message,
-            Use_Local_Sentiment_LLM = None,
-            Local_Sentiment_LLM = None,
-            device_map = None
+            Use_Local_Sentiment_LLM=None,
+            Local_Sentiment_LLM=None,
+            device_map=None
     ):
         """
         Function Description : Gives a Sentiment analysis on Text Messages . Runs On local machine with HF LLM.
@@ -139,48 +138,48 @@ class SentConfig:
         device_map = device_map if device_map is not None else self.device_map
         final_result = Generation_Pipeline(
             text_message=text_message,
-            Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM,
-            model_id = Local_Sentiment_LLM,
-            device_map = device_map
+            Use_Local_Sentiment_LLM=Use_Local_Sentiment_LLM,
+            model_id=Local_Sentiment_LLM,
+            device_map=device_map
         )
         return final_result
 
     def get_sentiment_from_website_each_feedback_sentiment(
             self,
             target_website,
-            Use_Local_Sentiment_LLM = None,
-            Use_Local_General_LLM = None,
-            Use_Local_Scraper = None,
-            Use_Scraper_API = None,
-            Use_Groq_API = None,
-            Use_Open_API = None,
-            Local_Sentiment_LLM = None,
-            Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-            Local_General_LLM_kwargs = {
-                    'temperature':0.1,
-                    'top_p':1
-                } ,
-            Groq_API = None,
-            OpenAi_API = None,
-            HuggingFace_API = None,
-            Scraper_api_key = None,
-            Local_api_key = None,
-            Groq_LLM = "llama3-8b-8192",
-            OpenAI_LLM = "GPT-3.5",
-            device_map = "auto",
-            get_Groq_Review = False, #Handle these
-            get_OpenAI_review = False,
-            get_localLLM_review = False,
-            Groq_LLM_Temperature = 0.1,
-            Groq_LLM_Max_Tokens = 100,
-            Groq_LLM_Max_Input_Tokens = 300,
-            Groq_LLM_top_p = 1,
-            Groq_LLM_stream = False,
-            OpenAI_LLM_Temperature = 0.1,
-            OpenAI_LLM_Max_Tokens = 100,
-            OpenAI_LLM_stream = False,
-            OpenAI_LLM_Max_Input_Tokens = 300,
-            Local_LLM_Max_Input_Tokens = 300
+            Use_Local_Sentiment_LLM=None,
+            Use_Local_General_LLM=None,
+            Use_Local_Scraper=None,
+            Use_Scraper_API=None,
+            Use_Groq_API=None,
+            Use_Open_API=None,
+            Local_Sentiment_LLM=None,
+            Local_General_LLM="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+            Local_General_LLM_kwargs={
+                'temperature': 0.1,
+                'top_p': 1
+            },
+            Groq_API=None,
+            OpenAi_API=None,
+            HuggingFace_API=None,
+            Scraper_api_key=None,
+            Local_api_key=None,
+            Groq_LLM="llama3-8b-8192",
+            OpenAI_LLM="GPT-3.5",
+            device_map="auto",
+            get_Groq_Review=False,  # Handle these
+            get_OpenAI_review=False,
+            get_localLLM_review=False,
+            Groq_LLM_Temperature=0.1,
+            Groq_LLM_Max_Tokens=100,
+            Groq_LLM_Max_Input_Tokens=300,
+            Groq_LLM_top_p=1,
+            Groq_LLM_stream=False,
+            OpenAI_LLM_Temperature=0.1,
+            OpenAI_LLM_Max_Tokens=100,
+            OpenAI_LLM_stream=False,
+            OpenAI_LLM_Max_Input_Tokens=300,
+            Local_LLM_Max_Input_Tokens=300
 
     ):
         """
@@ -248,10 +247,10 @@ class SentConfig:
         fetched_review = []
         fetched_review_array = []
         final_resulted_output = None
-        final_resulted_output_of_all_sites = [] 
+        final_resulted_output_of_all_sites = []
 
-        #Getting the Reviews From Site
-        if isinstance(target_website,str):
+        # Getting the Reviews From Site
+        if isinstance(target_website, str):
             fetched_review = Fetch_Reviews(
                 target_website,
                 Use_Local_Scraper,
@@ -259,7 +258,7 @@ class SentConfig:
                 Scraper_api_key,
                 Local_api_key
             )
-        elif isinstance(target_website , list) and all(isinstance(item,str) for item in target_website):
+        elif isinstance(target_website, list) and all(isinstance(item, str) for item in target_website):
             for site in target_website:
                 fetched_review_temp = Fetch_Reviews(
                     site,
@@ -270,37 +269,36 @@ class SentConfig:
                 )
                 fetched_review_array.append(fetched_review_temp)
         else:
-            return "Error: The accepted format is either a list of strings or a single string."   
-        
-        #Genrating Sentiment For Those Reviews
+            return "Error: The accepted format is either a list of strings or a single string."
+
+        # Genrating Sentiment For Those Reviews
         if fetched_review:
             final_resulted_output = Struct_Generation_Pipeline(
                 text_message=fetched_review,
-                Use_Local_Sentiment_LLM = True,
-                model_id = Local_Sentiment_LLM,
+                Use_Local_Sentiment_LLM=True,
+                model_id=Local_Sentiment_LLM,
                 device_map=device_map
             )
-            #return final_resulted_output
         elif fetched_review_array:
             webcount = 1
             for each_website_reviews in fetched_review_array:
                 final_resulted_output_of_each_site = Struct_Generation_Pipeline(
                     text_message=each_website_reviews,
-                    Use_Local_Sentiment_LLM = True,
-                    model_id = Local_Sentiment_LLM,
+                    Use_Local_Sentiment_LLM=True,
+                    model_id=Local_Sentiment_LLM,
                     device_map=device_map
                 )
-                final_resulted_output_of_each_site.insert(0,webcount)
+                final_resulted_output_of_each_site.insert(0, webcount)
                 webcount = webcount + 1
-                final_resulted_output_of_all_sites.append(final_resulted_output_of_each_site)
-            #return final_resulted_output_of_all_sites
+                final_resulted_output_of_all_sites.append(
+                    final_resulted_output_of_each_site)
         else:
             return "Error: Didnt Find Any Inputs"
-        
-        #Adding Additional Comments To those Reviews
-        if get_Groq_Review ==True or get_OpenAI_review ==True or get_localLLM_review ==True:
-            if get_localLLM_review: #Local LLM Inference
-                if final_resulted_output: #Single Website Given by the user
+
+        # Adding Additional Comments To those Reviews
+        if get_Groq_Review == True or get_OpenAI_review == True or get_localLLM_review == True:
+            if get_localLLM_review:  # Local LLM Inference
+                if final_resulted_output:  # Single Website Given by the user
                     updated_reviews = LocalLLM_inference_list(
                         final_resulted_output,
                         model_name=Local_General_LLM,
@@ -309,7 +307,7 @@ class SentConfig:
                         device_map=device_map
                     )
                     return updated_reviews
-                elif final_resulted_output_of_all_sites: #Multiple Website given by the user
+                elif final_resulted_output_of_all_sites:  # Multiple Website given by the user
                     all_sites_updated_reviews = []
                     for site_reviews in final_resulted_output_of_all_sites:
                         site_id = site_reviews[0]
@@ -321,12 +319,13 @@ class SentConfig:
                             max_input_tokens=Local_LLM_Max_Input_Tokens,
                             device_map=device_map
                         )
-                        all_sites_updated_reviews.append([site_id] + updated_reviews_site)
+                        all_sites_updated_reviews.append(
+                            [site_id] + updated_reviews_site)
                     return all_sites_updated_reviews
                 else:
                     print("Error: Didn't receive any result from the sites")
-            elif get_Groq_Review: #Groq LLM Inference
-                if final_resulted_output: #Single Website Given by the user
+            elif get_Groq_Review:  # Groq LLM Inference
+                if final_resulted_output:  # Single Website Given by the user
                     updated_reviews = Groq_inference_list(
                         final_resulted_output,
                         Groq_API,
@@ -337,7 +336,7 @@ class SentConfig:
                         max_tokens=Groq_LLM_Max_Tokens
                     )
                     return updated_reviews
-                elif final_resulted_output_of_all_sites:  #Multiple Website given by the user
+                elif final_resulted_output_of_all_sites:  # Multiple Website given by the user
                     all_sites_updated_reviews = []
                     for site_reviews in final_resulted_output_of_all_sites:
                         site_id = site_reviews[0]
@@ -351,12 +350,13 @@ class SentConfig:
                             max_input_tokens=Groq_LLM_Max_Input_Tokens,
                             max_tokens=Groq_LLM_Max_Tokens
                         )
-                        all_sites_updated_reviews.append([site_id] + updated_reviews_site)
+                        all_sites_updated_reviews.append(
+                            [site_id] + updated_reviews_site)
                     return all_sites_updated_reviews
                 else:
                     print("Error : Didnt Recieve any result from the sites")
-            elif get_OpenAI_review: #OpenAI LLM Inference
-                if final_resulted_output: #Single Website Given by the user
+            elif get_OpenAI_review:  # OpenAI LLM Inference
+                if final_resulted_output:  # Single Website Given by the user
                     updated_reviews = OpenAI_inference_list(
                         final_resulted_output,
                         OpenAi_API,
@@ -366,7 +366,7 @@ class SentConfig:
                         max_input_tokens=OpenAI_LLM_Max_Input_Tokens
                     )
                     return updated_reviews
-                elif final_resulted_output_of_all_sites:  #Multiple Website given by the user
+                elif final_resulted_output_of_all_sites:  # Multiple Website given by the user
                     all_sites_updated_reviews = []
                     for site_reviews in final_resulted_output_of_all_sites:
                         site_id = site_reviews[0]
@@ -379,7 +379,8 @@ class SentConfig:
                             stream=OpenAI_LLM_stream,
                             max_input_tokens=OpenAI_LLM_Max_Input_Tokens
                         )
-                        all_sites_updated_reviews.append([site_id] + updated_reviews_site)
+                        all_sites_updated_reviews.append(
+                            [site_id] + updated_reviews_site)
                     return all_sites_updated_reviews
             else:
                 print("No valid review source selected.")
@@ -397,36 +398,36 @@ class SentConfig:
     def get_sentiment_from_website_overall_summary(
             self,
             target_website,
-            Use_Local_Sentiment_LLM = None,
-            Use_Local_General_LLM = None,
-            Use_Local_Scraper = None,
-            Use_Scraper_API = None,
-            Use_Groq_API = None,
-            Use_Open_API = None,
-            Local_Sentiment_LLM = None,
-            Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-            Local_General_LLM_kwargs = {
-                    'temperature':0.1,
-                    'top_p':1
-                } ,
-            Groq_API = None,
-            OpenAi_API = None,
-            HuggingFace_API = None,
-            Scraper_api_key = None,
-            Local_api_key = None,
-            Groq_LLM = "llama3-8b-8192",
-            OpenAI_LLM = "GPT-3.5",
-            device_map = "auto",
-            Groq_LLM_Temperature = 0.1,
-            Groq_LLM_Max_Tokens = 100,
-            Groq_LLM_Max_Input_Tokens = 300,
-            Groq_LLM_top_p = 1,
-            Groq_LLM_stream = False,
-            OpenAI_LLM_Temperature = 0.1,
-            OpenAI_LLM_Max_Tokens = 100,
-            OpenAI_LLM_stream = False,
-            OpenAI_LLM_Max_Input_Tokens = 300,
-            Local_LLM_Max_Input_Tokens = 300
+            Use_Local_Sentiment_LLM=None,
+            Use_Local_General_LLM=None,
+            Use_Local_Scraper=None,
+            Use_Scraper_API=None,
+            Use_Groq_API=None,
+            Use_Open_API=None,
+            Local_Sentiment_LLM=None,
+            Local_General_LLM="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+            Local_General_LLM_kwargs={
+                'temperature': 0.1,
+                'top_p': 1
+            },
+            Groq_API=None,
+            OpenAi_API=None,
+            HuggingFace_API=None,
+            Scraper_api_key=None,
+            Local_api_key=None,
+            Groq_LLM="llama3-8b-8192",
+            OpenAI_LLM="GPT-3.5",
+            device_map="auto",
+            Groq_LLM_Temperature=0.1,
+            Groq_LLM_Max_Tokens=100,
+            Groq_LLM_Max_Input_Tokens=300,
+            Groq_LLM_top_p=1,
+            Groq_LLM_stream=False,
+            OpenAI_LLM_Temperature=0.1,
+            OpenAI_LLM_Max_Tokens=100,
+            OpenAI_LLM_stream=False,
+            OpenAI_LLM_Max_Input_Tokens=300,
+            Local_LLM_Max_Input_Tokens=300
     ):
         """
         Fetches reviews from a specified website and generates an overall sentiment summary.
@@ -486,70 +487,123 @@ class SentConfig:
         Local_General_LLM = Local_General_LLM if Local_General_LLM is not None else self.Local_General_LLM
         Local_General_LLM_kwargs = Local_General_LLM_kwargs if Local_General_LLM_kwargs is not None else self.Local_General_LLM_kwargs
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
+        final_resulted_output = None
 
-        fetched_review = Fetch_Reviews(
+        '''fetched_review = Fetch_Reviews(
             target_website,
             Use_Local_Scraper,
             Use_Scraper_API,
             Scraper_api_key,
             Local_api_key
         )
+
         if fetched_review:
             final_resulted_output = Struct_Generation_Pipeline(
                 text_message=fetched_review,
-                Use_Local_Sentiment_LLM = True,
-                model_id = Local_Sentiment_LLM,
+                Use_Local_Sentiment_LLM=True,
+                model_id=Local_Sentiment_LLM,
                 device_map=device_map
             )
+            print("Fetched Reviews with Sentiment\n\n")
+            print(final_resulted_output)
         else:
-            print("Error : No Values Have been Fetched")
+            # Raise a ValueError
+            raise ValueError("Couldn't Fetch")'''
+        if target_website:
+            try:
+                fetched_review = Fetch_Reviews(
+                    target_website,
+                    Use_Local_Scraper,
+                    Use_Scraper_API,
+                    Scraper_api_key,
+                    Local_api_key
+                )
 
-        if Use_Groq_API ==True or Use_Open_API ==True or Use_Local_General_LLM ==True:
-            if Use_Groq_API:
-                Summarized_result_Groq = summarize_reviews(
-                    reviews=final_resulted_output,
-                    KEY=Groq_API,
-                    max_tokens=Groq_LLM_Max_Tokens,
-                    temperature=Groq_LLM_Temperature,
-                    top_p=Groq_LLM_top_p,
-                    stream=Groq_LLM_stream,
-                    model_id=Groq_LLM
-                )
-                return Summarized_result_Groq
-            elif Use_Open_API:
-                Summarized_result_OpenAi = summarize_reviews_openai(
-                    reviews=final_resulted_output,
-                    KEY=OpenAi_API,
-                    model_id=OpenAI_LLM,
-                    max_tokens=OpenAI_LLM_Max_Tokens,
-                    temperature=OpenAI_LLM_Temperature,
-                    stream=OpenAI_LLM_stream
-                )
-                return Summarized_result_OpenAi
-            elif Use_Local_General_LLM:
-                Summarized_result_LocalLLM = summarize_reviews_local(
-                    reviews=final_resulted_output,
-                    model_path=Local_General_LLM
-                )
-                return Summarized_result_LocalLLM
-            else:
-                print("Error : use any one of the LLM inference")
+                if fetched_review:
+                    final_resulted_output = Struct_Generation_Pipeline(
+                        text_message=fetched_review,
+                        Use_Local_Sentiment_LLM=True,
+                        model_id=Local_Sentiment_LLM,
+                        device_map=device_map
+                    )
+                else:
+                    raise ValueError(
+                        "Couldn't Fetch the Reviews From the Site")
+
+            except ValueError as e:
+                print(f"Error: {e}")
+                exit()
+
+            except ConnectionError:
+                print(
+                    "Error: Unable to connect to the website. Please check your internet connection.")
+                exit()
+
+            except TimeoutError:
+                print("Error: The request timed out. Try again later.")
+                exit()
+
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+                exit()
+
+            if Use_Groq_API == True or Use_Open_API == True or Use_Local_General_LLM == True:
+                if Use_Groq_API:
+                    if final_resulted_output:
+                        Summarized_result_Groq = summarize_reviews(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        return Summarized_result_Groq
+                    else:
+                        print("Couldnt Return Formatted Output")
+                elif Use_Open_API:
+                    if final_resulted_output:
+                        Summarized_result_OpenAi = summarize_reviews_openai(
+                            reviews=final_resulted_output,
+                            KEY=OpenAi_API,
+                            model_id=OpenAI_LLM,
+                            max_tokens=OpenAI_LLM_Max_Tokens,
+                            temperature=OpenAI_LLM_Temperature,
+                            stream=OpenAI_LLM_stream
+                        )
+                        return Summarized_result_OpenAi
+                    else:
+                        print("Couldnt Return Formatted Output")
+                elif Use_Local_General_LLM:
+                    if final_resulted_output:
+                        Summarized_result_LocalLLM = summarize_reviews_local(
+                            reviews=final_resulted_output,
+                            model_path=Local_General_LLM
+                        )
+                        return Summarized_result_LocalLLM
+                    else:
+                        print("Couldnt Return Formatted Output")
+                else:
+                    print("Error : use any one of the LLM inference")
+        else:
+            raise ValueError("Error : No URL supplied")
 
     def get_analytical_customer_sentiments(
             self,
-            target_website, 
-            Use_Local_Scraper = None,
-            Use_Scraper_API = None,
-            Scraper_api_key = None,
-            Local_api_key = None,
-            Use_Local_Sentiment_LLM = True,
-            Use_Bar_chart_visualize = False,
-            Use_pie_chart_visualize = False,
-            Use_violin_plot_visualize = False,
-            Use_box_plot_visualize = False,
-            Use_histogram_visualize = False,
-            device_map = "auto",
-            Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+            target_website,
+            Use_Local_Scraper=None,
+            Use_Scraper_API=None,
+            Scraper_api_key=None,
+            Local_api_key=None,
+            Use_Local_Sentiment_LLM=True,
+            Use_Bar_chart_visualize=False,
+            Use_pie_chart_visualize=False,
+            Use_violin_plot_visualize=False,
+            Use_box_plot_visualize=False,
+            Use_histogram_visualize=False,
+            device_map="auto",
+            Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest"
     ):
         """
         Fetches reviews from a specified website and performs sentiment analysis, followed by optional visualization of the results.
@@ -593,8 +647,8 @@ class SentConfig:
         if fetched_review:
             final_resulted_output = Struct_Generation_Pipeline_Visual(
                 text_message=fetched_review,
-                Use_Local_Sentiment_LLM = True,
-                model_id = Local_Sentiment_LLM,
+                Use_Local_Sentiment_LLM=True,
+                model_id=Local_Sentiment_LLM,
                 device_map=device_map
             )
         else:
@@ -614,14 +668,13 @@ class SentConfig:
 
         if Use_histogram_visualize:
             plot_sentiment_histograms(final_resulted_output)
-        
 
     def get_Sentiment_Audio_file(
             self,
-            Audio_File_path = None,
-            Use_Local_Sentiment_LLM = True,
-            Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest",
-            device_map = "auto"
+            Audio_File_path=None,
+            Use_Local_Sentiment_LLM=True,
+            Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
+            device_map="auto"
     ):
         """
         Analyzes the sentiment of text extracted from an audio file.
@@ -644,10 +697,10 @@ class SentConfig:
             sentiment = self.get_Quick_sentiment(
                 text_message=retrieved_text,
                 Use_Local_Sentiment_LLM=Use_Local_Sentiment_LLM,
-                Local_Sentiment_LLM = Local_Sentiment_LLM,
+                Local_Sentiment_LLM=Local_Sentiment_LLM,
                 device_map=device_map
             )
-            return [{'retrieved_text':retrieved_text},sentiment]
+            return [{'retrieved_text': retrieved_text}, sentiment]
         else:
             print("Mention the Audio Path")
 
@@ -655,36 +708,36 @@ class SentConfig:
         self,
         target_website1,
         target_website2,
-        Use_Local_Sentiment_LLM = None,
-        Use_Local_General_LLM = None,
-        Use_Local_Scraper = None,
-        Use_Scraper_API = None,
-        Use_Groq_API = None,
-        Use_Open_API = None,
-        Local_Sentiment_LLM = None,
-        Local_General_LLM = "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-        Local_General_LLM_kwargs = {
-                'temperature':0.1,
-                'top_p':1
-            } ,
-        Groq_API = None,
-        OpenAi_API = None,
-        HuggingFace_API = None,
-        Scraper_api_key = None,
-        Local_api_key = None,
-        Groq_LLM = "llama3-8b-8192",
-        OpenAI_LLM = "GPT-3.5",
-        device_map = "auto",
-        Groq_LLM_Temperature = 0.1,
-        Groq_LLM_Max_Tokens = 100,
-        Groq_LLM_Max_Input_Tokens = 300,
-        Groq_LLM_top_p = 1,
-        Groq_LLM_stream = False,
-        OpenAI_LLM_Temperature = 0.1,
-        OpenAI_LLM_Max_Tokens = 100,
-        OpenAI_LLM_stream = False,
-        OpenAI_LLM_Max_Input_Tokens = 300,
-        Local_LLM_Max_Input_Tokens = 300 
+        Use_Local_Sentiment_LLM=None,
+        Use_Local_General_LLM=None,
+        Use_Local_Scraper=None,
+        Use_Scraper_API=None,
+        Use_Groq_API=None,
+        Use_Open_API=None,
+        Local_Sentiment_LLM=None,
+        Local_General_LLM="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        Local_General_LLM_kwargs={
+            'temperature': 0.1,
+            'top_p': 1
+        },
+        Groq_API=None,
+        OpenAi_API=None,
+        HuggingFace_API=None,
+        Scraper_api_key=None,
+        Local_api_key=None,
+        Groq_LLM="llama3-8b-8192",
+        OpenAI_LLM="GPT-3.5",
+        device_map="auto",
+        Groq_LLM_Temperature=0.1,
+        Groq_LLM_Max_Tokens=100,
+        Groq_LLM_Max_Input_Tokens=300,
+        Groq_LLM_top_p=1,
+        Groq_LLM_stream=False,
+        OpenAI_LLM_Temperature=0.1,
+        OpenAI_LLM_Max_Tokens=100,
+        OpenAI_LLM_stream=False,
+        OpenAI_LLM_Max_Input_Tokens=300,
+        Local_LLM_Max_Input_Tokens=300
     ):
         """
         Compares product reviews from two different websites using sentiment analysis and other configurations.
@@ -744,7 +797,7 @@ class SentConfig:
         Local_General_LLM_kwargs = Local_General_LLM_kwargs if Local_General_LLM_kwargs is not None else self.Local_General_LLM_kwargs
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
 
-        if isinstance(target_website1,str):
+        if isinstance(target_website1, str):
             fetched_review1 = Fetch_Reviews(
                 target_website1,
                 Use_Local_Scraper,
@@ -755,7 +808,7 @@ class SentConfig:
         else:
             print("Error : Coundnt Fetch Values from Site 1")
 
-        if isinstance(target_website2,str):
+        if isinstance(target_website2, str):
             fetched_review2 = Fetch_Reviews(
                 target_website2,
                 Use_Local_Scraper,
@@ -769,14 +822,14 @@ class SentConfig:
         if fetched_review1 and fetched_review2:
             final_resulted_output1 = Struct_Generation_Pipeline(
                 text_message=fetched_review1,
-                Use_Local_Sentiment_LLM = True,
-                model_id = Local_Sentiment_LLM,
+                Use_Local_Sentiment_LLM=True,
+                model_id=Local_Sentiment_LLM,
                 device_map=device_map
             )
             final_resulted_output2 = Struct_Generation_Pipeline(
                 text_message=fetched_review2,
-                Use_Local_Sentiment_LLM = True,
-                model_id = Local_Sentiment_LLM,
+                Use_Local_Sentiment_LLM=True,
+                model_id=Local_Sentiment_LLM,
                 device_map=device_map
             )
         else:
@@ -784,29 +837,28 @@ class SentConfig:
 
         if final_resulted_output1 and final_resulted_output2:
             compared_reviews = compare_reviews_local(
-                        reviews1=final_resulted_output1,
-                        reviews2=final_resulted_output2,
-                        KEY=Groq_API,
-                        temperature=Groq_LLM_Temperature,
-                        top_p=Groq_LLM_top_p,
-                        stream=Groq_LLM_stream,
-                        max_input_tokens=Groq_LLM_Max_Input_Tokens,
-                        max_tokens=Groq_LLM_Max_Tokens
+                reviews1=final_resulted_output1,
+                reviews2=final_resulted_output2,
+                KEY=Groq_API,
+                temperature=Groq_LLM_Temperature,
+                top_p=Groq_LLM_top_p,
+                stream=Groq_LLM_stream,
+                max_input_tokens=Groq_LLM_Max_Input_Tokens,
+                max_tokens=Groq_LLM_Max_Tokens
             )
             return compared_reviews
         else:
             print("Error : Sentiment Generation Error")
 
-
     def get_Sentiment_Image_file(
             self,
-            Image_File_path = None,
-            Custom_Prompt = None,
-            Main_Prompt = '<MORE_DETAILED_CAPTION>',
-            Use_Local_Sentiment_LLM = True,
-            Local_Sentiment_LLM = "cardiffnlp/twitter-roberta-base-sentiment-latest",
-            device_map = "auto",
-            Image_to_Text_Model = None
+            Image_File_path=None,
+            Custom_Prompt=None,
+            Main_Prompt='<MORE_DETAILED_CAPTION>',
+            Use_Local_Sentiment_LLM=True,
+            Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
+            device_map="auto",
+            Image_to_Text_Model=None
     ):
         """
         Analyzes the sentiment of text extracted from an image file.
@@ -828,7 +880,7 @@ class SentConfig:
         Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
         device_map = device_map if device_map is not None else self.device_map
 
-        if Image_File_path :
+        if Image_File_path:
             if Image_to_Text_Model == 'microsoft/Florence-2-large':
                 Extracted_Text = Convert_Image_to_Text(
                     image_path=Image_File_path,
@@ -839,10 +891,10 @@ class SentConfig:
                     sentiment = self.get_Quick_sentiment(
                         text_message=Extracted_Text,
                         Use_Local_Sentiment_LLM=Use_Local_Sentiment_LLM,
-                        Local_Sentiment_LLM = Local_Sentiment_LLM,
+                        Local_Sentiment_LLM=Local_Sentiment_LLM,
                         device_map=device_map
                     )
-                    return [{'Extracted_Text':Extracted_Text},sentiment]
+                    return [{'Extracted_Text': Extracted_Text}, sentiment]
                 else:
                     print("Error : Couldn't Extract any text")
         else:
@@ -851,9 +903,9 @@ class SentConfig:
     def Multi_language_Sentiment(
             self,
             text_message,
-            Use_Local_Sentiment_LLM = True,
-            Local_Sentiment_LLM = None,
-            device_map = None        
+            Use_Local_Sentiment_LLM=True,
+            Local_Sentiment_LLM=None,
+            device_map=None
     ):
         """
         Analyzes sentiment for a given text message by first translating it to a common language.
@@ -875,22 +927,22 @@ class SentConfig:
             translated_text = Translate_text(message=text_message)
             if translated_text:
                 sentiment = self.get_Quick_sentiment(
-                        text_message=translated_text,
-                        Use_Local_Sentiment_LLM=Use_Local_Sentiment_LLM,
-                        Local_Sentiment_LLM = Local_Sentiment_LLM,
-                        device_map=device_map
-                    )
-                return [{'Original Text':text_message},{'Translated Text':translated_text},sentiment]
+                    text_message=translated_text,
+                    Use_Local_Sentiment_LLM=Use_Local_Sentiment_LLM,
+                    Local_Sentiment_LLM=Local_Sentiment_LLM,
+                    device_map=device_map
+                )
+                return [{'Original Text': text_message}, {'Translated Text': translated_text}, sentiment]
             else:
-                    print("Error : Couldn't Translate any text")
+                print("Error : Couldn't Translate any text")
         else:
             print("Error : No message Recieved")
 
     def Config_Local_Scraper(
             self,
             action,
-            tag = None,
-            attrs = None,
+            tag=None,
+            attrs=None,
     ):
         """
         Configures the local web scraper by adding or retrieving review patterns.
@@ -903,10 +955,10 @@ class SentConfig:
         Returns:
         - result: The retrieved review patterns if the action is 'get'. If an invalid action is provided, an error message is printed.
         """
-        if action=='add':
+        if action == 'add':
             if tag and attrs:
-                add_review_pattern(tag=tag,attrs=attrs)
-        elif action=='get':
+                add_review_pattern(tag=tag, attrs=attrs)
+        elif action == 'get':
             result = get_review_patterns()
             return result
         else:
@@ -917,8 +969,8 @@ class SentConfig:
             target_site,
             output_dir,
             file_name,
-            Use_Local_Sentiment_LLM = None,
-            Use_Local_Scraper = None
+            Use_Local_Sentiment_LLM=None,
+            Use_Local_Scraper=None
     ):
         """
         Fetches reviews from a website and saves them to a CSV file.
@@ -938,10 +990,11 @@ class SentConfig:
         Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
         Fetched_reviews = self.get_sentiment_from_website_each_feedback_sentiment(
             target_website=target_site,
-             Use_Local_Sentiment_LLM = True,
-             Use_Local_Scraper=True,
-             get_Groq_Review = False,
-             get_OpenAI_review = False,
-             get_localLLM_review = False
+            Use_Local_Sentiment_LLM=True,
+            Use_Local_Scraper=True,
+            get_Groq_Review=False,
+            get_OpenAI_review=False,
+            get_localLLM_review=False
         )
-        save_reviews_to_csv(reviews=Fetched_reviews,output_dir=output_dir,file_name=file_name)
+        save_reviews_to_csv(reviews=Fetched_reviews,
+                            output_dir=output_dir, file_name=file_name)
