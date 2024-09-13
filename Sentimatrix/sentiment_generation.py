@@ -25,7 +25,7 @@ from .utils.visualization import (
 from .utils.wav_to_text import audio_to_text
 from .utils.text_translation import Translate_text
 from .utils.save_to_csv import save_reviews_to_csv
-from .utils.llm_inference.Florence_2_text import Convert_Image_to_Text
+from .utils.llm_inference.Image_to_text import generate_image_caption
 
 
 class SentConfig:
@@ -854,7 +854,6 @@ class SentConfig:
             self,
             Image_File_path=None,
             Custom_Prompt=None,
-            Main_Prompt='<MORE_DETAILED_CAPTION>',
             Use_Local_Sentiment_LLM=True,
             Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
             device_map="auto",
@@ -881,11 +880,10 @@ class SentConfig:
         device_map = device_map if device_map is not None else self.device_map
 
         if Image_File_path:
-            if Image_to_Text_Model == 'microsoft/Florence-2-large':
-                Extracted_Text = Convert_Image_to_Text(
+            if Image_to_Text_Model == 'Salesforce/blip-image-captioning-large':
+                Extracted_Text = generate_image_caption(
                     image_path=Image_File_path,
-                    text_input=Custom_Prompt,
-                    task_prompt=Main_Prompt
+                    text_prompt=Custom_Prompt
                 )
                 if Extracted_Text:
                     sentiment = self.get_Quick_sentiment(
@@ -897,8 +895,13 @@ class SentConfig:
                     return [{'Extracted_Text': Extracted_Text}, sentiment]
                 else:
                     print("Error : Couldn't Extract any text")
+                    exit()
+            else:
+                print("Unauthorised Model Loaded")
+                exit()
         else:
             print("Error : Image path Not Provided")
+            exit()
 
     def Multi_language_Sentiment(
             self,

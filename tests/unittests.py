@@ -201,8 +201,11 @@ Sent = SentConfig(
     Use_Local_Scraper=True,
     Use_Local_Sentiment_LLM=True
 )
-image_path = ''
-result = Sent.get_Sentiment_Image_file(Image_File_path=image_path,Image_to_Text_Model='microsoft/Florence-2-large')
+image_path = r'D:\codespace\sentimatrix\sample photos\Screenshot 2024-08-25 074810.png'
+result = Sent.get_Sentiment_Image_file(
+    Image_File_path=image_path,
+    Image_to_Text_Model='Salesforce/blip-image-captioning-large'
+)
 
 print(result)'''
 
