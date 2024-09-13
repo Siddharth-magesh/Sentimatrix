@@ -647,7 +647,7 @@ class SentConfig:
                 Local_Sentiment_LLM = Local_Sentiment_LLM,
                 device_map=device_map
             )
-            return sentiment
+            return [{'retrieved_text':retrieved_text},sentiment]
         else:
             print("Mention the Audio Path")
 
