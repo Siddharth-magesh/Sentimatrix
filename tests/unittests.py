@@ -305,9 +305,9 @@ print(result)'''
 Sent = SentConfig(
     Use_Local_Emotion_LLM=True,
     Use_Scraper_API=True,
-    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Scraper_api_key="",
     Use_Groq_API=True,
-    Groq_API="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"
+    Groq_API=""
 )
 target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
 result = Sent.get_Emotion_from_website_overall_summary(
@@ -323,7 +323,7 @@ print(result)'''
 Sent = SentConfig(
     Use_Local_Emotion_LLM=True,
     Use_Scraper_API=True,
-    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Scraper_api_key="",
     Use_Local_General_LLM=True
 )
 target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
@@ -339,10 +339,10 @@ print(result)'''
 Sent = SentConfig(
     Use_Local_Emotion_LLM=True,
     Use_Scraper_API=True,
-    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Scraper_api_key="",
     Use_Local_General_LLM=True,
     Use_Gemini_API=True,
-    Google_API="AIzaSyCBqcqJGCeDc1Tk63g9MsfQQXNdITdihmI"
+    Google_API=""
 )
 target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
 result = Sent.get_Emotion_from_website_overall_summary(
