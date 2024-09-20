@@ -1,4 +1,5 @@
 from transformers import pipeline , AutoModelForCausalLM , AutoTokenizer
+import requests
 
 def LocalLLM_inference_list(
         reviews,
@@ -113,3 +114,39 @@ def summarize_reviews_local(
     summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     return summary
+
+def Ollama_Local_Summarize(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise summary of the overall sentiment and main feedback points."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
+
+def Ollama_Local_Emotion_Summarize(
+    emotions,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_emotions = "\n".join(
+        [f"TEXT: {emotion[0]['text-message']}\n" + "\n".join(
+            [f"Emotion: {emo['label']} (Score: {emo['score']})" for emo in emotion[1]]
+        ) for emotion in emotions]
+    )
+    prompt = f"Here are the reviews:\n{combined_emotions}\nPlease provide a concise summary of the overall sentiment and main feedback points."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]

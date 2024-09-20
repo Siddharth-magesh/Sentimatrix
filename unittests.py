@@ -37,10 +37,10 @@ print("Current review patterns:", current_patterns)'''
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Scraper_API = True,
-    Scraper_api_key= ""
+    Scraper_api_key= "7ebf4f26faa024ef86d97279c16c2a0c"
 )
-Sent.get_sentiment_from_website_each_feedback_sentiment('https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1')
-'''
+result = Sent.get_sentiment_from_website_each_feedback_sentiment('https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1')
+print(result)'''
 
 # Initial Website Sentiment Test without groq --> Worked Without using Scraper API also
 '''from Sentimatrix.sentiment_generation import SentConfig
@@ -61,6 +61,7 @@ print(result)'''
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Sentiment_LLM= True,
+    Use_Gemini_API=True,
     device_map = "auto" 
 )
 target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
@@ -68,8 +69,8 @@ result = Sent.get_sentiment_from_website_each_feedback_sentiment(
     target_website=target,
     Use_Local_Scraper=True,
     Use_Scraper_API=False,
-    get_Groq_Review= True,
-    Groq_API=""
+    get_Gemini_Review=True,
+    Google_API=""
 )
 
 print(result)'''
@@ -128,7 +129,7 @@ Sent = SentConfig(
     Use_Groq_API=True,
     Use_Local_Scraper=False,
     Use_Scraper_API=True,
-    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Scraper_api_key="",
     Groq_API=""
 )
 target = 'https://www.amazon.com/dp/B0B9MYQ1W1/ref=sspa_dk_detail_4?psc=1&pd_rd_i=B0B9MYQ1W1&pd_rd_w=uR0Qm&content-id=amzn1.sym.7446a9d1-25fe-4460-b135-a60336bad2c9&pf_rd_p=7446a9d1-25fe-4460-b135-a60336bad2c9&pf_rd_r=FT61ZXKDX7WCHVB8BQ26&pd_rd_wg=dRCyO&pd_rd_r=d8984c14-110a-4ff7-ba32-2ba58196ef03&s=apparel&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw'
@@ -139,15 +140,31 @@ result = Sent.get_sentiment_from_website_overall_summary(
 )
 print(result)'''
 
-# UnitTest for get_sentiment_from_website_overall_summary using Groq
+# UnitTest for get_sentiment_from_website_overall_summary using Local LLM Ollama
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_General_LLM=True,
+    Use_Local_Scraper=False,
+    Use_Scraper_API=True,
+    Scraper_api_key=''
+)
+target = 'https://www.amazon.com/Legendary-Whitetails-Journeyman-Jacket-Tarmac/dp/B013KW38RQ/ref=cm_cr_arp_d_product_top?ie=UTF8'
+result = Sent.get_sentiment_from_website_overall_summary(
+    target_website=target
+)
+print(result)'''
+
+# UnitTest for get_sentiment_from_website_overall_summary using Gemini
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_General_LLM=True,
     Use_Local_Scraper=True,
 )
-target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+target = 'https://www.amazon.com/Legendary-Whitetails-Journeyman-Jacket-Tarmac/dp/B013KW38RQ/ref=cm_cr_arp_d_product_top?ie=UTF8'
 result = Sent.get_sentiment_from_website_overall_summary(
-    target_website=target
+    target_website=target,
+    Use_Gemini_API=True,
+    Google_API="AIzaSyCBqcqJGCeDc1Tk63g9MsfQQXNdITdihmI"
 )
 print(result)'''
 
@@ -181,13 +198,38 @@ print(result)'''
 # UnitTest for compare_product_on_reviews --->Done Value Fetch was good , but llm didnt perform well
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
-    Use_Local_Scraper=True,
+    Use_Local_Scraper=False,
+    Use_Scraper_API=True,
+    Scraper_api_key='',
     Use_Groq_API=True,
     Use_Local_Sentiment_LLM=True,
     Groq_API=''
 )
+
+
 targetsite1 = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
-targetsite2 = 'https://www.amazon.in/dp/B0CV9S7ZV6/ref=sspa_dk_detail_0?pd_rd_i=B0CV9S7ZV6&pd_rd_w=NpSRY&content-id=amzn1.sym.413ef885-ae1b-472f-afa4-d683cda6ad0d&pf_rd_p=413ef885-ae1b-472f-afa4-d683cda6ad0d&pf_rd_r=GRXQN1BT3J6P2EZE1H0A&pd_rd_wg=PUaeb&pd_rd_r=c8d3b191-000c-4133-bed6-1e56985c6d28&s=computers&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw&th=1'
+targetsite2 = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+result = Sent.compare_product_on_reviews(
+    target_website1=targetsite1,
+    target_website2=targetsite2
+)
+
+print(result)
+'''
+
+# UnitTest for compare_product_on_reviews --->Using Gemini LLM
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Scraper=True,
+    Use_Scraper_API=False,
+    Use_Gemini_API=True,
+    Use_Local_Sentiment_LLM=True,
+    Google_API='AIzaSyCBqcqJGCeDc1Tk63g9MsfQQXNdITdihmI'
+)
+
+
+targetsite1 = 'https://www.amazon.com/Legendary-Whitetails-Journeyman-Jacket-Tarmac/dp/B013KW38RQ/ref=cm_cr_arp_d_product_top?ie=UTF8'
+targetsite2 = 'https://www.amazon.com/dp/B075ZD9L6X/ref=sspa_dk_detail_2?psc=1&pd_rd_i=B075ZD9L6X&pd_rd_w=1hd1P&content-id=amzn1.sym.10c716f0-b18a-473a-9d6a-5d87bc47ef1e&pf_rd_p=10c716f0-b18a-473a-9d6a-5d87bc47ef1e&pf_rd_r=QYMFNXHMV8Q39KPKSKMJ&pd_rd_wg=YBNW5&pd_rd_r=0aba1fc4-298b-4065-a1b3-05b3580b6673&s=apparel&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM'
 result = Sent.compare_product_on_reviews(
     target_website1=targetsite1,
     target_website2=targetsite2
@@ -195,16 +237,16 @@ result = Sent.compare_product_on_reviews(
 
 print(result)'''
 
+
 # UnitTest for get_Sentiment_Image_file --->Done , But Need to be Executed and Tested
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Scraper=True,
     Use_Local_Sentiment_LLM=True
 )
-image_path = r'D:\codespace\sentimatrix\sample photos\Screenshot 2024-08-25 074810.png'
+image_path = r"D:\Hackathon\KCG\stock images\Screenshot 2024-08-25 074810.png"
 result = Sent.get_Sentiment_Image_file(
-    Image_File_path=image_path,
-    Image_to_Text_Model='Salesforce/blip-image-captioning-large'
+    Image_File_path=image_path
 )
 
 print(result)'''
@@ -240,3 +282,71 @@ Sent.Save_reviews_to_CSV(
     output_dir=r'',
     file_name='review.csv'
 )'''
+
+# Initial Website Emotion Test without groq --> Worked With using Scraper API also
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Emotion_LLM = True,
+    device_map = "auto" 
+)
+target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+result = Sent.get_emotion_from_website_each_feedback(
+    target_website=target,
+    Use_Scraper_API=True,
+    Scraper_api_key=""
+)
+
+print(result)'''
+
+
+# Emotion Summarization using Groq
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Emotion_LLM=True,
+    Use_Scraper_API=True,
+    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Use_Groq_API=True,
+    Groq_API="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"
+)
+target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+result = Sent.get_Emotion_from_website_overall_summary(
+    target_website=target
+)
+
+print(result)'''
+
+
+# Emotion Summarization using Ollama
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Emotion_LLM=True,
+    Use_Scraper_API=True,
+    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Use_Local_General_LLM=True
+)
+target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+result = Sent.get_Emotion_from_website_overall_summary(
+    target_website=target
+)
+
+print(result)'''
+
+# Emotion Summarization using Gemini
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Emotion_LLM=True,
+    Use_Scraper_API=True,
+    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Use_Local_General_LLM=True,
+    Use_Gemini_API=True,
+    Google_API="AIzaSyCBqcqJGCeDc1Tk63g9MsfQQXNdITdihmI"
+)
+target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+result = Sent.get_Emotion_from_website_overall_summary(
+    target_website=target
+)
+
+print(result)'''
