@@ -48,7 +48,7 @@ Sent = SentConfig(
     Use_Local_Sentiment_LLM= True,
     device_map = "auto" 
 )
-target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+target = 'https://www.amazon.com/Legendary-Whitetails-Journeyman-Jacket-Tarmac/dp/B013KW38RQ/ref=cm_cr_arp_d_product_top?ie=UTF8'
 result = Sent.get_sentiment_from_website_each_feedback_sentiment(
     target_website=target,
     Use_Local_Scraper= True,
@@ -61,15 +61,15 @@ print(result)'''
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Sentiment_LLM= True,
-    Use_Gemini_API=True,
-    device_map = "auto" 
+    Use_Gemini_API=False,
+    device_map="auto" 
 )
 target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
 result = Sent.get_sentiment_from_website_each_feedback_sentiment(
     target_website=target,
     Use_Local_Scraper=True,
     Use_Scraper_API=False,
-    get_Gemini_Review=True,
+    get_Gemini_Review=False,
     Google_API=""
 )
 
@@ -136,7 +136,8 @@ target = 'https://www.amazon.com/dp/B0B9MYQ1W1/ref=sspa_dk_detail_4?psc=1&pd_rd_
 result = Sent.get_sentiment_from_website_overall_summary(
     target_website=target,
     Groq_LLM_Max_Tokens=500,
-    Groq_LLM_Max_Input_Tokens=1000
+    Groq_LLM_Max_Input_Tokens=850,
+    Groq_LLM="llama-3.1-70b-versatile"
 )
 print(result)'''
 
@@ -208,25 +209,48 @@ Sent = SentConfig(
 
 
 targetsite1 = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
-targetsite2 = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+targetsite2 = 'https://www.amazon.in/dp/B0CV9JXPB5/ref=sspa_dk_detail_0?psc=1&pd_rd_i=B0CV9JXPB5&pd_rd_w=PTSA6&content-id=amzn1.sym.ced8ccbd-8515-4aaa-87bd-d5f65be4219b&pf_rd_p=ced8ccbd-8515-4aaa-87bd-d5f65be4219b&pf_rd_r=TJ9HAC5NGRGJHMDPXHTT&pd_rd_wg=EZHnn&pd_rd_r=53b3f0d0-7524-4bfa-a042-0a62da583008&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM'
+result = Sent.compare_product_on_reviews(
+    target_website1=targetsite1,
+    target_website2=targetsite2,
+    Groq_LLM_Max_Input_Tokens=1000,
+    Groq_LLM_Max_Tokens=800
+)
+
+print(result)'''
+
+
+# UnitTest for compare_product_on_reviews --->Using Gemini LLM
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Scraper=False,
+    Use_Scraper_API=True,
+    Use_Gemini_API=True,
+    Use_Local_Sentiment_LLM=True,
+    Google_API='AIzaSyCBqcqJGCeDc1Tk63g9MsfQQXNdITdihmI',
+    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c"
+)
+
+
+targetsite1 = 'https://www.amazon.com/Legendary-Whitetails-Journeyman-Jacket-Tarmac/dp/B013KW38RQ/ref=cm_cr_arp_d_product_top?ie=UTF8'
+targetsite2 = 'https://www.amazon.com/dp/B075ZD9L6X/ref=sspa_dk_detail_2?psc=1&pd_rd_i=B075ZD9L6X&pd_rd_w=1hd1P&content-id=amzn1.sym.10c716f0-b18a-473a-9d6a-5d87bc47ef1e&pf_rd_p=10c716f0-b18a-473a-9d6a-5d87bc47ef1e&pf_rd_r=QYMFNXHMV8Q39KPKSKMJ&pd_rd_wg=YBNW5&pd_rd_r=0aba1fc4-298b-4065-a1b3-05b3580b6673&s=apparel&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM'
 result = Sent.compare_product_on_reviews(
     target_website1=targetsite1,
     target_website2=targetsite2
 )
 
-print(result)
-'''
+print(result)'''
 
-# UnitTest for compare_product_on_reviews --->Using Gemini LLM
+
+# UnitTest for compare_product_on_reviews --->Using Local LLM
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
-    Use_Local_Scraper=True,
-    Use_Scraper_API=False,
-    Use_Gemini_API=True,
+    Use_Local_Scraper=False,
+    Use_Scraper_API=True,
     Use_Local_Sentiment_LLM=True,
-    Google_API='AIzaSyCBqcqJGCeDc1Tk63g9MsfQQXNdITdihmI'
+    Use_Local_General_LLM=True,
+    Scraper_api_key=""
 )
-
 
 targetsite1 = 'https://www.amazon.com/Legendary-Whitetails-Journeyman-Jacket-Tarmac/dp/B013KW38RQ/ref=cm_cr_arp_d_product_top?ie=UTF8'
 targetsite2 = 'https://www.amazon.com/dp/B075ZD9L6X/ref=sspa_dk_detail_2?psc=1&pd_rd_i=B075ZD9L6X&pd_rd_w=1hd1P&content-id=amzn1.sym.10c716f0-b18a-473a-9d6a-5d87bc47ef1e&pf_rd_p=10c716f0-b18a-473a-9d6a-5d87bc47ef1e&pf_rd_r=QYMFNXHMV8Q39KPKSKMJ&pd_rd_wg=YBNW5&pd_rd_r=0aba1fc4-298b-4065-a1b3-05b3580b6673&s=apparel&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM'
@@ -293,7 +317,7 @@ target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/d
 result = Sent.get_emotion_from_website_each_feedback(
     target_website=target,
     Use_Scraper_API=True,
-    Scraper_api_key=""
+    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c"
 )
 
 print(result)'''
@@ -471,6 +495,24 @@ result = Sent.get_analysis_report_from_youtube(
     Youtube_API=youtube_api_key,
     Use_Groq_API=True,
     Groq_API=""
+)
+
+print(result)'''
+
+# visualizing card for emotions
+'''
+from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Scraper=False,
+    Use_Scraper_API=True,
+    Scraper_api_key="",
+    Use_Local_Sentiment_LLM=False
+)
+target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+result = Sent.get_analytical_customer_sentiments(
+    target_website=target,
+    Use_Local_Emotion_LLM=True,
+    Use_Card_Emotion_Visulize=True
 )
 
 print(result)'''

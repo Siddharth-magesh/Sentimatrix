@@ -1,4 +1,3 @@
-
 from .utils.Quick_Sentiment import Generation_Pipeline
 from .utils.web_scraper import Fetch_Reviews, add_review_pattern, get_review_patterns
 from .utils.Structured_Sentiment import Struct_Generation_Pipeline, Struct_Generation_Pipeline_Visual
@@ -23,14 +22,16 @@ from .utils.llm_inference.localLLM_inference import (
     LocalLLM_inference_list,
     summarize_reviews_local,
     Ollama_Local_Summarize,
-    Ollama_Local_Emotion_Summarize
+    Ollama_Local_Emotion_Summarize,
+    Ollama_Local_Sentiment_Comparsion
 )
 from .utils.visualization import (
     plot_sentiment_box_plot,
     plot_sentiment_distribution,
     plot_sentiment_histograms,
     plot_sentiment_pie_chart,
-    plot_sentiment_violin_plot
+    plot_sentiment_violin_plot,
+    calculate_top_emotions_percentages
 )
 from .utils.wav_to_text import audio_to_text
 from .utils.text_translation import Translate_text
@@ -110,7 +111,8 @@ class SentConfig:
             Groq_LLM="llama3-8b-8192",
             OpenAI_LLM="GPT-3.5",
             Gemini_LLM="gemini-1.5-pro",
-            device_map="auto"
+            device_map="auto",
+            Ollama_Model_EndPoint = "http://localhost:11434/api/generate" 
     ):
         """
         Initializes the SentConfig class with configuration options for sentiment analysis
@@ -139,6 +141,7 @@ class SentConfig:
         self.Gemini_LLM = Gemini_LLM
         self.device_map = device_map
         self.Local_Emotion_LLM = Local_Emotion_LLM
+        self.Ollama_Model_EndPoint = Ollama_Model_EndPoint
 
     def get_Quick_sentiment(
             self,
@@ -1166,18 +1169,21 @@ class SentConfig:
     def get_analytical_customer_sentiments(
             self,
             target_website,
+            Use_Local_Sentiment_LLM=True,
+            Use_Local_Emotion_LLM = True,
             Use_Local_Scraper=None,
             Use_Scraper_API=None,
             Scraper_api_key=None,
             Local_api_key=None,
-            Use_Local_Sentiment_LLM=True,
             Use_Bar_chart_visualize=False,
             Use_pie_chart_visualize=False,
             Use_violin_plot_visualize=False,
             Use_box_plot_visualize=False,
             Use_histogram_visualize=False,
+            Use_Card_Emotion_Visulize=False,
             device_map="auto",
-            Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest"
+            Local_Emotion_LLM="SamLowe/roberta-base-go_emotions",
+            Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
     ):
         """
         Fetches reviews from a specified website and performs sentiment analysis, followed by optional visualization of the results.
@@ -1210,6 +1216,7 @@ class SentConfig:
         Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
         device_map = device_map if device_map is not None else self.device_map
         Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
+        Use_Local_Emotion_LLM = Use_Local_Emotion_LLM if Use_Local_Emotion_LLM is not None else self.Use_Local_Emotion_LLM
 
         fetched_review = Fetch_Reviews(
             target_website,
@@ -1219,12 +1226,20 @@ class SentConfig:
             Local_api_key
         )
         if fetched_review:
-            final_resulted_output = Struct_Generation_Pipeline_Visual(
-                text_message=fetched_review,
-                Use_Local_Sentiment_LLM=True,
-                model_id=Local_Sentiment_LLM,
-                device_map=device_map
-            )
+            if Use_Local_Sentiment_LLM:
+                final_resulted_output = Struct_Generation_Pipeline_Visual(
+                    text_message=fetched_review,
+                    Use_Local_Sentiment_LLM=True,
+                    model_id=Local_Sentiment_LLM,
+                    device_map=device_map
+                )
+            if Use_Local_Emotion_LLM:
+                final_resulted_output_Emotions = Struct_Emotion(
+                    text_message=fetched_review,
+                    Use_Local_Emotion_LLM=True,
+                    model_id=Local_Emotion_LLM,
+                    device_map=device_map
+                )
         else:
             print("Error : No Values Have been Fetched")
 
@@ -1242,6 +1257,10 @@ class SentConfig:
 
         if Use_histogram_visualize:
             plot_sentiment_histograms(final_resulted_output)
+
+        if Use_Card_Emotion_Visulize:
+            resulted_top5_emotions = calculate_top_emotions_percentages(reviews_emotions=final_resulted_output_Emotions)
+            return resulted_top5_emotions
 
     def get_Sentiment_Audio_file(
             self,
@@ -1282,15 +1301,15 @@ class SentConfig:
         self,
         target_website1,
         target_website2,
-        Use_Local_Sentiment_LLM=None,
-        Use_Local_General_LLM=None,
+        Use_Local_General_LLM=True,
+        Use_Local_Sentiment_LLM=True,
         Use_Local_Scraper=None,
         Use_Scraper_API=None,
         Use_Groq_API=None,
         Use_Open_API=None,
         Use_Gemini_API=None,
         Local_Sentiment_LLM=None,
-        Local_General_LLM="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        Local_General_LLM="llama3.1",
         Local_General_LLM_kwargs={
             'temperature': 0.1,
             'top_p': 1
@@ -1317,7 +1336,8 @@ class SentConfig:
         Local_LLM_Max_Input_Tokens=300,
         Gemini_LLM_Temperature=0.1,
         Gemini_LLM_Max_Tokens=100,
-        Gemini_LLM_Max_Input_Tokens=300
+        Gemini_LLM_Max_Input_Tokens=300,
+        Ollama_Model_EndPoint = "http://localhost:11434/api/generate" 
     ):
         """
         Compares product reviews from two different websites using sentiment analysis and other configurations.
@@ -1381,6 +1401,8 @@ class SentConfig:
         Local_General_LLM_kwargs = Local_General_LLM_kwargs if Local_General_LLM_kwargs is not None else self.Local_General_LLM_kwargs
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
 
+        Ollama_Model_EndPoint = Ollama_Model_EndPoint if Ollama_Model_EndPoint is not None else self.Ollama_Model_EndPoint
+
         if isinstance(target_website1, str):
             fetched_review1 = Fetch_Reviews(
                 target_website1,
@@ -1413,6 +1435,10 @@ class SentConfig:
                 device_map=device_map
             )
         else:
+            if not fetched_review1 :
+                print("Couldn't Find Reviews in Site 1")
+            if not fetched_review2:
+                print("Could'nt Find Reviews in Site 2")
             print("Error : Coundnt find Reviews in either one of the sites")
             exit()
 
@@ -1443,6 +1469,14 @@ class SentConfig:
             elif Use_Open_API==True:
                 print("Still Under Development")
                 exit()
+            elif Use_Local_General_LLM==True:
+                compared_reviews = Ollama_Local_Sentiment_Comparsion(
+                    review1=final_resulted_output1,
+                    review2=final_resulted_output2,
+                    Ollama_Model_EndPoint = Ollama_Model_EndPoint,
+                    Model_Name=Local_General_LLM
+                )
+                return compared_reviews
             else:
                 print("Select a LLM for infernce")
                 exit()

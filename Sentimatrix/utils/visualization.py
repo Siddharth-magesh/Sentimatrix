@@ -147,3 +147,22 @@ def plot_sentiment_violin_plot(reviews):
     sns.violinplot(x='label', y='score', data=df, palette={'positive':'green', 'neutral':'gray', 'negative':'red'})
     plt.title('Violin Plot of Sentiment Scores by Label')
     plt.show()
+
+def calculate_top_emotions_percentages(reviews_emotions):
+    # Extract emotions from each review
+    all_emotions = [emotion['label'] for review in reviews_emotions for emotion in review[1]]
+    
+    # Count the frequency of each emotion
+    emotion_counts = Counter(all_emotions)
+    
+    # Get total number of emotions
+    total_emotions_count = sum(emotion_counts.values())
+    
+    # Get top 5 emotions
+    top_5_emotions = emotion_counts.most_common(5)
+    
+    # Calculate percentage for each top emotion
+    top_5_emotions_percentages = [(emotion, (count / total_emotions_count) * 100) for emotion, count in top_5_emotions]
+    
+    # Output results
+    return top_5_emotions_percentages

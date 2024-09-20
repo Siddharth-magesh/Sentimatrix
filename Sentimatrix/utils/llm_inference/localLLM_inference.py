@@ -150,3 +150,24 @@ def Ollama_Local_Emotion_Summarize(
     }
     response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
     return response.json()["response"]
+
+def Ollama_Local_Sentiment_Comparsion(
+    review1,
+    review2,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_review1 = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in review1])
+    combined_review2 = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in review2])
+    prompt = f"""Compare the reviews for the two products below and provide a summary of how they compare in terms of customer satisfaction and feedback:\n\n
+        Product 1 Reviews:\n{combined_review1}\n\n
+        Product 2 Reviews:\n{combined_review2}\n\n
+        Please provide a concise summary comparing the overall sentiment and key points from both products."""
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
