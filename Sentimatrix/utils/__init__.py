@@ -16,3 +16,10 @@ from .visualization import (
 from .wav_to_text import audio_to_text
 from .text_translation import Translate_text
 from .save_to_csv import save_reviews_to_csv
+from .web_Scraper_Apps import IMDBReviewScraper
+from .web_Scraper_Apps import LetterboxdReviewScraper
+from .web_Scraper_Apps import MetacriticReviewScraper
+from .web_Scraper_Apps import RedditScraper
+from .web_Scraper_Apps import RottenTomatoesReviewScraper
+from .web_Scraper_Apps import SteamReviewScraper
+from .web_Scraper_Apps import YouTubeDataFetcher

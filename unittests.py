@@ -350,3 +350,127 @@ result = Sent.get_Emotion_from_website_overall_summary(
 )
 
 print(result)'''
+
+
+# Test Case for IMDB
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_General_LLM=True,
+    Use_Local_Sentiment_LLM=True
+)
+target = "top gun maverick"
+Reviews_Count = 50
+IMDB_API = ""
+result = Sent.get_analysis_report_from_imdb(
+    Product_Name=target,
+    Reviews_Count=Reviews_Count,
+    IMDB_API=IMDB_API,
+    Use_Local_API=True
+)
+
+print(result)'''
+
+# Test Case for LetterBoxD
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_General_LLM=True,
+    Use_Local_Sentiment_LLM=True
+)
+target = "thor"
+Reviews_Count = 20
+result = Sent.get_analysis_report_from_LetterBoxD(
+    Product_Name=target,
+    Reviews_Count=Reviews_Count,
+    Use_Local_API=True
+)
+
+print(result)'''
+
+# Test Case for metacritic
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_General_LLM=True,
+    Use_Local_Sentiment_LLM=True
+)
+target = "fortnite"
+Reviews_Count = 10
+result = Sent.get_analysis_report_from_metacritic(
+    Product_Name=target,
+    Reviews_Count=Reviews_Count,
+    Use_Local_API=True
+)
+
+print(result)'''
+
+# Test Case for Reddit
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_General_LLM=True,
+    Use_Local_Sentiment_LLM=True
+)
+target = "Top Gun Maverick"
+Reviews_Count = 10
+result = Sent.get_analysis_report_from_reddit(
+    Product_Name=target,
+    Reviews_Count=Reviews_Count,
+    Use_Local_API=True
+)
+
+print(result)'''
+
+# Test Case for RottenTomatoes
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_General_LLM=True,
+    Use_Local_Sentiment_LLM=True
+)
+target = "crazy rich asians"
+Reviews_Count = 100
+result = Sent.get_analysis_report_from_rottentomatoes(
+    Product_Name=target,
+    Reviews_Count=Reviews_Count,
+    Use_Local_API=True
+)
+
+print(result)'''
+
+# Test Case for Steam
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_General_LLM=True,
+    Use_Local_Sentiment_LLM=True
+)
+target = "dota 2"
+Reviews_Count = 50
+result = Sent.get_analysis_report_from_steam(
+    Product_Name=target,
+    Reviews_Count=Reviews_Count,
+    Use_Local_API=True
+)
+
+print(result)'''
+
+# Test Case for Youtube
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_General_LLM=False,
+    Use_Groq_API=True,
+    Use_Local_Sentiment_LLM=True
+)
+target = 'Oneplus 12'
+youtube_api_key = ''
+result = Sent.get_analysis_report_from_youtube(
+    Product_Name=target,
+    Youtube_API=youtube_api_key,
+    Use_Groq_API=True,
+    Groq_API=""
+)
+
+print(result)'''

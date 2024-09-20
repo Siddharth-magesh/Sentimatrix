@@ -93,7 +93,6 @@ def Groq_inference_list(
     # Return the modified list with Groq reviews appended to each sublist
     return reviews
 
-
 def summarize_reviews(
     reviews,  # List of lists containing reviews and corresponding sentiment data
     KEY: str,  # Groq API key for authentication
@@ -169,7 +168,6 @@ def summarize_reviews(
     summary = chat_completion.choices[0].message.content
 
     return summary
-
 
 def compare_reviews_local(
     reviews1,  # Reviews for the first product
