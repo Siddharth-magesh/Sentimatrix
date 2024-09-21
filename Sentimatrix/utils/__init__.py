@@ -12,7 +12,7 @@ from .llm_inference import (
 )
 from .visualization import (
     plot_sentiment_box_plot, plot_sentiment_distribution, plot_sentiment_histograms,
-    plot_sentiment_pie_chart, plot_sentiment_violin_plot , calculate_top_emotions_percentages
+    plot_sentiment_pie_chart, plot_sentiment_violin_plot , calculate_top_emotions_percentages , plot_sentiment_comparison
 )
 from .wav_to_text import audio_to_text
 from .text_translation import Translate_text

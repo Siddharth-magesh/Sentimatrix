@@ -530,3 +530,22 @@ result = Sent.get_suggestions_from_website(
 )
 
 print(result)'''
+
+'''# visualizing card for emotions
+
+from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Scraper=False,
+    Use_Scraper_API=True,
+    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Use_Local_Sentiment_LLM=False
+)
+target1 = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+target2 = 'https://www.amazon.in/Samsung-Moonlight-Storage-Corning-Gorilla/dp/B0D8134JH8/ref=srd_d_vsims_d_sccl_2_6/258-9850059-3542441?pd_rd_w=KRUSv&content-id=amzn1.sym.7ccbe032-5929-4c88-ab39-4923842061df&pf_rd_p=7ccbe032-5929-4c88-ab39-4923842061df&pf_rd_r=H5XZYT0WKD0YYEAWZ7JH&pd_rd_wg=O6XSP&pd_rd_r=75ac2c89-2b35-4922-a361-fe8657fca61c&pd_rd_i=B0D8134JH8&psc=1'
+result = Sent.compare_product_on_reviews(
+    target_website1=target1,
+    target_website2=target2,
+    Get_Graphical_View=True
+)
+
+print(result)'''

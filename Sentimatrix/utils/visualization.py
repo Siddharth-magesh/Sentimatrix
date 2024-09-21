@@ -3,6 +3,7 @@ import seaborn as sns
 import pandas as pd
 from collections import Counter
 from itertools import chain
+import numpy as np
 
 # Flatten the list of lists of dictionaries into a single list of dictionaries
 def flatten_reviews(reviews):
@@ -166,3 +167,42 @@ def calculate_top_emotions_percentages(reviews_emotions):
     
     # Output results
     return top_5_emotions_percentages
+
+
+# Function to count sentiments
+def count_sentiments(reviews):
+    sentiment_count = {'positive': 0, 'neutral': 0, 'negative': 0}
+    for review in reviews:
+        sentiment = review[1]['label']
+        sentiment_count[sentiment] += 1
+    return sentiment_count
+
+# Function to plot grouped bar chart
+def plot_sentiment_comparison(product1_reviews, product2_reviews):
+    # Count sentiments for both products
+    product1_sentiments = count_sentiments(product1_reviews)
+    product2_sentiments = count_sentiments(product2_reviews)
+
+    # Bar chart data
+    labels = ['Positive', 'Neutral', 'Negative']
+    product1_counts = [product1_sentiments['positive'], product1_sentiments['neutral'], product1_sentiments['negative']]
+    product2_counts = [product2_sentiments['positive'], product2_sentiments['neutral'], product2_sentiments['negative']]
+
+    # Plotting the grouped bar chart
+    x = np.arange(len(labels))  # the label locations
+    width = 0.35  # the width of the bars
+
+    fig, ax = plt.subplots()
+    bars1 = ax.bar(x - width/2, product1_counts, width, label='Product 1')
+    bars2 = ax.bar(x + width/2, product2_counts, width, label='Product 2')
+
+    # Add labels, title and custom x-axis tick labels
+    ax.set_xlabel('Sentiments')
+    ax.set_ylabel('Counts')
+    ax.set_title('Sentiment Comparison between Product 1 and Product 2')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    # Show the plot
+    plt.show()

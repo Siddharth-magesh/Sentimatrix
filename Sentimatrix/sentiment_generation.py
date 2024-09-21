@@ -34,7 +34,8 @@ from .utils.visualization import (
     plot_sentiment_histograms,
     plot_sentiment_pie_chart,
     plot_sentiment_violin_plot,
-    calculate_top_emotions_percentages
+    calculate_top_emotions_percentages,
+    plot_sentiment_comparison
 )
 from .utils.wav_to_text import audio_to_text
 from .utils.text_translation import Translate_text
@@ -1312,6 +1313,7 @@ class SentConfig:
         Use_Open_API=None,
         Use_Gemini_API=None,
         Local_Sentiment_LLM=None,
+        Get_Graphical_View = False,
         Local_General_LLM="llama3.1",
         Local_General_LLM_kwargs={
             'temperature': 0.1,
@@ -1445,6 +1447,8 @@ class SentConfig:
             print("Error : Coundnt find Reviews in either one of the sites")
             exit()
 
+        if Get_Graphical_View:
+            plot_sentiment_comparison(product1_reviews=final_resulted_output1,product2_reviews=final_resulted_output2)
         if final_resulted_output1 and final_resulted_output2:
             if Use_Groq_API==True:
                 compared_reviews = compare_reviews_local(
