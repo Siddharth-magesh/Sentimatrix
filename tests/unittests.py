@@ -451,14 +451,16 @@ print(result)'''
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_General_LLM=True,
-    Use_Local_Sentiment_LLM=True
+    Use_Local_Sentiment_LLM=True,
+    Use_Groq_API=True
 )
 target = "crazy rich asians"
 Reviews_Count = 100
 result = Sent.get_analysis_report_from_rottentomatoes(
     Product_Name=target,
     Reviews_Count=Reviews_Count,
-    Use_Local_API=True
+    Groq_API="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",
+    Use_Groq_API=True
 )
 
 print(result)'''
@@ -475,7 +477,8 @@ Reviews_Count = 50
 result = Sent.get_analysis_report_from_steam(
     Product_Name=target,
     Reviews_Count=Reviews_Count,
-    Use_Local_API=True
+    Groq_API="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",
+    Use_Groq_API=True
 )
 
 print(result)'''
