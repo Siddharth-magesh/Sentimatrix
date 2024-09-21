@@ -1688,6 +1688,7 @@ class SentConfig:
         OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
         device_map = device_map if device_map is not None else self.device_map
+        Suggestions_result_LocalLLM=''
 
         scraper = IMDBReviewScraper(IMDB_API)
         imdb_id = scraper.get_imdb_id(Product_Name)
@@ -1845,6 +1846,7 @@ class SentConfig:
         OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
         device_map = device_map if device_map is not None else self.device_map
+        Suggestions_result_LocalLLM=''
 
         scraper = LetterboxdReviewScraper()
         reviews = scraper.get_letterboxd_reviews(Product_Name, Reviews_Count)
@@ -2001,6 +2003,7 @@ class SentConfig:
         OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
         device_map = device_map if device_map is not None else self.device_map
+        Suggestions_result_LocalLLM=''
 
         scraper = MetacriticReviewScraper()
         reviews = scraper.fetch_reviews(Product_Name, platforms, Reviews_Count)
@@ -2159,6 +2162,7 @@ class SentConfig:
         OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
         device_map = device_map if device_map is not None else self.device_map
+        Suggestions_result_LocalLLM=''
 
         scraper = RedditScraper(reddit_client_id, reddit_client_secret, reddit_user_agent)
         reviews = scraper.search_reddit_for_product(Product_Name, Reviews_Count)
@@ -2314,6 +2318,7 @@ class SentConfig:
         OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
         device_map = device_map if device_map is not None else self.device_map
+        Suggestions_result_LocalLLM=''
 
         scraper = RottenTomatoesReviewScraper()
         reviews = scraper.get_rotten_tomatoes_reviews(Product_Name, Reviews_Count)
@@ -2470,6 +2475,7 @@ class SentConfig:
         OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
         device_map = device_map if device_map is not None else self.device_map
+        Suggestions_result_LocalLLM=''
 
         scraper = SteamReviewScraper()
         reviews = scraper.fetch_reviews_for_game(Product_Name, Reviews_Count)
@@ -2625,6 +2631,7 @@ class SentConfig:
         OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
         device_map = device_map if device_map is not None else self.device_map
+        Suggestions_result_LocalLLM=''
 
         fetcher = YouTubeDataFetcher(Youtube_API)
         reviews = fetcher.fetch_youtube_data_for_product(Product_Name, max_videos=10)
@@ -2839,6 +2846,7 @@ class SentConfig:
         Local_General_LLM_kwargs = Local_General_LLM_kwargs if Local_General_LLM_kwargs is not None else self.Local_General_LLM_kwargs
         HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
         final_resulted_output = None
+        Suggestions_result_LocalLLM=''
 
         
         if target_website:

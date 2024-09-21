@@ -531,9 +531,9 @@ result = Sent.get_suggestions_from_website(
 
 print(result)'''
 
-'''# visualizing card for emotions
+# visualizing Bars for Sentiment
 
-from Sentimatrix.sentiment_generation import SentConfig
+''''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
     Use_Local_Scraper=False,
     Use_Scraper_API=True,
