@@ -484,17 +484,16 @@ print(result)'''
 
 '''from Sentimatrix.sentiment_generation import SentConfig
 Sent = SentConfig(
-    Use_Local_General_LLM=False,
-    Use_Groq_API=True,
+    Use_Local_General_LLM=True,
     Use_Local_Sentiment_LLM=True
 )
 target = 'Oneplus 12'
-youtube_api_key = ''
+youtube_api_key = 'AIzaSyDdGyupUJqws-7toxs4bSBUfAT0BoMzrb0'
 result = Sent.get_analysis_report_from_youtube(
     Product_Name=target,
     Youtube_API=youtube_api_key,
-    Use_Groq_API=True,
-    Groq_API=""
+    Use_Local_API=True,
+    Get_Suggestions=True
 )
 
 print(result)'''
@@ -513,6 +512,21 @@ result = Sent.get_analytical_customer_sentiments(
     target_website=target,
     Use_Local_Emotion_LLM=True,
     Use_Card_Emotion_Visulize=True
+)
+
+print(result)'''
+
+# Suggestions from local LLM
+'''from Sentimatrix.sentiment_generation import SentConfig
+Sent = SentConfig(
+    Use_Local_Sentiment_LLM=True,
+    Use_Scraper_API=True,
+    Scraper_api_key="7ebf4f26faa024ef86d97279c16c2a0c",
+    Use_Local_General_LLM=True
+)
+target = 'https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1'
+result = Sent.get_suggestions_from_website(
+    target_website=target
 )
 
 print(result)'''

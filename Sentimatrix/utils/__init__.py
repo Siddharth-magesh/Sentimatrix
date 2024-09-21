@@ -8,7 +8,7 @@ from .llm_inference import (
     Gemini_inference_list , summarize_reviews_gemini , compare_reviews_gemini,
     compare_reviews_local , Generate_Summary_From_Image , Ollama_Local_Summarize , 
     summarize_Emotions_reviews , Ollama_Local_Emotion_Summarize , summarize_Emotion_reviews_gemini , 
-    Ollama_Local_Sentiment_Comparsion
+    Ollama_Local_Sentiment_Comparsion , suggest_reviews, suggest_reviews_gemini , Ollama_Local_Suggestions
 )
 from .visualization import (
     plot_sentiment_box_plot, plot_sentiment_distribution, plot_sentiment_histograms,

@@ -171,3 +171,19 @@ def Ollama_Local_Sentiment_Comparsion(
     }
     response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
     return response.json()["response"]
+
+def Ollama_Local_Suggestions(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise suggestions for imporving the product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]

@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
     name='Sentimatrix',
-    version='0.1.4',
+    version='0.1.5',
     description='Advanced sentiment analysis platform for text, web content, audio data and Image data',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -28,6 +28,10 @@ setup(
         'requests',
         'beautifulsoup4',
         'accelerate',
+        'selenium',
+        'praw',
+        'youtube_transcript_api',
+        'googleapiclient'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

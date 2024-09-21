@@ -6,13 +6,15 @@ from .utils.llm_inference.groq_inference import (
     Groq_inference_list,
     summarize_reviews,
     compare_reviews_local,
-    summarize_Emotions_reviews
+    summarize_Emotions_reviews,
+    suggest_reviews
 )
 from .utils.llm_inference.gemini_inference import (
     Gemini_inference_list,
     summarize_reviews_gemini,
     compare_reviews_gemini,
-    summarize_Emotion_reviews_gemini
+    summarize_Emotion_reviews_gemini,
+    suggest_reviews_gemini
 )
 from .utils.llm_inference.openai_inference import (
     OpenAI_inference_list,
@@ -23,7 +25,8 @@ from .utils.llm_inference.localLLM_inference import (
     summarize_reviews_local,
     Ollama_Local_Summarize,
     Ollama_Local_Emotion_Summarize,
-    Ollama_Local_Sentiment_Comparsion
+    Ollama_Local_Sentiment_Comparsion,
+    Ollama_Local_Suggestions
 )
 from .utils.visualization import (
     plot_sentiment_box_plot,
@@ -1648,6 +1651,7 @@ class SentConfig:
         OpenAi_API="",
         HuggingFace_API="",
         Google_API="",
+        Get_Suggestions=False,
         Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
         Local_Emotion_LLM="SamLowe/roberta-base-go_emotions",
         Groq_LLM_Temperature=0.1,
@@ -1696,13 +1700,19 @@ class SentConfig:
                 model_id=Local_Sentiment_LLM,
                 device_map=device_map
             )
+            if Get_Suggestions:
+                    Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                        reviews=final_resulted_output_sentiment,
+                        Model_Name=Local_General_LLM,
+                        Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    )
             if Use_Local_API:
                 Summarized_result_LocalLLM = Ollama_Local_Summarize(
                     reviews=final_resulted_output_sentiment,
                     Model_Name=Local_General_LLM,
                     Ollama_Model_EndPoint=Ollama_Model_EndPoint
                 )
-                return Summarized_result_LocalLLM
+                return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
             elif Use_Groq_API:
                 Summarized_result_Groq = summarize_reviews(
                     reviews=final_resulted_output_sentiment,
@@ -1713,7 +1723,7 @@ class SentConfig:
                     stream=Groq_LLM_stream,
                     model_id=Groq_LLM
                 )
-                return Summarized_result_Groq
+                return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
             elif Use_Gemini_API:
                 Summarized_result_Gemini = summarize_reviews_gemini(
                     reviews=final_resulted_output_sentiment,
@@ -1722,7 +1732,7 @@ class SentConfig:
                     temperature=Gemini_LLM_Temperature,
                     model=Gemini_LLM
                 )
-                return Summarized_result_Gemini
+                return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
             elif Use_OpenAI_API:
                 Summarized_result_OpenAi = summarize_reviews_openai(
                     reviews=final_resulted_output_sentiment,
@@ -1732,7 +1742,7 @@ class SentConfig:
                     temperature=OpenAI_LLM_Temperature,
                     stream=OpenAI_LLM_stream
                 )
-                return Summarized_result_OpenAi
+                return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
             else:
                 return "Activate Any one Of the LLM"
         if Use_Local_Emotion_LLM:
@@ -1798,6 +1808,7 @@ class SentConfig:
         OpenAi_API="",
         HuggingFace_API="",
         Google_API="",
+        Get_Suggestions=False,
         Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
         Local_Emotion_LLM="SamLowe/roberta-base-go_emotions",
         Groq_LLM_Temperature=0.1,
@@ -1841,13 +1852,19 @@ class SentConfig:
                     model_id=Local_Sentiment_LLM,
                     device_map=device_map
                 )
+                if Get_Suggestions:
+                    Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                        reviews=final_resulted_output_sentiment,
+                        Model_Name=Local_General_LLM,
+                        Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    )
                 if Use_Local_API:
                     Summarized_result_LocalLLM = Ollama_Local_Summarize(
                         reviews=final_resulted_output_sentiment,
                         Model_Name=Local_General_LLM,
                         Ollama_Model_EndPoint=Ollama_Model_EndPoint
                     )
-                    return Summarized_result_LocalLLM
+                    return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
                 elif Use_Groq_API:
                     Summarized_result_Groq = summarize_reviews(
                         reviews=final_resulted_output_sentiment,
@@ -1858,7 +1875,7 @@ class SentConfig:
                         stream=Groq_LLM_stream,
                         model_id=Groq_LLM
                     )
-                    return Summarized_result_Groq
+                    return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
                 elif Use_Gemini_API:
                     Summarized_result_Gemini = summarize_reviews_gemini(
                         reviews=final_resulted_output_sentiment,
@@ -1867,7 +1884,7 @@ class SentConfig:
                         temperature=Gemini_LLM_Temperature,
                         model=Gemini_LLM
                     )
-                    return Summarized_result_Gemini
+                    return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
                 elif Use_OpenAI_API:
                     Summarized_result_OpenAi = summarize_reviews_openai(
                         reviews=final_resulted_output_sentiment,
@@ -1877,7 +1894,7 @@ class SentConfig:
                         temperature=OpenAI_LLM_Temperature,
                         stream=OpenAI_LLM_stream
                     )
-                    return Summarized_result_OpenAi
+                    return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
                 else:
                     return "Activate Any one Of the LLM"
             if Use_Local_Emotion_LLM:
@@ -1946,6 +1963,7 @@ class SentConfig:
         OpenAi_API="",
         HuggingFace_API="",
         Google_API="",
+        Get_Suggestions=False,
         Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
         Local_Emotion_LLM="SamLowe/roberta-base-go_emotions",
         platforms = ["playstation-5", "pc", "playstation-4"],
@@ -1990,13 +2008,19 @@ class SentConfig:
                     model_id=Local_Sentiment_LLM,
                     device_map=device_map
                 )
+                if Get_Suggestions:
+                    Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                        reviews=final_resulted_output_sentiment,
+                        Model_Name=Local_General_LLM,
+                        Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    )
                 if Use_Local_API:
                     Summarized_result_LocalLLM = Ollama_Local_Summarize(
                         reviews=final_resulted_output_sentiment,
                         Model_Name=Local_General_LLM,
                         Ollama_Model_EndPoint=Ollama_Model_EndPoint
                     )
-                    return Summarized_result_LocalLLM
+                    return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
                 elif Use_Groq_API:
                     Summarized_result_Groq = summarize_reviews(
                         reviews=final_resulted_output_sentiment,
@@ -2007,7 +2031,7 @@ class SentConfig:
                         stream=Groq_LLM_stream,
                         model_id=Groq_LLM
                     )
-                    return Summarized_result_Groq
+                    return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
                 elif Use_Gemini_API:
                     Summarized_result_Gemini = summarize_reviews_gemini(
                         reviews=final_resulted_output_sentiment,
@@ -2016,7 +2040,7 @@ class SentConfig:
                         temperature=Gemini_LLM_Temperature,
                         model=Gemini_LLM
                     )
-                    return Summarized_result_Gemini
+                    return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
                 elif Use_OpenAI_API:
                     Summarized_result_OpenAi = summarize_reviews_openai(
                         reviews=final_resulted_output_sentiment,
@@ -2026,7 +2050,7 @@ class SentConfig:
                         temperature=OpenAI_LLM_Temperature,
                         stream=OpenAI_LLM_stream
                     )
-                    return Summarized_result_OpenAi
+                    return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
                 else:
                     return "Activate Any one Of the LLM"
             if Use_Local_Emotion_LLM:
@@ -2098,6 +2122,7 @@ class SentConfig:
         OpenAi_API="",
         HuggingFace_API="",
         Google_API="",
+        Get_Suggestions=False,
         Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
         Local_Emotion_LLM="SamLowe/roberta-base-go_emotions",
         Groq_LLM_Temperature=0.1,
@@ -2141,13 +2166,19 @@ class SentConfig:
                     model_id=Local_Sentiment_LLM,
                     device_map=device_map
                 )
+                if Get_Suggestions:
+                    Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                        reviews=final_resulted_output_sentiment,
+                        Model_Name=Local_General_LLM,
+                        Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    )
                 if Use_Local_API:
                     Summarized_result_LocalLLM = Ollama_Local_Summarize(
                         reviews=final_resulted_output_sentiment,
                         Model_Name=Local_General_LLM,
                         Ollama_Model_EndPoint=Ollama_Model_EndPoint
                     )
-                    return Summarized_result_LocalLLM
+                    return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
                 elif Use_Groq_API:
                     Summarized_result_Groq = summarize_reviews(
                         reviews=final_resulted_output_sentiment,
@@ -2158,7 +2189,7 @@ class SentConfig:
                         stream=Groq_LLM_stream,
                         model_id=Groq_LLM
                     )
-                    return Summarized_result_Groq
+                    return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
                 elif Use_Gemini_API:
                     Summarized_result_Gemini = summarize_reviews_gemini(
                         reviews=final_resulted_output_sentiment,
@@ -2167,7 +2198,7 @@ class SentConfig:
                         temperature=Gemini_LLM_Temperature,
                         model=Gemini_LLM
                     )
-                    return Summarized_result_Gemini
+                    return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
                 elif Use_OpenAI_API:
                     Summarized_result_OpenAi = summarize_reviews_openai(
                         reviews=final_resulted_output_sentiment,
@@ -2177,7 +2208,7 @@ class SentConfig:
                         temperature=OpenAI_LLM_Temperature,
                         stream=OpenAI_LLM_stream
                     )
-                    return Summarized_result_OpenAi
+                    return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
                 else:
                     return "Activate Any one Of the LLM"
             if Use_Local_Emotion_LLM:
@@ -2246,6 +2277,7 @@ class SentConfig:
         OpenAi_API="",
         HuggingFace_API="",
         Google_API="",
+        Get_Suggestions=False,
         Local_Sentiment_LLM="cardiffnlp/twitter-roberta-base-sentiment-latest",
         Local_Emotion_LLM="SamLowe/roberta-base-go_emotions",
         Groq_LLM_Temperature=0.1,
@@ -2289,13 +2321,19 @@ class SentConfig:
                     model_id=Local_Sentiment_LLM,
                     device_map=device_map
                 )
+                if Get_Suggestions:
+                    Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                        reviews=final_resulted_output_sentiment,
+                        Model_Name=Local_General_LLM,
+                        Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    )
                 if Use_Local_API:
                     Summarized_result_LocalLLM = Ollama_Local_Summarize(
                         reviews=final_resulted_output_sentiment,
                         Model_Name=Local_General_LLM,
                         Ollama_Model_EndPoint=Ollama_Model_EndPoint
                     )
-                    return Summarized_result_LocalLLM
+                    return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
                 elif Use_Groq_API:
                     Summarized_result_Groq = summarize_reviews(
                         reviews=final_resulted_output_sentiment,
@@ -2306,7 +2344,7 @@ class SentConfig:
                         stream=Groq_LLM_stream,
                         model_id=Groq_LLM
                     )
-                    return Summarized_result_Groq
+                    return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
                 elif Use_Gemini_API:
                     Summarized_result_Gemini = summarize_reviews_gemini(
                         reviews=final_resulted_output_sentiment,
@@ -2315,7 +2353,7 @@ class SentConfig:
                         temperature=Gemini_LLM_Temperature,
                         model=Gemini_LLM
                     )
-                    return Summarized_result_Gemini
+                    return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
                 elif Use_OpenAI_API:
                     Summarized_result_OpenAi = summarize_reviews_openai(
                         reviews=final_resulted_output_sentiment,
@@ -2325,7 +2363,7 @@ class SentConfig:
                         temperature=OpenAI_LLM_Temperature,
                         stream=OpenAI_LLM_stream
                     )
-                    return Summarized_result_OpenAi
+                    return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
                 else:
                     return "Activate Any one Of the LLM"
             if Use_Local_Emotion_LLM:
@@ -2390,6 +2428,7 @@ class SentConfig:
         Use_Gemini_API=None,
         Use_Local_API=None,
         Use_OpenAI_API=None,
+        Get_Suggestions=False,
         Groq_API="",
         OpenAi_API="",
         HuggingFace_API="",
@@ -2438,13 +2477,19 @@ class SentConfig:
                     model_id=Local_Sentiment_LLM,
                     device_map=device_map
                 )
+                if Get_Suggestions:
+                    Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                        reviews=final_resulted_output_sentiment,
+                        Model_Name=Local_General_LLM,
+                        Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    )
                 if Use_Local_API:
                     Summarized_result_LocalLLM = Ollama_Local_Summarize(
                         reviews=final_resulted_output_sentiment,
                         Model_Name=Local_General_LLM,
                         Ollama_Model_EndPoint=Ollama_Model_EndPoint
                     )
-                    return Summarized_result_LocalLLM
+                    return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
                 elif Use_Groq_API:
                     Summarized_result_Groq = summarize_reviews(
                         reviews=final_resulted_output_sentiment,
@@ -2455,7 +2500,7 @@ class SentConfig:
                         stream=Groq_LLM_stream,
                         model_id=Groq_LLM
                     )
-                    return Summarized_result_Groq
+                    return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
                 elif Use_Gemini_API:
                     Summarized_result_Gemini = summarize_reviews_gemini(
                         reviews=final_resulted_output_sentiment,
@@ -2464,7 +2509,7 @@ class SentConfig:
                         temperature=Gemini_LLM_Temperature,
                         model=Gemini_LLM
                     )
-                    return Summarized_result_Gemini
+                    return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
                 elif Use_OpenAI_API:
                     Summarized_result_OpenAi = summarize_reviews_openai(
                         reviews=final_resulted_output_sentiment,
@@ -2474,7 +2519,7 @@ class SentConfig:
                         temperature=OpenAI_LLM_Temperature,
                         stream=OpenAI_LLM_stream
                     )
-                    return Summarized_result_OpenAi
+                    return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
                 else:
                     return "Activate Any one Of the LLM"
             if Use_Local_Emotion_LLM:
@@ -2538,6 +2583,7 @@ class SentConfig:
         Use_Gemini_API=None,
         Use_Local_API=None,
         Use_OpenAI_API=None,
+        Get_Suggestions=False,
         Groq_API="",
         OpenAi_API="",
         HuggingFace_API="",
@@ -2586,13 +2632,19 @@ class SentConfig:
                     model_id=Local_Sentiment_LLM,
                     device_map=device_map
                 )
+                if Get_Suggestions:
+                    Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                        reviews=final_resulted_output_sentiment,
+                        Model_Name=Local_General_LLM,
+                        Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    )
                 if Use_Local_API:
                     Summarized_result_LocalLLM = Ollama_Local_Summarize(
                         reviews=final_resulted_output_sentiment,
                         Model_Name=Local_General_LLM,
                         Ollama_Model_EndPoint=Ollama_Model_EndPoint
                     )
-                    return Summarized_result_LocalLLM
+                    return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
                 elif Use_Groq_API:
                     Summarized_result_Groq = summarize_reviews(
                         reviews=final_resulted_output_sentiment,
@@ -2603,7 +2655,7 @@ class SentConfig:
                         stream=Groq_LLM_stream,
                         model_id=Groq_LLM
                     )
-                    return Summarized_result_Groq
+                    return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
                 elif Use_Gemini_API:
                     Summarized_result_Gemini = summarize_reviews_gemini(
                         reviews=final_resulted_output_sentiment,
@@ -2612,7 +2664,7 @@ class SentConfig:
                         temperature=Gemini_LLM_Temperature,
                         model=Gemini_LLM
                     )
-                    return Summarized_result_Gemini
+                    return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
                 elif Use_OpenAI_API:
                     Summarized_result_OpenAi = summarize_reviews_openai(
                         reviews=final_resulted_output_sentiment,
@@ -2622,7 +2674,7 @@ class SentConfig:
                         temperature=OpenAI_LLM_Temperature,
                         stream=OpenAI_LLM_stream
                     )
-                    return Summarized_result_OpenAi
+                    return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
                 else:
                     return "Activate Any one Of the LLM"
             if Use_Local_Emotion_LLM:
@@ -2676,3 +2728,207 @@ class SentConfig:
         else:
             print("Movie not found.")
             exit()
+
+    def get_suggestions_from_website(
+            self,
+            target_website,
+            Use_Local_Sentiment_LLM=None,
+            Use_Local_General_LLM=None,
+            Use_Local_Scraper=None,
+            Use_Scraper_API=None,
+            Use_Groq_API=None,
+            Use_Open_API=None,
+            Use_Gemini_API=None,
+            Local_Sentiment_LLM=None,
+            Local_General_LLM="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+            Local_General_LLM_kwargs={
+                'temperature': 0.1,
+                'top_p': 1
+            },
+            Groq_API=None,
+            OpenAi_API=None,
+            HuggingFace_API=None,
+            Scraper_api_key=None,
+            Google_API=None,
+            Local_api_key=None,
+            Groq_LLM="llama3-8b-8192",
+            OpenAI_LLM="GPT-3.5",
+            device_map="auto",
+            Gemini_LLM="gemini-1.5-pro",
+            Groq_LLM_Temperature=0.1,
+            Groq_LLM_Max_Tokens=100,
+            Groq_LLM_Max_Input_Tokens=300,
+            Groq_LLM_top_p=1,
+            Groq_LLM_stream=False,
+            OpenAI_LLM_Temperature=0.1,
+            OpenAI_LLM_Max_Tokens=100,
+            OpenAI_LLM_stream=False,
+            OpenAI_LLM_Max_Input_Tokens=300,
+            Local_LLM_Max_Input_Tokens=300,
+            Gemini_LLM_Temperature=0.1,
+            Gemini_LLM_Max_Tokens=100,
+            Gemini_LLM_Max_Input_Tokens=300,
+            Ollama_Model="llama3.1",
+            Ollama_Model_EndPoint = "http://localhost:11434/api/generate" 
+
+    ):
+        """
+        Fetches reviews from a specified website and generates an overall sentiment summary.
+        Uses various methods for sentiment analysis and summarization, depending on the available options and configurations.
+
+        Parameters:
+        - target_website: The website from which to fetch reviews.
+        - Use_Local_Sentiment_LLM: Boolean indicating whether to use the local sentiment LLM for initial sentiment analysis.
+        - Use_Local_General_LLM: Boolean indicating whether to use a local general LLM for summarization.
+        - Use_Local_Scraper: Boolean indicating whether to use a local scraper to fetch reviews.
+        - Use_Scraper_API: Boolean indicating whether to use a scraper API for fetching reviews.
+        - Use_Groq_API: Boolean indicating whether to use the Groq API for summarization.
+        - Use_Open_API: Boolean indicating whether to use the OpenAI API for summarization.
+        - Local_Sentiment_LLM: Model identifier for the local sentiment LLM.
+        - Local_General_LLM: Model identifier for the local general LLM used for summarization.
+        - Local_General_LLM_kwargs: Additional arguments for the local general LLM.
+        - Groq_API: API key for the Groq API.
+        - OpenAi_API: API key for the OpenAI API.
+        - HuggingFace_API: API key for Hugging Face.
+        - Scraper_api_key: API key for the scraper service.
+        - Local_api_key: API key for the local API.
+        - Groq_LLM: Model identifier for the Groq LLM.
+        - OpenAI_LLM: Model identifier for the OpenAI LLM.
+        - device_map: Device to run the model on (e.g., "cpu" or "cuda").
+        - Groq_LLM_Temperature: Temperature setting for the Groq LLM.
+        - Groq_LLM_Max_Tokens: Maximum tokens for the Groq LLM.
+        - Groq_LLM_Max_Input_Tokens: Maximum input tokens for the Groq LLM.
+        - Groq_LLM_top_p: Top-p value for the Groq LLM.
+        - Groq_LLM_stream: Boolean indicating whether to use streaming for Groq LLM.
+        - OpenAI_LLM_Temperature: Temperature setting for the OpenAI LLM.
+        - OpenAI_LLM_Max_Tokens: Maximum tokens for the OpenAI LLM.
+        - OpenAI_LLM_stream: Boolean indicating whether to use streaming for OpenAI LLM.
+        - OpenAI_LLM_Max_Input_Tokens: Maximum input tokens for the OpenAI LLM.
+        - Local_LLM_Max_Input_Tokens: Maximum input tokens for the local LLM.
+
+        Returns:
+        - Summarized sentiment results based on the selected summarization method (Groq API, OpenAI API, or local general LLM).
+        - Error message if no reviews were fetched or no LLM inference method is selected.
+        """
+
+        Use_Local_Scraper = Use_Local_Scraper if Use_Local_Scraper is not None else self.Use_Local_Scraper
+        Use_Scraper_API = Use_Scraper_API if Use_Scraper_API is not None else self.Use_Scraper_API
+        Scraper_api_key = Scraper_api_key if Scraper_api_key is not None else self.Scraper_api_key
+        Local_api_key = Local_api_key if Local_api_key is not None else self.Local_api_key
+        Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
+        device_map = device_map if device_map is not None else self.device_map
+
+        Groq_API = Groq_API if Groq_API is not None else self.Groq_API
+        Use_Groq_API = Use_Groq_API if Use_Groq_API is not None else self.Use_Groq_API
+        Groq_LLM = Groq_LLM if Groq_LLM is not None else self.Groq_LLM
+
+        Google_API = Google_API if Google_API is not None else self.Google_API
+        Use_Gemini_API = Use_Gemini_API if Use_Gemini_API is not None else self.Use_Gemini_API
+        Gemini_LLM = Gemini_LLM if Gemini_LLM is not None else self.Gemini_LLM
+
+        Use_Open_API = Use_Open_API if Use_Open_API is not None else self.Use_Open_API
+        OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
+        OpenAI_LLM = OpenAI_LLM if OpenAI_LLM is not None else self.OpenAI_LLM
+
+        Use_Local_General_LLM = Use_Local_General_LLM if Use_Local_General_LLM is not None else self.Use_Local_General_LLM
+        Local_General_LLM = Local_General_LLM if Local_General_LLM is not None else self.Local_General_LLM
+        Local_General_LLM_kwargs = Local_General_LLM_kwargs if Local_General_LLM_kwargs is not None else self.Local_General_LLM_kwargs
+        HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
+        final_resulted_output = None
+
+        
+        if target_website:
+            try:
+                fetched_review = Fetch_Reviews(
+                    target_website,
+                    Use_Local_Scraper,
+                    Use_Scraper_API,
+                    Scraper_api_key,
+                    Local_api_key
+                )
+
+                if fetched_review:
+                    final_resulted_output = Struct_Generation_Pipeline(
+                        text_message=fetched_review,
+                        Use_Local_Sentiment_LLM=True,
+                        model_id=Local_Sentiment_LLM,
+                        device_map=device_map
+                    )
+                else:
+                    raise ValueError("Couldn't Fetch the Reviews From the Site")
+
+            except ValueError as e:
+                print(f"Error: {e}")
+                exit()
+
+            except ConnectionError:
+                print(
+                    "Error: Unable to connect to the website. Please check your internet connection.")
+                exit()
+
+            except TimeoutError:
+                print("Error: The request timed out. Try again later.")
+                exit()
+
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+                exit()
+
+            if Use_Groq_API == True or Use_Open_API == True or Use_Local_General_LLM == True or Use_Gemini_API == True:
+                if Use_Groq_API:
+                    if final_resulted_output:
+                        Suggestions_result_Groq = suggest_reviews(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        return Suggestions_result_Groq
+                    else:
+                        print("Couldnt Return Formatted Output")
+                        exit()
+                elif Use_Gemini_API:
+                    if final_resulted_output:
+                        Suggestions_result_Gemini = suggest_reviews_gemini(
+                            reviews=final_resulted_output,
+                            KEY=Google_API,
+                            max_tokens=Gemini_LLM_Max_Tokens,
+                            temperature=Gemini_LLM_Temperature,
+                            model=Gemini_LLM
+                        )
+                        return Suggestions_result_Gemini
+                    else:
+                        print("Couldnt Return Formatted Output")
+                        exit()
+                elif Use_Open_API:
+                    if final_resulted_output:
+                        Suggestions_result_OpenAi = summarize_reviews_openai(
+                            reviews=final_resulted_output,
+                            KEY=OpenAi_API,
+                            model_id=OpenAI_LLM,
+                            max_tokens=OpenAI_LLM_Max_Tokens,
+                            temperature=OpenAI_LLM_Temperature,
+                            stream=OpenAI_LLM_stream
+                        )
+                        return Suggestions_result_OpenAi
+                    else:
+                        print("Couldnt Return Formatted Output")
+                        exit()
+                elif Use_Local_General_LLM:
+                    if final_resulted_output:
+                        Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        return Suggestions_result_LocalLLM
+                    else:
+                        print("Couldnt Return Formatted Output")
+                else:
+                    print("Error : use any one of the LLM inference")
+        else:
+            raise ValueError("Error : No URL supplied")
+        

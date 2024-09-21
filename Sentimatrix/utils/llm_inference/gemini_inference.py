@@ -98,7 +98,6 @@ def compare_reviews_gemini(
 
     return comparison_summary.content
 
-
 def summarize_Emotion_reviews_gemini(
     emotions,
     KEY: str,
@@ -123,5 +122,30 @@ def summarize_Emotion_reviews_gemini(
 
     chain = ChatPromptTemplate.from_messages([("system", "Summarize the reviews:"), ("human", prompt)]) | llm
     summary = chain.invoke({"content": combined_emotions})
+
+    return summary.content
+
+def suggest_reviews_gemini(
+    reviews,
+    KEY: str,
+    max_tokens: int = 500,
+    temperature: float = 0.3,
+    model: str = "gemini-1.5-pro",
+):
+    llm = ChatGoogleGenerativeAI(
+        model=model,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        api_key=KEY,
+    )
+
+    combined_reviews = "\n".join(
+        [f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews]
+    )
+
+    prompt = f"Given the Reviews and Sentiment , generate some suggestions that can improve the product performence\n{combined_reviews}"
+
+    chain = ChatPromptTemplate.from_messages([("system", "You are a suggestion providing Chatbot which analyses all the customer feedback and generates suggestions to improve the products:"), ("human", prompt)]) | llm
+    summary = chain.invoke({"content": combined_reviews})
 
     return summary.content
