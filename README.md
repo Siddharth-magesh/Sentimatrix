@@ -739,7 +739,7 @@ If you encounter any issues or have questions, please open an issue on the [GitH
 
 | Role               | Name               | Contact                        | GitHub                                |
 | ------------------ | ------------------ | ------------------------------ | ------------------------------------- |
-| **Lead Developer** | Siddharth Magesh | [siddharthmagesh007@gmail.com](siddharthmagesh007@gmail.com) | [Siddharth-magesh](https://github.com/Siddharth-magesh)) |
+| **Lead Developer** | Siddharth Magesh | [siddharthmagesh007@gmail.com](siddharthmagesh007@gmail.com) | [Siddharth-magesh](https://github.com/Siddharth-magesh) |
 | **Contributor**    | Pranesh Kumar V  | [praneshvaradharaj@gmail.com](praneshvaradharaj@gmail.com)  | [PraneshPK2005](https://github.com/PraneshPK2005)    |
 
 ## License
