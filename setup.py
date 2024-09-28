@@ -31,7 +31,8 @@ setup(
         'selenium',
         'praw',
         'youtube_transcript_api',
-        'google-api-python-client'
+        'google-api-python-client',
+        'langchain_google_genai'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
