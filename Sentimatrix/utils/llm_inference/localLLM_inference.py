@@ -187,3 +187,131 @@ def Ollama_Local_Suggestions(
     }
     response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
     return response.json()["response"]
+
+def Ollama_authentic_user_experience(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise analysis of the authentic user experience with this product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
+
+def Ollama_Detailed_Features(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise analysis of the detailed features of this product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
+
+def Ollama_Value_For_Money(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise analysis of the value for money of this product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
+
+def Ollama_Recommendations(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise analysis of the recommendations for this product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
+
+def Ollama_Shipping_Packaging(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise analysis of the shipping and packaging experience for this product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
+
+def Ollama_Durability_Longuity(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise analysis of the durability and longevity of this product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
+
+def Ollama_CustomerService(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise analysis of the customer service experience related to this product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]
+
+def Ollama_Performance(
+    reviews,
+    Ollama_Model_EndPoint="http://localhost:11434/api/generate",
+    Model_Name="llama3.1"
+):
+    combined_reviews = "\n".join([f"REVIEW: {review[0]['text-message']} (Sentiment: {review[1]['label']}, Score: {review[1]['score']})" for review in reviews])
+    prompt = f"Here are the reviews:\n{combined_reviews}\nPlease provide a concise analysis of the performance of this product."
+    OLLAMA_DATA = {
+     "model": Model_Name,
+     "prompt": prompt,
+     "stream": False,
+     "keep_alive": "1m",
+    }
+    response = requests.post(Ollama_Model_EndPoint, json=OLLAMA_DATA)
+    return response.json()["response"]

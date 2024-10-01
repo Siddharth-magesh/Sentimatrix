@@ -137,7 +137,7 @@ result = Sent.get_sentiment_from_website_overall_summary(
     target_website=target,
     Groq_LLM_Max_Tokens=500,
     Groq_LLM_Max_Input_Tokens=850,
-    Groq_LLM="llama-3.1-70b-versatile"
+    Groq_LLM="llama3-8b-8192"
 )
 print(result)'''
 
@@ -551,4 +551,128 @@ result = Sent.compare_product_on_reviews(
     Get_Graphical_View=True
 )
 
+print(result)'''
+
+
+# Getting Specific Reviews Amazon
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+
+Sent = SentConfig(
+    Use_Groq_API=True,
+    Use_Scraper_API=True,
+    Scraper_api_key='',
+    Use_Local_Sentiment_LLM=True
+)
+result = Sent.specific_review_summary(
+    target_website='https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1',
+    Get_Amazon=True,
+    Use_Groq_API=True,
+    Authentic_User_Experience=True,
+    Groq_API=''
+)
+print(result)'''
+
+# Getting Specific Reviews from multi Sites
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+target = "top gun maverick"
+Reviews_Count = 50
+IMDB_API = "ddd5c586"
+Sent = SentConfig(
+    Use_Groq_API=True,
+    Use_Scraper_API=True,
+    Scraper_api_key='7ebf4f26faa024ef86d97279c16c2a0c',
+    Use_Local_Sentiment_LLM=True
+)
+result = Sent.specific_review_summary(
+    Product_Name=target,
+    Reviews_Count=50,
+    IMDB_API=IMDB_API,
+    Get_IMDB=True,
+    Get_LetterBoxD=True,
+    Use_Groq_API=True,
+    Authentic_User_Experience=True,
+    Groq_API='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'
+)
+print(result)'''
+
+# Getting Specific Reviews from multi Sites access all Sites
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+
+target = "fortnite"
+Reviews_Count = 25
+Sent = SentConfig(
+    Use_Groq_API=True,
+    Use_Scraper_API=True,
+    Scraper_api_key='7ebf4f26faa024ef86d97279c16c2a0c',
+    Use_Local_Sentiment_LLM=True
+)
+result = Sent.specific_review_summary(
+    Product_Name=target,
+    Reviews_Count=Reviews_Count,
+    Get_MetaCritic=True,
+    Get_Reddit=True,
+    Get_Youtube=True,
+    Use_Groq_API=True,
+    Authentic_User_Experience=True,
+    Groq_API='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',
+    Youtube_API='AIzaSyBzsh3ZLvgEfooiNKg5MnPZZxAZs6FgINM'
+)
+print(result)'''
+
+# Getting Differnt Types of Specific Reviews
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+
+target = "Top Gun Maverick"
+Reviews_Count = 20
+IMDB_API = ""
+Sent = SentConfig(
+    Use_Groq_API=True,
+    Use_Scraper_API=True,
+    Scraper_api_key='',
+    Use_Local_Sentiment_LLM=True
+)
+result = Sent.specific_review_summary(
+    Product_Name=target,
+    Reviews_Count=Reviews_Count,
+    IMDB_API=IMDB_API,
+    Get_IMDB=True,
+    Get_LetterBoxD=True,
+    Get_Reddit=True,
+    Get_Youtube=True,
+    Use_Groq_API=True,
+    Get_RottenTomatoes=True,
+    Authentic_User_Experience=True,
+    Value_For_Money=True,
+    Groq_API='',
+    Youtube_API=''
+)
+print(result)'''
+
+# Getting Differnt Types of Specific Reviews using Ollama Local
+
+'''from Sentimatrix.sentiment_generation import SentConfig
+
+Sent = SentConfig(
+    Use_Scraper_API=True,
+    Scraper_api_key='7ebf4f26faa024ef86d97279c16c2a0c',
+    Use_Local_Sentiment_LLM=True
+)
+result = Sent.specific_review_summary(
+    target_website='https://www.amazon.in/ASUS-Battery-i7-13650HX-Windows-G614JU-N3200WS/dp/B0C4TVHMR9?th=1',
+    Get_Amazon=True,
+    Use_Local_General_LLM=True,
+    Authentic_User_Experience=True,
+    Detailed_Features=True,
+    Value_For_Money=True,
+    Recommendations=True,
+    Shipping_and_Packaging=True,
+    Durability_and_Longuity=True,
+    Customer_Service=True,
+    Performance=True,
+    Max_Reviews=100
+)
 print(result)'''

@@ -7,7 +7,15 @@ from .utils.llm_inference.groq_inference import (
     summarize_reviews,
     compare_reviews_local,
     summarize_Emotions_reviews,
-    suggest_reviews
+    suggest_reviews,
+    groq_authentic_user_experience,
+    groq_Value_For_Money,
+    groq_Performance,
+    groq_CustomerService,
+    groq_Detailed_Features,
+    groq_Durability_Longuity,
+    groq_Recommendations,
+    groq_Shipping_Packaging
 )
 from .utils.llm_inference.gemini_inference import (
     Gemini_inference_list,
@@ -26,7 +34,15 @@ from .utils.llm_inference.localLLM_inference import (
     Ollama_Local_Summarize,
     Ollama_Local_Emotion_Summarize,
     Ollama_Local_Sentiment_Comparsion,
-    Ollama_Local_Suggestions
+    Ollama_Local_Suggestions,
+    Ollama_Recommendations,
+    Ollama_Performance,
+    Ollama_authentic_user_experience,
+    Ollama_CustomerService,
+    Ollama_Detailed_Features,
+    Ollama_Durability_Longuity,
+    Ollama_Shipping_Packaging,
+    Ollama_Value_For_Money
 )
 from .utils.visualization import (
     plot_sentiment_box_plot,
@@ -1692,112 +1708,117 @@ class SentConfig:
 
         scraper = IMDBReviewScraper(IMDB_API)
         imdb_id = scraper.get_imdb_id(Product_Name)
+        print(imdb_id)
         if imdb_id:
             reviews = scraper.get_imdb_reviews(imdb_id, Reviews_Count)
         else:
             print("Movie not found.")
             exit()
 
-        if Use_Local_Sentiment_LLM:
-            final_resulted_output_sentiment = Struct_Generation_Pipeline(
-                text_message=reviews,
-                Use_Local_Sentiment_LLM=True,
-                model_id=Local_Sentiment_LLM,
-                device_map=device_map
-            )
-            if Get_Suggestions:
-                    Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+        if reviews:
+            if Use_Local_Sentiment_LLM:
+                final_resulted_output_sentiment = Struct_Generation_Pipeline(
+                    text_message=reviews,
+                    Use_Local_Sentiment_LLM=True,
+                    model_id=Local_Sentiment_LLM,
+                    device_map=device_map
+                )
+                if Get_Suggestions:
+                        Suggestions_result_LocalLLM = Ollama_Local_Suggestions(
+                            reviews=final_resulted_output_sentiment,
+                            Model_Name=Local_General_LLM,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                if Use_Local_API:
+                    Summarized_result_LocalLLM = Ollama_Local_Summarize(
                         reviews=final_resulted_output_sentiment,
                         Model_Name=Local_General_LLM,
                         Ollama_Model_EndPoint=Ollama_Model_EndPoint
                     )
-            if Use_Local_API:
-                Summarized_result_LocalLLM = Ollama_Local_Summarize(
-                    reviews=final_resulted_output_sentiment,
-                    Model_Name=Local_General_LLM,
-                    Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
+                elif Use_Groq_API:
+                    Summarized_result_Groq = summarize_reviews(
+                        reviews=final_resulted_output_sentiment,
+                        KEY=Groq_API,
+                        max_tokens=Groq_LLM_Max_Tokens,
+                        temperature=Groq_LLM_Temperature,
+                        top_p=Groq_LLM_top_p,
+                        stream=Groq_LLM_stream,
+                        model_id=Groq_LLM
+                    )
+                    return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
+                elif Use_Gemini_API:
+                    Summarized_result_Gemini = summarize_reviews_gemini(
+                        reviews=final_resulted_output_sentiment,
+                        KEY=Google_API,
+                        max_tokens=Gemini_LLM_Max_Tokens,
+                        temperature=Gemini_LLM_Temperature,
+                        model=Gemini_LLM
+                    )
+                    return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
+                elif Use_OpenAI_API:
+                    Summarized_result_OpenAi = summarize_reviews_openai(
+                        reviews=final_resulted_output_sentiment,
+                        KEY=OpenAi_API,
+                        model_id=OpenAI_LLM,
+                        max_tokens=OpenAI_LLM_Max_Tokens,
+                        temperature=OpenAI_LLM_Temperature,
+                        stream=OpenAI_LLM_stream
+                    )
+                    return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
+                else:
+                    return "Activate Any one Of the LLM"
+            if Use_Local_Emotion_LLM:
+                final_resulted_output_emotion = Struct_Emotion(
+                    text_message=reviews,
+                    Use_Local_Emotion_LLM=True,
+                    model_id=Local_Emotion_LLM,
+                    device_map=device_map
                 )
-                return Summarized_result_LocalLLM + "\n" + Suggestions_result_LocalLLM
-            elif Use_Groq_API:
-                Summarized_result_Groq = summarize_reviews(
-                    reviews=final_resulted_output_sentiment,
-                    KEY=Groq_API,
-                    max_tokens=Groq_LLM_Max_Tokens,
-                    temperature=Groq_LLM_Temperature,
-                    top_p=Groq_LLM_top_p,
-                    stream=Groq_LLM_stream,
-                    model_id=Groq_LLM
-                )
-                return Summarized_result_Groq + "\n" + Suggestions_result_LocalLLM
-            elif Use_Gemini_API:
-                Summarized_result_Gemini = summarize_reviews_gemini(
-                    reviews=final_resulted_output_sentiment,
-                    KEY=Google_API,
-                    max_tokens=Gemini_LLM_Max_Tokens,
-                    temperature=Gemini_LLM_Temperature,
-                    model=Gemini_LLM
-                )
-                return Summarized_result_Gemini + "\n" + Suggestions_result_LocalLLM
-            elif Use_OpenAI_API:
-                Summarized_result_OpenAi = summarize_reviews_openai(
-                    reviews=final_resulted_output_sentiment,
-                    KEY=OpenAi_API,
-                    model_id=OpenAI_LLM,
-                    max_tokens=OpenAI_LLM_Max_Tokens,
-                    temperature=OpenAI_LLM_Temperature,
-                    stream=OpenAI_LLM_stream
-                )
-                return Summarized_result_OpenAi + "\n" + Suggestions_result_LocalLLM
-            else:
-                return "Activate Any one Of the LLM"
-        if Use_Local_Emotion_LLM:
-            final_resulted_output_emotion = Struct_Emotion(
-                text_message=reviews,
-                Use_Local_Emotion_LLM=True,
-                model_id=Local_Emotion_LLM,
-                device_map=device_map
-            )
-            if Use_Local_API:
-                Summarized_result_LocalLLM = Ollama_Local_Emotion_Summarize(
-                    emotions=final_resulted_output_emotion,
-                    Model_Name=Local_General_LLM,
-                    Ollama_Model_EndPoint=Ollama_Model_EndPoint
-                )
-                return Summarized_result_LocalLLM
-            elif Use_Groq_API:
-                Summarized_result_Groq = summarize_Emotions_reviews(
-                    emotions=final_resulted_output_emotion,
-                    KEY=Groq_API,
-                    max_tokens=Groq_LLM_Max_Tokens,
-                    temperature=Groq_LLM_Temperature,
-                    top_p=Groq_LLM_top_p,
-                    stream=Groq_LLM_stream,
-                    model_id=Groq_LLM
-                )
-                return Summarized_result_Groq
-            elif Use_Gemini_API:
-                Summarized_result_Gemini = summarize_Emotion_reviews_gemini(
-                    emotions=final_resulted_output_emotion,
-                    KEY=Google_API,
-                    max_tokens=Gemini_LLM_Max_Tokens,
-                    temperature=Gemini_LLM_Temperature,
-                    model=Gemini_LLM
-                )
-                return Summarized_result_Gemini
-            elif Use_OpenAI_API:
-                Summarized_result_OpenAi = summarize_reviews_openai(
-                    reviews=final_resulted_output_emotion,
-                    KEY=OpenAi_API,
-                    model_id=OpenAI_LLM,
-                    max_tokens=OpenAI_LLM_Max_Tokens,
-                    temperature=OpenAI_LLM_Temperature,
-                    stream=OpenAI_LLM_stream
-                )
-                return Summarized_result_OpenAi
-            else:
-                return "Activate Any one Of the LLM"
-        if Use_Local_Sentiment_LLM == False and Use_Local_Sentiment_LLM == None and Use_Local_Emotion_LLM == False and Use_Local_Emotion_LLM == None:
-            return "Either Enable Sentiment LLM or Emotion LLM to Perform Analysis" 
+                if Use_Local_API:
+                    Summarized_result_LocalLLM = Ollama_Local_Emotion_Summarize(
+                        emotions=final_resulted_output_emotion,
+                        Model_Name=Local_General_LLM,
+                        Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                    )
+                    return Summarized_result_LocalLLM
+                elif Use_Groq_API:
+                    Summarized_result_Groq = summarize_Emotions_reviews(
+                        emotions=final_resulted_output_emotion,
+                        KEY=Groq_API,
+                        max_tokens=Groq_LLM_Max_Tokens,
+                        temperature=Groq_LLM_Temperature,
+                        top_p=Groq_LLM_top_p,
+                        stream=Groq_LLM_stream,
+                        model_id=Groq_LLM
+                    )
+                    return Summarized_result_Groq
+                elif Use_Gemini_API:
+                    Summarized_result_Gemini = summarize_Emotion_reviews_gemini(
+                        emotions=final_resulted_output_emotion,
+                        KEY=Google_API,
+                        max_tokens=Gemini_LLM_Max_Tokens,
+                        temperature=Gemini_LLM_Temperature,
+                        model=Gemini_LLM
+                    )
+                    return Summarized_result_Gemini
+                elif Use_OpenAI_API:
+                    Summarized_result_OpenAi = summarize_reviews_openai(
+                        reviews=final_resulted_output_emotion,
+                        KEY=OpenAi_API,
+                        model_id=OpenAI_LLM,
+                        max_tokens=OpenAI_LLM_Max_Tokens,
+                        temperature=OpenAI_LLM_Temperature,
+                        stream=OpenAI_LLM_stream
+                    )
+                    return Summarized_result_OpenAi
+                else:
+                    return "Activate Any one Of the LLM"
+            if Use_Local_Sentiment_LLM == False and Use_Local_Sentiment_LLM == None and Use_Local_Emotion_LLM == False and Use_Local_Emotion_LLM == None:
+                return "Either Enable Sentiment LLM or Emotion LLM to Perform Analysis" 
+        else :
+            print(f"Couldn't Find Any Reviews Regarding {Product_Name}")
+            exit()       
     
     def get_analysis_report_from_LetterBoxD(
         self,
@@ -2944,3 +2965,476 @@ class SentConfig:
         else:
             raise ValueError("Error : No URL supplied")
         
+    def specific_review_summary(
+        self,
+        target_website=None,
+        Product_Name=None,
+        Reviews_Count=20,
+        IMDB_API=None,
+        Max_Reviews=None,
+        Use_Local_Sentiment_LLM=None,
+        Use_Local_General_LLM=None,
+        Use_Local_Scraper=None,
+        Use_Scraper_API=None,
+        Use_Groq_API=None,
+        Use_Open_API=None,
+        Use_Gemini_API=None,
+        Local_Sentiment_LLM=None,
+        Local_Emotion_LLM=None,
+        Groq_API=None,
+        OpenAi_API=None,
+        HuggingFace_API=None,
+        Scraper_api_key=None,
+        Google_API=None,
+        Local_api_key=None,
+        Youtube_API=None,
+        Groq_LLM="llama3-8b-8192",
+        OpenAI_LLM="GPT-3.5",
+        device_map="auto",
+        Gemini_LLM="gemini-1.5-pro",
+        platforms = ["playstation-5", "pc", "playstation-4"],
+        reddit_client_id='qzUTCldtSi4hU19EXseCFg',
+        reddit_client_secret='shDZVPvWAH7lb5Oe2NP9tKIqCSTSkQ',
+        reddit_user_agent='textextracter/1.0 by/u/DeepReference5190',
+        Groq_LLM_Temperature=0.1,
+        Groq_LLM_Max_Tokens=100,
+        Groq_LLM_Max_Input_Tokens=300,
+        Groq_LLM_top_p=1,
+        Groq_LLM_stream=False,
+        OpenAI_LLM_Temperature=0.1,
+        OpenAI_LLM_Max_Tokens=100,
+        OpenAI_LLM_stream=False,
+        OpenAI_LLM_Max_Input_Tokens=300,
+        Local_LLM_Max_Input_Tokens=300,
+        Gemini_LLM_Temperature=0.1,
+        Gemini_LLM_Max_Tokens=100,
+        Gemini_LLM_Max_Input_Tokens=300,
+        Ollama_Model="llama3.1",
+        Ollama_Model_EndPoint = "http://localhost:11434/api/generate",
+        Get_IMDB=False,
+        Get_LetterBoxD=False,
+        Get_MetaCritic=False,
+        Get_Reddit=False,
+        Get_RottenTomatoes=False,
+        Get_Steam=False,
+        Get_Youtube=False,
+        Get_Amazon=False,
+        Authentic_User_Experience=False,
+        Detailed_Features=False,
+        Value_For_Money=False,
+        Recommendations=False,
+        Shipping_and_Packaging=False,
+        Durability_and_Longuity=False,
+        Customer_Service=False,
+        Performance=False
+    ):       
+        def merge_reviews(All_Reviews):
+            merged = []
+            for input_list in All_Reviews:
+                if input_list:
+                    merged.extend(input_list)
+            return merged
+        
+        def reduce_reviews(reviews):
+            total_reviews = len(reviews)
+            if Max_Reviews:
+                if total_reviews < Max_Reviews:
+                    reduced_reviews = reviews
+                else:
+                    reduced_reviews = reviews[:Max_Reviews] 
+            elif total_reviews > 100:
+                half_reviews_count = total_reviews // 3 
+                reduced_reviews = reviews[:half_reviews_count] 
+            else:
+                reduced_reviews = reviews
+            return reduced_reviews
+            
+        Use_Local_Scraper = Use_Local_Scraper if Use_Local_Scraper is not None else self.Use_Local_Scraper
+        Use_Local_Sentiment_LLM = Use_Local_Sentiment_LLM if Use_Local_Sentiment_LLM is not None else self.Use_Local_Sentiment_LLM
+        Use_Scraper_API = Use_Scraper_API if Use_Scraper_API is not None else self.Use_Scraper_API
+        Scraper_api_key = Scraper_api_key if Scraper_api_key is not None else self.Scraper_api_key
+        Local_api_key = Local_api_key if Local_api_key is not None else self.Local_api_key
+        device_map = device_map if device_map is not None else self.device_map
+
+        Local_Sentiment_LLM = Local_Sentiment_LLM if Local_Sentiment_LLM is not None else self.Local_Sentiment_LLM
+        Local_Emotion_LLM = Local_Emotion_LLM if Local_Emotion_LLM is not None else self.Local_Emotion_LLM
+
+        Groq_API = Groq_API if Groq_API is not None else self.Groq_API
+        Use_Groq_API = Use_Groq_API if Use_Groq_API is not None else self.Use_Groq_API
+        Groq_LLM = Groq_LLM if Groq_LLM is not None else self.Groq_LLM
+
+        Google_API = Google_API if Google_API is not None else self.Google_API
+        Use_Gemini_API = Use_Gemini_API if Use_Gemini_API is not None else self.Use_Gemini_API
+        Gemini_LLM = Gemini_LLM if Gemini_LLM is not None else self.Gemini_LLM
+
+        Use_Open_API = Use_Open_API if Use_Open_API is not None else self.Use_Open_API
+        OpenAi_API = OpenAi_API if OpenAi_API is not None else self.OpenAi_API
+        OpenAI_LLM = OpenAI_LLM if OpenAI_LLM is not None else self.OpenAI_LLM
+
+        Use_Local_General_LLM = Use_Local_General_LLM if Use_Local_General_LLM is not None else self.Use_Local_General_LLM
+        HuggingFace_API = HuggingFace_API if HuggingFace_API is not None else self.HuggingFace_API
+
+        final_resulted_output = None
+        specific_summary_outputs = []
+        IMDB_Reviews = []
+        LetterBox_Reviews = []
+        amazon_resulted_output = []
+        MetaCritic_Reviews = []
+        Reddit_Reviews = []
+        RottenTomatoes_Reviews = []
+        Steam_Reviews = []
+        Youtube_Reviews = []
+
+        if Get_IMDB==True:
+            scraper = IMDBReviewScraper(IMDB_API)
+            imdb_id = scraper.get_imdb_id(Product_Name)
+            if imdb_id:
+                reviews = scraper.get_imdb_reviews(imdb_id, Reviews_Count)
+            else:
+                print(f"Movie not found {Product_Name}")
+                exit()
+            IMDB_Reviews = Struct_Generation_Pipeline(
+                text_message=reviews,
+                Use_Local_Sentiment_LLM=True,
+                model_id=Local_Sentiment_LLM,
+                device_map=device_map
+            )
+        
+        if Get_LetterBoxD==True:
+            scraper = LetterboxdReviewScraper()
+            reviews = scraper.get_letterboxd_reviews(Product_Name, Reviews_Count)
+            if reviews:
+                LetterBox_Reviews = Struct_Generation_Pipeline(
+                        text_message=reviews,
+                        Use_Local_Sentiment_LLM=True,
+                        model_id=Local_Sentiment_LLM,
+                        device_map=device_map
+                    )
+            else:
+                print(f"Reviews Not Found For the Product : {Product_Name}")
+        
+        if Get_Amazon==True:
+            if target_website:
+                try:
+                    fetched_review = Fetch_Reviews(
+                        target_website,
+                        Use_Local_Scraper,
+                        Use_Scraper_API,
+                        Scraper_api_key,
+                        Local_api_key
+                    )
+
+                    if fetched_review:
+                        amazon_resulted_output = Struct_Generation_Pipeline(
+                            text_message=fetched_review,
+                            Use_Local_Sentiment_LLM=True,
+                            model_id=Local_Sentiment_LLM,
+                            device_map=device_map
+                        )
+                    else:
+                        raise ValueError("Couldn't Fetch the Reviews From the Site")
+
+                except ValueError as e:
+                    print(f"Error: {e}")
+                    exit()
+
+                except ConnectionError:
+                    print(
+                        "Error: Unable to connect to the website. Please check your internet connection.")
+                    exit()
+
+                except TimeoutError:
+                    print("Error: The request timed out. Try again later.")
+                    exit()
+
+                except Exception as e:
+                    print(f"An unexpected error occurred: {e}")
+                    exit()
+        
+        if Get_MetaCritic==True:
+            scraper = MetacriticReviewScraper()
+            reviews = scraper.fetch_reviews(Product_Name, platforms, Reviews_Count)
+            if reviews:
+                MetaCritic_Reviews = Struct_Generation_Pipeline(
+                    text_message=reviews,
+                    Use_Local_Sentiment_LLM=True,
+                    model_id=Local_Sentiment_LLM,
+                    device_map=device_map
+                )
+            else:
+                print(f"Reviews Not Found For the Product : {Product_Name}")
+
+        if Get_Reddit==True:
+            scraper = RedditScraper(reddit_client_id, reddit_client_secret, reddit_user_agent)
+            reviews = scraper.search_reddit_for_product(Product_Name, Reviews_Count)
+            if reviews:
+                Reddit_Reviews = Struct_Generation_Pipeline(
+                    text_message=reviews,
+                    Use_Local_Sentiment_LLM=True,
+                    model_id=Local_Sentiment_LLM,
+                    device_map=device_map
+                )
+            else:
+                print(f"Reviews Not Found For the Product : {Product_Name}")
+
+        if Get_RottenTomatoes==True:
+            if Product_Name:
+                scraper = RottenTomatoesReviewScraper()
+                reviews = scraper.get_rotten_tomatoes_reviews(Product_Name, Reviews_Count)
+                if reviews:
+                    RottenTomatoes_Reviews = Struct_Generation_Pipeline(
+                        text_message=reviews,
+                        Use_Local_Sentiment_LLM=True,
+                        model_id=Local_Sentiment_LLM,
+                        device_map=device_map
+                    )
+                else:
+                    print(f"Reviews Not Found For the Product : {Product_Name}")
+            else:
+                print("Mention the Product Name")
+
+        if Get_Steam==True:
+            scraper = SteamReviewScraper()
+            reviews = scraper.fetch_reviews_for_game(Product_Name, Reviews_Count)
+            if reviews:
+                Steam_Reviews = Struct_Generation_Pipeline(
+                    text_message=reviews,
+                    Use_Local_Sentiment_LLM=True,
+                    model_id=Local_Sentiment_LLM,
+                    device_map=device_map
+                )
+            else:
+                print(f"Reviews Not Found For the Product : {Product_Name}")
+
+        if Get_Youtube==True:
+            fetcher = YouTubeDataFetcher(Youtube_API)
+            reviews = fetcher.fetch_youtube_data_for_product(Product_Name, max_videos=10)
+            if reviews:
+                Youtube_Reviews = Struct_Generation_Pipeline(
+                    text_message=reviews,
+                    Use_Local_Sentiment_LLM=True,
+                    model_id=Local_Sentiment_LLM,
+                    device_map=device_map
+                )
+            else:
+                print(f"Reviews Not Found For the Product : {Product_Name}")
+
+        All_Reviews = [
+            IMDB_Reviews,
+            LetterBox_Reviews,
+            amazon_resulted_output,
+            MetaCritic_Reviews,
+            Reddit_Reviews,
+            RottenTomatoes_Reviews,
+            Steam_Reviews,
+            Youtube_Reviews
+        ]
+
+        merged_reviews = merge_reviews(All_Reviews)
+        final_resulted_output = reduce_reviews(merged_reviews)
+        
+        if Use_Groq_API == True or Use_Open_API == True or Use_Local_General_LLM == True or Use_Gemini_API == True:
+            if Use_Groq_API:
+                if final_resulted_output:
+                    if Authentic_User_Experience==True:
+                        Authentic_User_Experience_result_Groq = groq_authentic_user_experience(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        specific_summary_outputs.append({'Authentic_User_Experience':Authentic_User_Experience_result_Groq})
+
+                    if Detailed_Features==True:
+                        Detailed_Features_result_Groq = groq_Detailed_Features(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        specific_summary_outputs.append({'Detailed_Features':Detailed_Features_result_Groq})
+                    
+                    if Value_For_Money==True:
+                        Value_For_Money_result_Groq = groq_Value_For_Money(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        specific_summary_outputs.append({'Value_For_Money':Value_For_Money_result_Groq})
+
+                    if Recommendations==True:
+                        Recommendations_result_Groq = groq_Recommendations(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        specific_summary_outputs.append({'Recommendations':Recommendations_result_Groq})
+
+                    if Shipping_and_Packaging==True:
+                        Shipping_and_Packaging_result_Groq = groq_Shipping_Packaging(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        specific_summary_outputs.append({'Shipping_and_Packaging':Shipping_and_Packaging_result_Groq})
+
+                    if Durability_and_Longuity==True:
+                        Durability_and_Longuity_result_Groq = groq_Durability_Longuity(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        specific_summary_outputs.append({'Durability_and_Longuity':Durability_and_Longuity_result_Groq})
+
+                    if Customer_Service==True:
+                        Customer_Service_result_Groq = groq_CustomerService(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        specific_summary_outputs.append({'Customer_Service':Customer_Service_result_Groq})
+
+                    if Performance==True:
+                        Performance_uning_Groq = groq_Performance(
+                            reviews=final_resulted_output,
+                            KEY=Groq_API,
+                            max_tokens=Groq_LLM_Max_Tokens,
+                            temperature=Groq_LLM_Temperature,
+                            top_p=Groq_LLM_top_p,
+                            stream=Groq_LLM_stream,
+                            model_id=Groq_LLM
+                        )
+                        specific_summary_outputs.append({'Performance':Performance_uning_Groq})
+
+                    return specific_summary_outputs
+                else:
+                    print("Couldnt Return Formatted Output")
+                    exit()
+
+            elif Use_Gemini_API:
+                if final_resulted_output:
+                    Summarized_result_Gemini = summarize_reviews_gemini(
+                        reviews=final_resulted_output,
+                        KEY=Google_API,
+                        max_tokens=Gemini_LLM_Max_Tokens,
+                        temperature=Gemini_LLM_Temperature,
+                        model=Gemini_LLM
+                    )
+                    return Summarized_result_Gemini
+                else:
+                    print("Couldnt Return Formatted Output")
+                    exit()
+
+            elif Use_Open_API:
+                if final_resulted_output:
+                    Summarized_result_OpenAi = summarize_reviews_openai(
+                        reviews=final_resulted_output,
+                        KEY=OpenAi_API,
+                        model_id=OpenAI_LLM,
+                        max_tokens=OpenAI_LLM_Max_Tokens,
+                        temperature=OpenAI_LLM_Temperature,
+                        stream=OpenAI_LLM_stream
+                    )
+                    return Summarized_result_OpenAi
+                else:
+                    print("Couldnt Return Formatted Output")
+                    exit()
+
+            elif Use_Local_General_LLM:
+                if final_resulted_output:
+                    if Authentic_User_Experience==True:
+                        Authentic_User_Experience_result_Ollama = Ollama_authentic_user_experience(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        specific_summary_outputs.append({'Authentic_User_Experience':Authentic_User_Experience_result_Ollama})
+                    if Detailed_Features==True:
+                        Detailed_Features_result_Ollama = Ollama_Detailed_Features(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        specific_summary_outputs.append({'Detailed_Features':Detailed_Features_result_Ollama})
+
+                    if Value_For_Money==True:
+                        Value_For_Money_result_Ollama = Ollama_Value_For_Money(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        specific_summary_outputs.append({'Value_For_Money':Value_For_Money_result_Ollama})
+
+                    if Recommendations==True:
+                        Recommendations_result_Ollama = Ollama_Recommendations(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        specific_summary_outputs.append({'Recommendations':Recommendations_result_Ollama})
+
+                    if Shipping_and_Packaging==True:
+                        Shipping_and_Packaging_result_Ollama = Ollama_Shipping_Packaging(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        specific_summary_outputs.append({'Shipping_and_Packaging':Shipping_and_Packaging_result_Ollama})
+
+                    if Durability_and_Longuity==True:
+                        Durability_and_Longuity_result_Ollama = Ollama_Durability_Longuity(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        specific_summary_outputs.append({'Durability_and_Longuity':Durability_and_Longuity_result_Ollama})
+
+                    if Customer_Service==True:
+                        Customer_Service_result_Ollama = Ollama_CustomerService(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        specific_summary_outputs.append({'Customer_Service':Customer_Service_result_Ollama})
+
+                    if Performance==True:
+                        Performance_using_Ollama = Ollama_Performance(
+                            reviews=final_resulted_output,
+                            Model_Name=Ollama_Model,
+                            Ollama_Model_EndPoint=Ollama_Model_EndPoint
+                        )
+                        specific_summary_outputs.append({'Performance':Performance_using_Ollama})
+                    
+                    return specific_summary_outputs
+                else:
+                    print("Couldnt Return Formatted Output")
+            else:
+                print("Error : use any one of the LLM inference")
+        else:
+            raise ValueError("Error : No URL supplied")
