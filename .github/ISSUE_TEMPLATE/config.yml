@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://sentimatrix.dev/docs
+    about: Check our documentation for guides and examples
+  - name: Discussions
+    url: https://github.com/sentimatrix/sentimatrix/discussions
+    about: Ask questions and share ideas in Discussions
