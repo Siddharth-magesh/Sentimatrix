@@ -15,6 +15,18 @@ pip install sentimatrix[llm]       # All LLM providers
 pip install sentimatrix[local]     # Local inference
 ```
 
+### Optional: Browser Dependencies (for Amazon/JS-heavy sites)
+
+```bash
+# Install Playwright browser (for sites that require JavaScript)
+playwright install chromium
+
+# Install system dependencies (Linux only)
+sudo playwright install-deps
+```
+
+> **Note:** Steam and Reddit work without browser dependencies (they use JSON APIs).
+
 ---
 
 ## Basic Usage
@@ -541,9 +553,116 @@ sentimatrix analyze "This is the best purchase I've ever made!" --json
 
 ---
 
+## Using Commercial Scraping APIs
+
+For sites with strong anti-bot protection, use commercial APIs:
+
+```python
+import asyncio
+from sentimatrix.providers.scrapers.commercial import (
+    ScraperAPIClient,
+    ApifyClient,
+    BrightDataClient,
+    OxylabsClient,
+    ZyteClient,
+    ScrapingBeeClient,
+    ScrapingAntClient,
+)
+
+async def main():
+    # ScraperAPI (40M+ proxies, JS rendering)
+    async with ScraperAPIClient(api_key="your_key") as client:
+        content = await client.scrape(
+            "https://www.amazon.com/dp/B08N5WRWNW",
+            render_js=True,
+            country_code="us",
+        )
+        print(f"Status: {content.status_code}")
+
+    # Apify (2000+ actors)
+    async with ApifyClient(api_key="your_key") as client:
+        result = await client.run_actor(
+            "apify/amazon-product-scraper",
+            run_input={"productUrls": ["https://amazon.com/dp/B08N5WRWNW"]},
+        )
+        print(f"Items: {len(result)}")
+
+    # Bright Data (72M+ proxies)
+    async with BrightDataClient(api_key="your_key") as client:
+        reviews = await client.scrape_amazon_reviews("B08N5WRWNW", limit=50)
+        print(f"Reviews: {len(reviews)}")
+
+asyncio.run(main())
+```
+
+### Available Commercial APIs
+
+| Service | Proxy Pool | JS Render | Best For |
+|---------|------------|-----------|----------|
+| ScraperAPI | 40M+ | Yes | General scraping |
+| Apify | N/A | Actors | Pre-built scrapers |
+| Bright Data | 72M+ | Yes | Enterprise scale |
+| Oxylabs | 100M+ | Yes | E-commerce |
+| Zyte | 50M+ | AI | Auto extraction |
+| ScrapingBee | 1M+ | Yes | Screenshots |
+| ScrapingAnt | - | Yes | Budget option |
+
+---
+
+## Full Pipeline Example
+
+Complete example: scrape, analyze, and generate insights:
+
+```python
+import asyncio
+from sentimatrix import Sentimatrix, LLMConfig
+
+async def main():
+    # Configure with Groq (free tier available)
+    llm_config = LLMConfig(
+        provider="groq",
+        api_key="gsk_your_api_key",  # Get from console.groq.com
+        model="llama-3.3-70b-versatile",
+    )
+
+    async with Sentimatrix(llm_config=llm_config) as sm:
+        # 1. Scrape Steam reviews (no browser needed)
+        print("Scraping Steam reviews...")
+        reviews = await sm.scrape_steam("730", limit=30)  # Counter-Strike 2
+        print(f"  Got {len(reviews)} reviews")
+
+        # 2. Analyze sentiment and emotions
+        print("\nAnalyzing reviews...")
+        analysis = await sm.analyze_reviews(reviews)
+        print(f"  Positive: {analysis.positive_ratio:.1%}")
+        print(f"  Negative: {analysis.negative_ratio:.1%}")
+        print(f"  Average polarity: {analysis.average_polarity:.2f}")
+
+        # 3. Generate LLM-powered insights
+        print("\nGenerating insights...")
+        insights = await sm.generate_insights(reviews, analysis=analysis)
+
+        print(f"\nSummary: {insights.summary}")
+
+        print("\nPros:")
+        for pro in insights.pros[:3]:
+            print(f"  + {pro}")
+
+        print("\nCons:")
+        for con in insights.cons[:3]:
+            print(f"  - {con}")
+
+asyncio.run(main())
+```
+
+---
+
 ## Next Steps
 
 - [Configuration Reference](./CONFIGURATION.md)
 - [API Reference](../api/REFERENCE.md)
 - [Architecture Overview](../architecture/OVERVIEW.md)
-- [Platform Scrapers](../scrapers/PLATFORM_SCRAPERS.md)
+- [Scraper Guide](../scrapers/OVERVIEW.md)
+- [Provider Guide](../providers/OVERVIEW.md)
+- [Examples](../guides/examples.md)
+- [Troubleshooting](../guides/troubleshooting.md)

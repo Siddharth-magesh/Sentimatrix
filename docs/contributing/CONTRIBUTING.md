@@ -1,6 +1,6 @@
 # Contributing to Sentimatrix
 
-Thank you for your interest in contributing to Sentimatrix.
+Thank you for your interest in contributing to Sentimatrix V2.
 
 ## Code of Conduct
 
@@ -28,7 +28,7 @@ python -m venv venv
 source venv/bin/activate  # Linux/macOS
 .\venv\Scripts\activate   # Windows
 
-# Install in development mode
+# Install in development mode with all dependencies
 pip install -e ".[dev]"
 
 # Install pre-commit hooks
@@ -36,6 +36,43 @@ pre-commit install
 
 # Run tests to verify setup
 pytest
+
+# Run specific test suite
+pytest tests/unit/providers/llm/
+pytest tests/unit/providers/scrapers/
+```
+
+---
+
+## Project Structure
+
+```
+sentimatrix/
+├── core/               # Core infrastructure
+│   ├── config.py       # Configuration (Pydantic v2)
+│   ├── logger.py       # Structured logging
+│   ├── exceptions.py   # Exception hierarchy (50+ types)
+│   ├── cache.py        # Memory & Redis caching
+│   └── pipeline.py     # Pipeline orchestration
+├── providers/
+│   ├── base.py         # Provider interfaces
+│   ├── llm/            # 19 LLM providers
+│   │   ├── openai_provider.py
+│   │   ├── groq_provider.py
+│   │   ├── anthropic_provider.py
+│   │   └── ... (16 more)
+│   ├── scrapers/
+│   │   ├── platforms/  # Platform scrapers (8)
+│   │   └── commercial/ # Commercial APIs (7)
+│   └── models/         # HuggingFace models
+├── analysis/
+│   ├── sentiment.py    # Sentiment analysis
+│   ├── emotion.py      # Emotion detection
+│   └── multimodal.py   # Audio/image/video
+├── input/              # Input handlers
+├── output/             # Exporters, formatters, visualizers
+├── cli.py              # CLI interface
+└── main.py             # Main Sentimatrix class
 ```
 
 ---
@@ -48,7 +85,7 @@ pytest
 2. Use the bug report template
 3. Include:
    - Python version
-   - Sentimatrix version
+   - Sentimatrix version (`pip show sentimatrix`)
    - Minimal reproduction code
    - Expected vs actual behavior
    - Full error traceback
@@ -65,12 +102,235 @@ pytest
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/your-feature`
 3. Make changes following our style guide
-4. Write/update tests
+4. Write/update tests (minimum 90% coverage)
 5. Run the test suite: `pytest`
 6. Run linting: `ruff check .`
 7. Run formatting: `black .`
-8. Commit with descriptive messages
-9. Push and create a Pull Request
+8. Run type checking: `mypy sentimatrix/`
+9. Commit with descriptive messages
+10. Push and create a Pull Request
+
+---
+
+## Adding New Providers
+
+### Adding an LLM Provider
+
+1. Create provider file in `sentimatrix/providers/llm/`:
+
+```python
+"""
+NewProvider LLM Provider
+
+Implements the BaseLLMProvider interface for NewProvider's API.
+"""
+from sentimatrix.providers.base import BaseLLMProvider, LLMResponse
+from sentimatrix.core.config import LLMConfig
+
+class NewProvider(BaseLLMProvider):
+    """NewProvider implementation."""
+
+    def __init__(self, config: Optional[LLMConfig] = None) -> None:
+        super().__init__(config)
+        self._client = None
+
+    async def initialize(self) -> None:
+        """Initialize the client."""
+        # Setup client
+        self._initialized = True
+
+    async def close(self) -> None:
+        """Close the client."""
+        self._initialized = False
+
+    async def generate(
+        self,
+        prompt: str,
+        system_prompt: Optional[str] = None,
+        **kwargs,
+    ) -> LLMResponse:
+        """Generate completion."""
+        self._ensure_initialized()
+        # Implementation
+        return LLMResponse(...)
+
+    async def generate_stream(self, prompt: str, **kwargs):
+        """Stream completion."""
+        self._ensure_initialized()
+        # Implementation
+        yield "chunk"
+```
+
+2. Register in `__init__.py`:
+
+```python
+from .new_provider import NewProvider
+
+__all__ = [..., "NewProvider"]
+```
+
+3. Add tests in `tests/unit/providers/llm/test_new_provider.py`
+4. Update documentation in `docs/providers/`
+
+### Adding a Platform Scraper
+
+1. Create scraper in `sentimatrix/providers/scrapers/platforms/`:
+
+```python
+from sentimatrix.providers.scrapers.platforms.base import BasePlatformScraper
+from sentimatrix.providers.base import Review
+
+class NewPlatformScraper(BasePlatformScraper):
+    """Scraper for NewPlatform."""
+
+    PLATFORM = "newplatform"
+
+    async def scrape_reviews(
+        self,
+        identifier: str,
+        limit: int = 100,
+        **kwargs,
+    ) -> List[Review]:
+        """Scrape reviews."""
+        # Implementation
+        return reviews
+
+    @staticmethod
+    def validate_id(identifier: str) -> bool:
+        """Validate platform ID format."""
+        return bool(identifier)
+
+    @staticmethod
+    def extract_id(url: str) -> Optional[str]:
+        """Extract ID from URL."""
+        # Implementation
+        return None
+```
+
+2. Register in `__init__.py`
+3. Add tests
+4. Update scraper documentation
+
+---
+
+## Code Style
+
+### Formatter and Linter
+
+- **Formatter**: Black (line length 100)
+- **Linter**: Ruff
+- **Type checker**: mypy (strict mode)
+- **Docstrings**: Google style
+
+### Example Docstring
+
+```python
+async def analyze_sentiment(
+    self,
+    text: str,
+    threshold: float = 0.5,
+) -> SentimentResult:
+    """
+    Analyze sentiment of text.
+
+    Args:
+        text: Text to analyze.
+        threshold: Confidence threshold (0-1).
+
+    Returns:
+        SentimentResult with sentiment label and confidence.
+
+    Raises:
+        ValidationError: If text is empty.
+        ProviderError: If analysis fails.
+
+    Example:
+        >>> result = await analyzer.analyze_sentiment("Great product!")
+        >>> print(result.sentiment)  # "positive"
+    """
+```
+
+### Type Hints
+
+All public functions must have complete type hints:
+
+```python
+from typing import List, Optional, Dict, Any
+
+async def process_reviews(
+    reviews: List[Review],
+    options: Optional[Dict[str, Any]] = None,
+) -> ProcessingResult:
+    ...
+```
+
+---
+
+## Testing Requirements
+
+### Coverage Requirements
+
+- Minimum 90% coverage for new code
+- Unit tests for all public functions
+- Integration tests for complex features
+- Mock external dependencies
+
+### Test Structure
+
+```python
+import pytest
+from unittest.mock import AsyncMock, patch
+
+class TestNewFeature:
+    """Tests for new feature."""
+
+    @pytest.fixture
+    def sample_data(self):
+        """Sample test data."""
+        return {"key": "value"}
+
+    @pytest.mark.asyncio
+    async def test_success_case(self, sample_data):
+        """Test successful operation."""
+        result = await some_function(sample_data)
+        assert result.success is True
+
+    @pytest.mark.asyncio
+    async def test_error_handling(self):
+        """Test error handling."""
+        with pytest.raises(ValidationError):
+            await some_function(invalid_data)
+
+    @pytest.mark.asyncio
+    async def test_with_mock(self):
+        """Test with mocked dependency."""
+        with patch("module.external_call") as mock:
+            mock.return_value = AsyncMock(return_value="mocked")
+            result = await function_using_external()
+            assert result == "expected"
+```
+
+### Running Tests
+
+```bash
+# All tests
+pytest
+
+# With coverage
+pytest --cov=sentimatrix --cov-report=html
+
+# Specific module
+pytest tests/unit/providers/llm/
+
+# Verbose
+pytest -v
+
+# Only fast tests
+pytest -m "not slow"
+
+# Parallel execution
+pytest -n auto
+```
 
 ---
 
@@ -79,8 +339,10 @@ pytest
 ### Before Submitting
 
 - [ ] Code follows project style guide
-- [ ] All tests pass
-- [ ] New code has tests
+- [ ] All tests pass (`pytest`)
+- [ ] Linting passes (`ruff check .`)
+- [ ] Type checking passes (`mypy sentimatrix/`)
+- [ ] New code has tests (90%+ coverage)
 - [ ] Documentation updated if needed
 - [ ] No merge conflicts
 
@@ -114,29 +376,7 @@ How was this tested?
 
 ---
 
-## Development Guidelines
-
-### Code Style
-
-- Formatter: Black (line length 100)
-- Linter: Ruff
-- Type checker: mypy
-- Docstrings: Google style
-
-### Testing Requirements
-
-- Minimum 90% coverage for new code
-- Unit tests for all public functions
-- Integration tests for complex features
-- Mock external dependencies
-
-### Documentation
-
-- Docstrings for all public APIs
-- Update relevant .md files
-- Add examples for new features
-
-### Commit Messages
+## Commit Messages
 
 Format: `type(scope): description`
 
@@ -150,56 +390,11 @@ Types:
 
 Examples:
 ```
-feat(scrapers): add TikTok scraper
-fix(sentiment): correct score normalization
+feat(llm): add Mistral provider
+fix(scrapers): handle Amazon CAPTCHA
 docs(api): update provider documentation
-```
-
----
-
-## Architecture Overview
-
-```
-sentimatrix/
-├── core/           # Core infrastructure
-├── providers/      # Provider implementations
-│   ├── llm/        # LLM providers
-│   ├── scrapers/   # Scraper providers
-│   └── models/     # ML model providers
-├── analysis/       # Analysis modules
-├── output/         # Export and visualization
-└── utils/          # Utilities
-```
-
-### Adding New Providers
-
-1. Create provider file in appropriate directory
-2. Inherit from base provider class
-3. Implement required interface methods
-4. Register in `__init__.py`
-5. Add configuration schema
-6. Write comprehensive tests
-7. Update documentation
-
----
-
-## Running Tests
-
-```bash
-# All tests
-pytest
-
-# With coverage
-pytest --cov=sentimatrix
-
-# Specific test file
-pytest tests/unit/test_sentiment.py
-
-# Verbose output
-pytest -v
-
-# Run only fast tests
-pytest -m "not slow"
+test(sentiment): add batch analysis tests
+refactor(cache): improve TTL handling
 ```
 
 ---

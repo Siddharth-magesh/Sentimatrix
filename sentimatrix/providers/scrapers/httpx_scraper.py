@@ -381,6 +381,7 @@ class HTTPXScraper(BaseScraperProvider):
             if proxy_url and self._proxy_manager:
                 self._proxy_manager.report_failure(proxy_url)
             raise ScraperConnectionError(
+                provider="httpx",
                 url=url,
                 reason=str(e),
             ) from e

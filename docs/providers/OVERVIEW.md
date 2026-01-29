@@ -2,93 +2,178 @@
 
 ## Architecture
 
-V2 implements a unified provider interface that abstracts away differences between LLM providers. This allows seamless switching between providers without code changes.
+Sentimatrix V2 implements a unified provider interface with 19 LLM providers. This allows seamless switching between providers without code changes.
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    LLM PROVIDER MANAGER                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │              BASE LLM PROVIDER                       │   │
-│  │  - generate(prompt) -> str                          │   │
-│  │  - generate_stream(prompt) -> AsyncIterator[str]    │   │
-│  │  - embed(text) -> List[float]                       │   │
-│  │  - supports_vision() -> bool                        │   │
-│  │  - supports_function_calling() -> bool              │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                           │                                 │
-│         ┌─────────────────┼─────────────────┐              │
-│         ▼                 ▼                 ▼              │
-│  ┌───────────┐     ┌───────────┐     ┌───────────┐        │
-│  │  CLOUD    │     │  LOCAL    │     │ SPECIALIZED│        │
-│  │ PROVIDERS │     │ PROVIDERS │     │ PROVIDERS  │        │
-│  └───────────┘     └───────────┘     └───────────┘        │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                    LLM PROVIDER MANAGER                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │                 BASE LLM PROVIDER                        │    │
+│  │  - generate(prompt) -> LLMResponse                       │    │
+│  │  - generate_stream(prompt) -> AsyncIterator[str]        │    │
+│  │  - embed(text) -> List[float]                           │    │
+│  │  - generate_with_functions(prompt, tools) -> Response   │    │
+│  └─────────────────────────────────────────────────────────┘    │
+│                           │                                      │
+│    ┌──────────────────────┼──────────────────────┐              │
+│    ▼                      ▼                      ▼              │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐           │
+│  │   CLOUD     │   │  INFERENCE  │   │   LOCAL     │           │
+│  │  PROVIDERS  │   │  PROVIDERS  │   │  PROVIDERS  │           │
+│  └─────────────┘   └─────────────┘   └─────────────┘           │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Provider Categories
+## All 19 Implemented Providers
 
-### 1. Major Cloud Providers
+### Cloud Providers (6)
 
-| Provider | Models | Vision | Functions | Streaming |
-|----------|--------|--------|-----------|-----------|
-| OpenAI | GPT-4o, GPT-4, GPT-3.5 | Yes | Yes | Yes |
-| Anthropic | Claude 3.5, Claude 3 | Yes | Yes | Yes |
-| Google | Gemini 2.0, 1.5 | Yes | Yes | Yes |
-| AWS Bedrock | Multiple | Varies | Varies | Yes |
-| Azure OpenAI | GPT-4o, GPT-4 | Yes | Yes | Yes |
+| Provider | Class | Models | Free Tier |
+|----------|-------|--------|-----------|
+| OpenAI | `OpenAIProvider` | GPT-4o, GPT-4o-mini, o1 | No |
+| Anthropic | `AnthropicProvider` | Claude 3.5 Sonnet, Claude 3 | No |
+| Google Gemini | `GeminiProvider` | Gemini 2.0 Flash, 1.5 Pro | Yes |
+| Mistral | `MistralProvider` | Mistral 7B, 8x7B, Large | Yes |
+| Cohere | `CohereProvider` | Command R, Command R+ | Yes |
+| Groq | `GroqProvider` | LLaMA 3.3, Mixtral | Yes |
 
-### 2. Open-Source Platforms
+### Inference Providers (5)
 
-| Provider | Models | Pricing | Best For |
-|----------|--------|---------|----------|
-| Together AI | 200+ models | Pay-per-token | Variety |
-| Fireworks AI | OSS models | Pay-per-token | Speed |
-| Replicate | OSS models | Per-second | Flexibility |
-| Hugging Face | 400K+ models | Free/Pro | Research |
+| Provider | Class | Models | Speed |
+|----------|-------|--------|-------|
+| Together AI | `TogetherProvider` | 200+ models | Fast |
+| Fireworks AI | `FireworksProvider` | OSS models | Very Fast |
+| OpenRouter | `OpenRouterProvider` | All models | Varies |
+| Cerebras | `CerebrasProvider` | LLaMA | Ultra Fast |
+| DeepSeek | `DeepSeekProvider` | DeepSeek V3, R1 | Fast |
 
-### 3. Specialized Inference
+### Local Providers (6)
 
-| Provider | Speed | Specialty |
-|----------|-------|-----------|
-| Groq | 750 tok/s | Fastest cloud |
-| Cerebras | 1800 tok/s | Fastest overall |
-| SambaNova | 580 tok/s | Large models |
+| Provider | Class | Interface | Best For |
+|----------|-------|-----------|----------|
+| Ollama | `OllamaProvider` | HTTP :11434 | Easy setup |
+| LM Studio | `LMStudioProvider` | HTTP :1234 | Desktop GUI |
+| vLLM | `vLLMProvider` | HTTP | Production |
+| llama.cpp | `LlamaCppProvider` | HTTP | Portability |
+| text-gen-webui | `TextGenProvider` | HTTP :5000 | Features |
+| ExLlamaV2 | `ExLlamaV2Provider` | HTTP | Quantized |
 
-### 4. Local Inference
+### Enterprise (2)
 
-| Solution | Interface | Best For |
-|----------|-----------|----------|
-| Ollama | HTTP API | Ease of use |
-| vLLM | HTTP API | Production |
-| llama.cpp | CLI/API | Portability |
-| LM Studio | GUI | Desktop |
-
-### 5. Regional Providers
-
-| Provider | Region | Models |
-|----------|--------|--------|
-| Mistral AI | EU | Mistral, Mixtral |
-| DeepSeek | China | DeepSeek-R1 |
-| Alibaba Qwen | China | Qwen series |
-| Baidu ERNIE | China | ERNIE series |
+| Provider | Class | Region | Notes |
+|----------|-------|--------|-------|
+| Azure OpenAI | `AzureOpenAIProvider` | Azure | Enterprise |
+| AWS Bedrock | `BedrockProvider` | AWS | Multi-model |
 
 ---
 
-## Provider Selection Matrix
+## Quick Start
+
+### Basic Usage
+
+```python
+import asyncio
+from sentimatrix.providers.llm import GroqProvider
+from sentimatrix.core.config import LLMConfig
+
+async def main():
+    config = LLMConfig(
+        provider="groq",
+        api_key="gsk_...",
+        model="llama-3.3-70b-versatile",
+        temperature=0.7,
+    )
+
+    async with GroqProvider(config) as provider:
+        response = await provider.generate(
+            prompt="Analyze the sentiment: I love this product!",
+            system_prompt="You are a sentiment analyst.",
+        )
+
+        print(f"Response: {response.content}")
+        print(f"Tokens: {response.usage.total_tokens}")
+        print(f"Time: {response.response_time_ms:.0f}ms")
+
+asyncio.run(main())
+```
+
+### Using the Provider Manager
+
+```python
+from sentimatrix.providers.llm.manager import LLMProviderManager, LLMProvider
+
+async def main():
+    manager = LLMProviderManager(
+        api_keys={
+            "groq": "gsk_...",
+            "openai": "sk-...",
+        }
+    )
+
+    # Initialize primary provider
+    await manager.initialize(LLMProvider.GROQ)
+
+    # Generate with automatic fallback
+    response = await manager.generate(
+        prompt="Summarize this review...",
+        fallback_providers=[LLMProvider.OPENAI],
+    )
+
+asyncio.run(main())
+```
+
+### Streaming
+
+```python
+async with GroqProvider(config) as provider:
+    async for chunk in provider.generate_stream("Tell me a story..."):
+        print(chunk, end="", flush=True)
+```
+
+### Function Calling
+
+```python
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_sentiment",
+            "description": "Analyze sentiment of text",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sentiment": {"type": "string", "enum": ["positive", "negative", "neutral"]},
+                    "confidence": {"type": "number"},
+                },
+                "required": ["sentiment", "confidence"],
+            },
+        },
+    }
+]
+
+response = await provider.generate_with_functions(
+    prompt="This product is amazing!",
+    functions=tools,
+)
+```
+
+---
+
+## Provider Selection Guide
 
 ### By Use Case
 
 | Use Case | Recommended | Reason |
 |----------|-------------|--------|
-| Production (general) | OpenAI, Anthropic | Reliability |
-| Cost-sensitive | Groq, DeepSeek | Low pricing |
-| Speed-critical | Groq, Cerebras | Fastest |
-| Privacy-required | Ollama, vLLM | Local |
+| Production | OpenAI, Anthropic | Reliability |
+| Cost-sensitive | Groq, DeepSeek | Low/free pricing |
+| Speed-critical | Groq, Cerebras | Fastest inference |
+| Privacy-required | Ollama, vLLM | Local execution |
 | Vision tasks | GPT-4o, Claude 3 | Quality |
 | Long context | Gemini, Claude | 1M+ tokens |
 | Reasoning | Claude 3.5, o1 | Accuracy |
@@ -97,77 +182,24 @@ V2 implements a unified provider interface that abstracts away differences betwe
 
 | Budget | Provider | Notes |
 |--------|----------|-------|
-| Free | Ollama, Gemini Flash | Limited/local |
-| < $10/mo | Groq, DeepSeek | Free tiers |
+| Free | Groq, Gemini, Ollama | Limited quotas |
+| < $10/mo | Groq, Mistral | Free tiers |
 | $10-100/mo | OpenAI, Anthropic | Standard use |
-| $100-1000/mo | Multiple providers | High volume |
-| > $1000/mo | Enterprise tiers | Dedicated |
+| > $100/mo | Enterprise tiers | High volume |
 
 ---
 
 ## Pricing Comparison (per 1M tokens)
 
-### Input Tokens
-
-| Provider | Model | Price |
-|----------|-------|-------|
-| DeepSeek | V3 | $0.07 |
-| Gemini | Flash | $0.075 |
-| Groq | Llama 3.1 70B | $0.59 |
-| OpenAI | GPT-4o-mini | $0.15 |
-| OpenAI | GPT-4o | $2.50 |
-| Anthropic | Sonnet 3.5 | $3.00 |
-| Anthropic | Opus 3 | $15.00 |
-
-### Output Tokens
-
-| Provider | Model | Price |
-|----------|-------|-------|
-| DeepSeek | V3 | $0.27 |
-| Gemini | Flash | $0.30 |
-| Groq | Llama 3.1 70B | $0.79 |
-| OpenAI | GPT-4o-mini | $0.60 |
-| OpenAI | GPT-4o | $10.00 |
-| Anthropic | Sonnet 3.5 | $15.00 |
-| Anthropic | Opus 3 | $75.00 |
-
----
-
-## Configuration
-
-### Global LLM Config
-
-```yaml
-llm:
-  default_provider: "openai"
-  fallback_providers:
-    - "anthropic"
-    - "groq"
-
-  timeout: 30
-  max_retries: 3
-  retry_delay: 1.0
-
-  providers:
-    openai:
-      api_key: "${OPENAI_API_KEY}"
-      model: "gpt-4o-mini"
-      temperature: 0.7
-      max_tokens: 1024
-
-    anthropic:
-      api_key: "${ANTHROPIC_API_KEY}"
-      model: "claude-3-5-sonnet-20241022"
-      max_tokens: 1024
-
-    groq:
-      api_key: "${GROQ_API_KEY}"
-      model: "llama-3.1-70b-versatile"
-
-    ollama:
-      base_url: "http://localhost:11434"
-      model: "llama3.1"
-```
+| Provider | Model | Input | Output |
+|----------|-------|-------|--------|
+| Groq | LLaMA 3.3 70B | Free | Free |
+| DeepSeek | V3 | $0.07 | $0.27 |
+| Gemini | 1.5 Flash | $0.075 | $0.30 |
+| OpenAI | GPT-4o-mini | $0.15 | $0.60 |
+| OpenAI | GPT-4o | $2.50 | $10.00 |
+| Anthropic | Claude 3.5 Sonnet | $3.00 | $15.00 |
+| Anthropic | Claude 3 Opus | $15.00 | $75.00 |
 
 ---
 
@@ -180,64 +212,75 @@ llm:
 | Google | Yes | Yes | Yes | Yes | Yes |
 | Groq | Yes | Yes | No | No | Yes |
 | Mistral | Yes | Yes | No | Yes | Yes |
-| Ollama | Yes | Partial | Yes* | Yes | Yes |
+| Cohere | Yes | Yes | No | Yes | Yes |
 | Together | Yes | Yes | Yes* | Yes | Yes |
+| Fireworks | Yes | Yes | Yes* | Yes | Yes |
 | DeepSeek | Yes | Yes | No | Yes | Yes |
+| Ollama | Yes | Partial | Yes* | Yes | Yes |
 
 *Depends on model
 
 ---
 
-## Unified Interface
+## Configuration
 
-```python
-from sentimatrix.providers.llm import get_provider
+### YAML Config
 
-# Get provider by name
-provider = get_provider("openai", api_key="...")
+```yaml
+llm:
+  default_provider: groq
+  fallback_providers:
+    - openai
+    - anthropic
 
-# All providers support the same interface
-response = await provider.generate(
-    prompt="Analyze sentiment: This product is amazing!",
-    system_prompt="You are a sentiment analysis expert.",
-    temperature=0.7,
-    max_tokens=500
-)
+  timeout: 30
+  max_retries: 3
 
-# Streaming
-async for chunk in provider.generate_stream(prompt):
-    print(chunk, end="")
+  providers:
+    groq:
+      api_key: ${GROQ_API_KEY}
+      model: llama-3.3-70b-versatile
+      temperature: 0.7
 
-# Embeddings (if supported)
-if provider.supports_embeddings():
-    vector = await provider.embed("Some text to embed")
+    openai:
+      api_key: ${OPENAI_API_KEY}
+      model: gpt-4o-mini
+
+    ollama:
+      base_url: http://localhost:11434
+      model: llama3.2
+```
+
+### Environment Variables
+
+```bash
+export GROQ_API_KEY="gsk_..."
+export OPENAI_API_KEY="sk-..."
+export ANTHROPIC_API_KEY="sk-ant-..."
+export GOOGLE_API_KEY="..."
+export MISTRAL_API_KEY="..."
+export TOGETHER_API_KEY="..."
 ```
 
 ---
 
-## Fallback Strategy
+## Rate Limits
 
-```python
-# Automatic fallback on failure
-llm_manager = LLMManager(config)
-llm_manager.set_fallback_chain(["openai", "anthropic", "groq"])
+| Provider | Requests/min | Tokens/min | Free Tier |
+|----------|--------------|------------|-----------|
+| Groq | 30 | 6,000 | Yes |
+| OpenAI (Tier 1) | 500 | 30,000 | No |
+| Anthropic | 1,000 | 80,000 | No |
+| Gemini | 60 | 1,000,000 | Yes |
+| Mistral | 100 | 500,000 | Yes |
 
-# Will try openai first, then anthropic, then groq
-response = await llm_manager.generate(prompt)
-```
+The provider manager includes built-in rate limiting and automatic retry with backoff.
 
 ---
 
-## Rate Limiting
+## Related Documentation
 
-Each provider has different rate limits:
-
-| Provider | Requests/min | Tokens/min |
-|----------|--------------|------------|
-| OpenAI (Tier 1) | 500 | 30,000 |
-| OpenAI (Tier 4) | 10,000 | 800,000 |
-| Anthropic | 1,000 | 80,000 |
-| Groq | 30 | 6,000 |
-| Gemini | 60 | 1,000,000 |
-
-V2 includes built-in rate limiting to respect these limits.
+- [Cloud Providers](./CLOUD_PROVIDERS.md) - OpenAI, Anthropic, Google details
+- [Inference Providers](./INFERENCE_PROVIDERS.md) - Groq, Together, Fireworks details
+- [Local Providers](./LOCAL_PROVIDERS.md) - Ollama, vLLM, llama.cpp details
+- [Provider Manager](../api/REFERENCE.md) - Manager API reference
