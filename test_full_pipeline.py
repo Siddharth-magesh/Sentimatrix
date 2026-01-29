@@ -243,7 +243,7 @@ async def test_full_sentimatrix_pipeline(groq_api_key: str):
 async def main():
     """Run all tests."""
     # Groq API key from user
-    groq_api_key = "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"
+    groq_api_key = "your_groq_api_key_here"  # Replace with your actual Groq API key
 
     print("\n" + "#" * 60)
     print("#  SENTIMATRIX - FULL PIPELINE DEMONSTRATION")
