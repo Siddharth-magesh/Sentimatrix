@@ -448,6 +448,99 @@ asyncio.run(main())
 
 ---
 
+## Command Line Interface (CLI)
+
+Sentimatrix includes a powerful CLI for quick analysis without writing code.
+
+### Installation
+
+After installing Sentimatrix, the `sentimatrix` command is available:
+
+```bash
+pip install sentimatrix
+sentimatrix --help
+```
+
+### Quick Sentiment Analysis
+
+```bash
+# Analyze a single text
+sentimatrix analyze "I love this product!"
+
+# Analyze with emotion detection
+sentimatrix analyze "I'm so frustrated!" --emotions
+
+# Output as JSON
+sentimatrix analyze "Great experience!" --json
+
+# Save to file
+sentimatrix analyze "Amazing!" -o result.json
+```
+
+### Batch Analysis from File
+
+```bash
+# Analyze texts from a file (one per line)
+sentimatrix analyze-file reviews.txt
+
+# Analyze from CSV/JSON
+sentimatrix analyze-file data.csv -o results.json
+
+# Include emotions
+sentimatrix analyze-file reviews.txt --emotions -o results.csv
+```
+
+### Web Scraping
+
+```bash
+# Scrape Amazon product reviews
+sentimatrix scrape amazon B08N5WRWNW --limit 100
+
+# Scrape and analyze Steam game reviews
+sentimatrix scrape steam 730 --limit 50 --analyze
+
+# Scrape YouTube comments
+sentimatrix scrape youtube dQw4w9WgXcQ --limit 100 -o comments.json
+
+# Scrape Reddit post comments
+sentimatrix scrape reddit abc123 --limit 50 --analyze
+```
+
+### Batch CSV Processing
+
+```bash
+# Process CSV with text column and add sentiment
+sentimatrix batch input.csv -o output.csv
+
+# Include emotion detection
+sentimatrix batch reviews.csv -o analyzed.csv --emotions
+```
+
+### System Information
+
+```bash
+# Show version and system info
+sentimatrix info
+
+# Output as JSON
+sentimatrix info --json
+```
+
+### CLI Examples
+
+```bash
+# Full workflow: scrape Amazon and analyze
+sentimatrix scrape amazon B08N5WRWNW --limit 100 --analyze -o amazon_analysis.json
+
+# Analyze customer feedback file
+sentimatrix analyze-file customer_feedback.txt --emotions -o sentiment_report.json
+
+# Quick sentiment check
+sentimatrix analyze "This is the best purchase I've ever made!" --json
+```
+
+---
+
 ## Next Steps
 
 - [Configuration Reference](./CONFIGURATION.md)

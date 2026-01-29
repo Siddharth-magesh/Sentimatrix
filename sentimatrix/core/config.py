@@ -44,18 +44,38 @@ class CacheBackend(str, Enum):
 class LLMProvider(str, Enum):
     """Supported LLM providers."""
 
+    # Core Providers
     OPENAI = "openai"
     ANTHROPIC = "anthropic"
-    GROQ = "groq"
     GEMINI = "gemini"
+
+    # Cloud Enterprise
+    AZURE_OPENAI = "azure_openai"
+    BEDROCK = "bedrock"
+
+    # Fast Inference
+    GROQ = "groq"
+    CEREBRAS = "cerebras"
+    FIREWORKS = "fireworks"
+    TOGETHER = "together"
+
+    # Router/Gateway
+    OPENROUTER = "openrouter"
+
+    # Specialized
     MISTRAL = "mistral"
     COHERE = "cohere"
-    TOGETHER = "together"
-    FIREWORKS = "fireworks"
-    CEREBRAS = "cerebras"
     DEEPSEEK = "deepseek"
+
+    # Local Inference
     OLLAMA = "ollama"
+    LMSTUDIO = "lmstudio"
     VLLM = "vllm"
+    LLAMACPP = "llamacpp"
+    TEXTGEN = "textgen"
+    EXLLAMAV2 = "exllamav2"
+
+    # Legacy
     HUGGINGFACE = "huggingface"
 
 

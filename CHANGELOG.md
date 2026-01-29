@@ -9,6 +9,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Stage 13: CLI Interface (2026-01-29)
+
+- **Command Line Interface** (`sentimatrix/cli.py`)
+  - Full-featured CLI for Sentimatrix operations
+  - Commands:
+    - `analyze` - Analyze sentiment of a single text
+    - `analyze-file` - Batch analyze texts from file (txt, csv, json)
+    - `scrape` - Scrape reviews from platforms (Amazon, Steam, YouTube, Reddit)
+    - `batch` - Process CSV files with sentiment analysis
+    - `info` - Display system information and dependencies
+  - Features:
+    - Rich terminal output with tables and progress bars (optional)
+    - JSON and CSV output formats
+    - Emotion detection support
+    - Platform-specific scraping with rate limiting
+  - 28 unit tests
+
+- **CI/CD Workflows** (`.github/workflows/`)
+  - `ci.yml` - Comprehensive CI pipeline
+    - Lint & format (ruff, black, isort, mypy)
+    - Unit tests (Python 3.10-3.12 matrix)
+    - Integration tests with Redis
+    - E2E tests
+    - Security scan (bandit, safety)
+    - Package build
+    - Codecov integration
+    - PyPI release automation
+  - `release.yml` - Manual release workflow
+    - Version validation
+    - Full test suite
+    - Version bump automation
+    - GitHub release creation
+    - PyPI/TestPyPI publishing
+
+---
+
 #### Stage 12: Documentation & CI/CD (2026-01-28)
 
 - **API Reference Documentation** (`docs/api/README.md`)

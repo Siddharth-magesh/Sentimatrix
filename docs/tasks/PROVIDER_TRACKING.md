@@ -31,8 +31,8 @@
 | OpenAI | P0 | **Working** | [x] | [x] | [x] | GPT-4o, GPT-4o-mini, o1, streaming, functions, embeddings |
 | Anthropic | P0 | **Working** | [x] | [x] | [x] | Claude 3.5 Sonnet, Claude 3, 200K context, vision |
 | Google Gemini | P0 | **Working** | [x] | [x] | [x] | Gemini 2.0/1.5 Pro/Flash, 2M context, vision |
-| Azure OpenAI | P1 | Planned | [ ] | [ ] | [ ] | Enterprise OpenAI |
-| Amazon Bedrock | P1 | Planned | [ ] | [ ] | [ ] | Multi-model access |
+| Azure OpenAI | P1 | **Working** | [x] | [x] | [x] | Enterprise OpenAI via Microsoft Azure |
+| Amazon Bedrock | P1 | **Working** | [x] | [x] | [x] | Multi-model: Claude, Llama, Titan, Mistral, Cohere |
 | Google Vertex AI | P2 | Planned | [ ] | [ ] | [ ] | Enterprise Gemini |
 
 ---
@@ -42,9 +42,9 @@
 | Provider | Priority | Status | Implemented | Tested | Working | Notes |
 |----------|----------|--------|-------------|--------|---------|-------|
 | Groq | P0 | **Working** | [x] | [x] | [x] | LPU, 750 tok/s, LLaMA 3.3, Mixtral, Whisper |
-| Cerebras | P1 | Planned | [ ] | [ ] | [ ] | WSE, 1800 tok/s |
+| Cerebras | P1 | **Working** | [x] | [x] | [x] | WSE, 1800 tok/s (8B), 450 tok/s (70B) |
+| Fireworks AI | P1 | **Working** | [x] | [x] | [x] | FireAttention, Llama 3, Mixtral, embeddings |
 | SambaNova | P2 | Planned | [ ] | [ ] | [ ] | RDU, 405B support |
-| Fireworks AI | P1 | Planned | [ ] | [ ] | [ ] | FireAttention |
 
 ---
 
@@ -52,7 +52,7 @@
 
 | Provider | Priority | Status | Implemented | Tested | Working | Notes |
 |----------|----------|--------|-------------|--------|---------|-------|
-| Together AI | P1 | Planned | [ ] | [ ] | [ ] | 200+ models |
+| Together AI | P1 | **Working** | [x] | [x] | [x] | 200+ models, Llama, Mixtral, Qwen, embeddings |
 | Hugging Face | P1 | Planned | [ ] | [ ] | [ ] | Inference API |
 | Replicate | P2 | Planned | [ ] | [ ] | [ ] | Per-second billing |
 | Deep Infra | P2 | Planned | [ ] | [ ] | [ ] | OSS models |
@@ -66,11 +66,12 @@
 | Provider | Priority | Status | Implemented | Tested | Working | Notes |
 |----------|----------|--------|-------------|--------|---------|-------|
 | Ollama | P0 | **Working** | [x] | [x] | [x] | No API key, streaming, embeddings, model management |
-| Ollama Cloud | P2 | Planned | [ ] | [ ] | [ ] | Hosted Ollama |
-| LM Studio | P1 | Planned | [ ] | [ ] | [ ] | Desktop GUI |
-| vLLM | P1 | Planned | [ ] | [ ] | [ ] | Production server |
-| llama.cpp | P2 | Planned | [ ] | [ ] | [ ] | CPU inference |
-| Llama | P2 | Planned | [ ] | [ ] | [ ] | Meta's models |
+| LM Studio | P1 | **Working** | [x] | [x] | [x] | GGUF models, local server, no API key |
+| vLLM | P1 | **Working** | [x] | [x] | [x] | PagedAttention, high-throughput serving |
+| llama.cpp | P2 | **Working** | [x] | [x] | [x] | CPU/GPU GGUF inference, grammar, tokenization |
+| text-gen-webui | P2 | **Working** | [x] | [x] | [x] | Multi-backend GUI, character chat, extensions |
+| ExLlamaV2 | P2 | **Working** | [x] | [x] | [x] | GPTQ/EXL2 quantized, LoRA support, TabbyAPI |
+| Ollama Cloud | P3 | Planned | [ ] | [ ] | [ ] | Hosted Ollama |
 
 ---
 
@@ -78,7 +79,7 @@
 
 | Provider | Priority | Status | Implemented | Tested | Working | Notes |
 |----------|----------|--------|-------------|--------|---------|-------|
-| Mistral | P0 | Planned | [ ] | [ ] | [ ] | EU-based |
+| Mistral | P0 | **Working** | [x] | [x] | [x] | EU-based, mistral-large, pixtral, codestral, embeddings |
 | OVHcloud AI | P3 | Planned | [ ] | [ ] | [ ] | EU infrastructure |
 | Scaleway | P3 | Planned | [ ] | [ ] | [ ] | EU cloud |
 | Aleph Alpha | P3 | Planned | [ ] | [ ] | [ ] | German AI |
@@ -89,7 +90,7 @@
 
 | Provider | Priority | Status | Implemented | Tested | Working | Notes |
 |----------|----------|--------|-------------|--------|---------|-------|
-| DeepSeek | P1 | Planned | [ ] | [ ] | [ ] | V3, R1 reasoning |
+| DeepSeek | P1 | **Working** | [x] | [x] | [x] | V3 chat, coder, R1 reasoning |
 | Alibaba Qwen | P2 | Planned | [ ] | [ ] | [ ] | Qwen series |
 | Moonshot AI | P2 | Planned | [ ] | [ ] | [ ] | Kimi |
 | Zhipu AI | P2 | Planned | [ ] | [ ] | [ ] | GLM series |
@@ -107,7 +108,7 @@
 
 | Provider | Priority | Status | Implemented | Tested | Working | Notes |
 |----------|----------|--------|-------------|--------|---------|-------|
-| Cohere | P1 | Planned | [ ] | [ ] | [ ] | RAG, embeddings |
+| Cohere | P1 | **Working** | [x] | [x] | [x] | RAG, embeddings, reranking, Command R+ |
 | Perplexity | P2 | Planned | [ ] | [ ] | [ ] | Search + LLM |
 | xAI (Grok) | P2 | Planned | [ ] | [ ] | [ ] | Elon's AI |
 | Upstage | P2 | Planned | [ ] | [ ] | [ ] | Solar models |
@@ -119,7 +120,7 @@
 
 | Provider | Priority | Status | Implemented | Tested | Working | Notes |
 |----------|----------|--------|-------------|--------|---------|-------|
-| OpenRouter | P1 | Planned | [ ] | [ ] | [ ] | Multi-provider router |
+| OpenRouter | P1 | **Working** | [x] | [x] | [x] | 200+ models, unified API, cost tracking |
 | Vercel AI Gateway | P2 | Planned | [ ] | [ ] | [ ] | Edge AI |
 | Cloudflare Workers AI | P2 | Planned | [ ] | [ ] | [ ] | Edge inference |
 | Cloudflare AI Gateway | P2 | Planned | [ ] | [ ] | [ ] | AI proxy |
@@ -180,17 +181,17 @@
 
 | Category | Total | P0 | P1 | P2 | P3 | Implemented | Working |
 |----------|-------|----|----|----|----|-------------|---------|
-| Major Cloud | 6 | 3 | 2 | 1 | 0 | 3 | 3 |
-| Fast Inference | 4 | 1 | 2 | 1 | 0 | 1 | 1 |
-| Open Source | 6 | 0 | 2 | 3 | 1 | 0 | 0 |
-| Local | 6 | 1 | 2 | 3 | 0 | 1 | 1 |
-| European | 4 | 1 | 0 | 0 | 3 | 0 | 0 |
-| Chinese | 11 | 0 | 1 | 4 | 6 | 0 | 0 |
-| Specialized | 5 | 0 | 1 | 4 | 0 | 0 | 0 |
-| Router/Gateway | 7 | 0 | 1 | 2 | 4 | 0 | 0 |
+| Major Cloud | 6 | 3 | 2 | 1 | 0 | 5 | 5 |
+| Fast Inference | 4 | 1 | 2 | 1 | 0 | 3 | 3 |
+| Open Source | 6 | 0 | 2 | 3 | 1 | 1 | 1 |
+| Local | 7 | 1 | 2 | 3 | 1 | 6 | 6 |
+| European | 4 | 1 | 0 | 0 | 3 | 1 | 1 |
+| Chinese | 11 | 0 | 1 | 4 | 6 | 1 | 1 |
+| Specialized | 5 | 0 | 1 | 4 | 0 | 1 | 1 |
+| Router/Gateway | 7 | 0 | 1 | 2 | 4 | 1 | 1 |
 | Enterprise | 6 | 0 | 0 | 2 | 4 | 0 | 0 |
 | Other | 30+ | 0 | 0 | 0 | 30+ | 0 | 0 |
-| **Total** | **85+** | **6** | **11** | **20** | **48+** | **5** | **5** |
+| **Total** | **86+** | **6** | **11** | **20** | **49+** | **19** | **19** |
 
 ### Provider Manager
 
@@ -205,12 +206,40 @@
 
 ## Implementation Order
 
-1. **Phase 1 (P0):** ✅ OpenAI, ✅ Anthropic, ✅ Google Gemini, ✅ Groq, ✅ Ollama, Mistral
-2. **Phase 2 (P1):** Azure, Bedrock, Cerebras, Fireworks, Together, Cohere, OpenRouter, HuggingFace, LM Studio, vLLM, DeepSeek
-3. **Phase 3 (P2):** Remaining P2 providers
+1. **Phase 1 (P0):** ✅ OpenAI, ✅ Anthropic, ✅ Google Gemini, ✅ Groq, ✅ Ollama, ✅ Mistral
+2. **Phase 2 (P1):** ✅ Azure, ✅ Bedrock, ✅ Cerebras, ✅ Fireworks, ✅ Together, ✅ Cohere, ✅ OpenRouter, HuggingFace, ✅ LM Studio, ✅ vLLM, ✅ DeepSeek
+3. **Phase 3 (P2):** ✅ llama.cpp, ✅ text-gen-webui, ✅ ExLlamaV2, Remaining P2 providers
 4. **Phase 4 (P3):** As needed/requested
 
-**Phase 1 Progress:** 5/6 complete (83%)
+**Phase 1 Progress:** 6/6 complete (100%)
+**Phase 2 Progress:** 10/11 complete (91%)
+**Phase 3 Progress:** 3/X started (Local inference complete)
+
+---
+
+## Provider Files
+
+| Provider | File |
+|----------|------|
+| OpenAI | `sentimatrix/providers/llm/openai_provider.py` |
+| Anthropic | `sentimatrix/providers/llm/anthropic_provider.py` |
+| Google Gemini | `sentimatrix/providers/llm/gemini_provider.py` |
+| Groq | `sentimatrix/providers/llm/groq_provider.py` |
+| Ollama | `sentimatrix/providers/llm/ollama_provider.py` |
+| Azure OpenAI | `sentimatrix/providers/llm/azure_openai_provider.py` |
+| Amazon Bedrock | `sentimatrix/providers/llm/bedrock_provider.py` |
+| Mistral | `sentimatrix/providers/llm/mistral_provider.py` |
+| Cerebras | `sentimatrix/providers/llm/cerebras_provider.py` |
+| Fireworks AI | `sentimatrix/providers/llm/fireworks_provider.py` |
+| Together AI | `sentimatrix/providers/llm/together_provider.py` |
+| OpenRouter | `sentimatrix/providers/llm/openrouter_provider.py` |
+| Cohere | `sentimatrix/providers/llm/cohere_provider.py` |
+| LM Studio | `sentimatrix/providers/llm/lmstudio_provider.py` |
+| vLLM | `sentimatrix/providers/llm/vllm_provider.py` |
+| DeepSeek | `sentimatrix/providers/llm/deepseek_provider.py` |
+| llama.cpp | `sentimatrix/providers/llm/llamacpp_provider.py` |
+| text-gen-webui | `sentimatrix/providers/llm/textgen_provider.py` |
+| ExLlamaV2 | `sentimatrix/providers/llm/exllamav2_provider.py` |
 
 ---
 

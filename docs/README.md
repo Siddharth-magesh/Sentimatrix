@@ -42,6 +42,7 @@ docs/
 │   └── CI_CD.md                # CI/CD pipeline
 ├── usage/                       # User guides
 │   ├── QUICKSTART.md           # Quick start guide
+│   ├── CLI.md                  # CLI reference
 │   └── CONFIGURATION.md        # Configuration reference
 ├── api/                         # API documentation
 │   └── REFERENCE.md            # API reference
