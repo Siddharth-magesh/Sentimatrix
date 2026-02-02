@@ -15,7 +15,7 @@ hide:
   <a href="getting-started/quickstart/" class="action-button primary">
     Get Started
   </a>
-  <a href="https://github.com/sentimatrix/sentimatrix" class="action-button secondary">
+  <a href="https://github.com/Siddharth-magesh/Sentimatrix" class="action-button secondary">
     View on GitHub
   </a>
 </div>
