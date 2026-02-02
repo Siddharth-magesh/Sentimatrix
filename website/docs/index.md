@@ -22,20 +22,20 @@ hide:
 
 <div class="stats">
   <div class="stat">
-    <div class="stat-number" data-suffix="+">19</div>
+    <div class="stat-number">21</div>
     <div class="stat-label">LLM Providers</div>
   </div>
   <div class="stat">
-    <div class="stat-number" data-suffix="+">8</div>
+    <div class="stat-number">9</div>
     <div class="stat-label">Platform Scrapers</div>
   </div>
   <div class="stat">
-    <div class="stat-number">7</div>
+    <div class="stat-number">8</div>
     <div class="stat-label">Commercial APIs</div>
   </div>
   <div class="stat">
-    <div class="stat-number" data-suffix="+">280</div>
-    <div class="stat-label">Tests</div>
+    <div class="stat-number" data-suffix="+">1100</div>
+    <div class="stat-label">Tests (91% Coverage)</div>
   </div>
 </div>
 
@@ -89,8 +89,8 @@ asyncio.run(main())
 </div>
 
 <div class="card">
-<h3>:material-api: 19 LLM Providers</h3>
-<p>Seamless integration with OpenAI, Anthropic, Google, Groq, Mistral, Cohere, Together, Fireworks, Ollama, vLLM, and more.</p>
+<h3>:material-api: 21 LLM Providers</h3>
+<p>Seamless integration with OpenAI, Anthropic, Google, Groq, Mistral, Cohere, Together, Fireworks, Ollama, vLLM, AWS Bedrock, and more.</p>
 </div>
 
 <div class="card">
@@ -99,8 +99,8 @@ asyncio.run(main())
 </div>
 
 <div class="card">
-<h3>:material-cloud: Commercial APIs</h3>
-<p>Integration with ScraperAPI, Apify, Bright Data, Oxylabs, Zyte, ScrapingBee, and ScrapingAnt for enterprise-scale scraping.</p>
+<h3>:material-cloud: 8 Commercial APIs</h3>
+<p>Integration with ScraperAPI, Apify, Bright Data, Oxylabs, Zyte, ScrapingBee, ScrapingAnt, and Firecrawl for enterprise-scale scraping.</p>
 </div>
 
 <div class="card">
@@ -119,36 +119,43 @@ Sentimatrix supports a wide range of LLM providers for enhanced analysis:
 <div class="grid">
 
 <div class="card">
-<h3>Cloud Providers</h3>
+<h3>Core Providers</h3>
 <p>
 <span class="provider-badge cloud">OpenAI</span>
 <span class="provider-badge cloud">Anthropic</span>
-<span class="provider-badge cloud">Google</span>
+<span class="provider-badge cloud">Google Gemini</span>
+</p>
+</div>
+
+<div class="card">
+<h3>Specialized</h3>
+<p>
 <span class="provider-badge cloud">Mistral</span>
 <span class="provider-badge cloud">Cohere</span>
-<span class="provider-badge cloud">Groq</span>
+<span class="provider-badge cloud">DeepSeek</span>
+<span class="provider-badge cloud">OpenRouter</span>
 </p>
 </div>
 
 <div class="card">
-<h3>Inference Providers</h3>
+<h3>Fast Inference</h3>
 <p>
-<span class="provider-badge inference">Together</span>
-<span class="provider-badge inference">Fireworks</span>
-<span class="provider-badge inference">OpenRouter</span>
+<span class="provider-badge inference">Groq</span>
 <span class="provider-badge inference">Cerebras</span>
-<span class="provider-badge inference">DeepSeek</span>
+<span class="provider-badge inference">Fireworks</span>
+<span class="provider-badge inference">Together</span>
 </p>
 </div>
 
 <div class="card">
-<h3>Local Providers</h3>
+<h3>Local Inference</h3>
 <p>
 <span class="provider-badge local">Ollama</span>
 <span class="provider-badge local">LM Studio</span>
 <span class="provider-badge local">vLLM</span>
 <span class="provider-badge local">llama.cpp</span>
 <span class="provider-badge local">ExLlamaV2</span>
+<span class="provider-badge local">Text-Gen-WebUI</span>
 </p>
 </div>
 
@@ -282,7 +289,7 @@ asyncio.run(main())
 
 <div class="card">
 <h3>:material-test-tube: Well Tested</h3>
-<p>280+ tests covering unit, integration, and end-to-end scenarios with comprehensive mocking.</p>
+<p>1100+ tests with 91% coverage including unit, integration, and end-to-end scenarios.</p>
 </div>
 
 </div>
@@ -292,8 +299,8 @@ asyncio.run(main())
 ## Getting Help
 
 - **Documentation**: You're here! Explore the sidebar for detailed guides.
-- **GitHub Issues**: [Report bugs or request features](https://github.com/sentimatrix/sentimatrix/issues)
-- **Discussions**: [Ask questions and share ideas](https://github.com/sentimatrix/sentimatrix/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/Siddharth-magesh/Sentimatrix/issues)
+- **Discussions**: [Ask questions and share ideas](https://github.com/Siddharth-magesh/Sentimatrix/discussions)
 
 ---
 

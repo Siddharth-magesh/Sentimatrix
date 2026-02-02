@@ -1,11 +1,11 @@
 ---
 title: LLM Providers
-description: Configure and use 19 different LLM providers with Sentimatrix
+description: Configure and use 21 different LLM providers with Sentimatrix
 ---
 
 # LLM Providers
 
-Sentimatrix supports **19 LLM providers** for enhanced sentiment analysis, summarization, and insight generation.
+Sentimatrix supports **21 LLM providers** for enhanced sentiment analysis, summarization, and insight generation. All providers are fully implemented with streaming, fallback chains, and health monitoring.
 
 ## Provider Categories
 
@@ -26,7 +26,7 @@ Sentimatrix supports **19 LLM providers** for enhanced sentiment analysis, summa
 <div class="card">
 <h3>:material-desktop-tower: Local Providers</h3>
 <p>Run models locally for privacy and cost savings.</p>
-<p>Ollama, LM Studio, vLLM, llama.cpp, ExLlamaV2</p>
+<p>Ollama, LM Studio, vLLM, llama.cpp, ExLlamaV2, Text-Gen-WebUI</p>
 </div>
 
 <div class="card">
@@ -101,6 +101,7 @@ config = SentimatrixConfig(
 | vLLM | :material-check: | :material-close: | :material-check: | :material-close: | :material-close: |
 | llama.cpp | :material-check: | :material-close: | :material-check: | :material-close: | :material-close: |
 | ExLlamaV2 | :material-check: | :material-close: | :material-close: | :material-close: | :material-close: |
+| Text-Gen-WebUI | :material-check: | :material-close: | :material-check: | :material-close: | :material-close: |
 | Azure OpenAI | :material-check: | :material-check: | :material-check: | :material-check: | :material-check: |
 | AWS Bedrock | :material-check: | :material-check: | :material-check: | :material-close: | :material-check: |
 
@@ -228,8 +229,19 @@ Detailed documentation for each provider:
 - [vLLM](vllm.md) - Production server
 - [llama.cpp](llamacpp.md) - Portable inference
 - [ExLlamaV2](exllamav2.md) - Quantized models
+- [Text-Gen-WebUI](textgen.md) - Web-based UI
 
 ### Enterprise
 
 - [Azure OpenAI](azure.md) - Microsoft Azure
 - [AWS Bedrock](bedrock.md) - Amazon Web Services
+
+## Provider Manager Features
+
+Sentimatrix includes a sophisticated provider manager with:
+
+- **Fallback Chains**: Automatically switch to backup providers on failure
+- **Health Monitoring**: Track provider availability and response times
+- **Rate Limit Handling**: Automatic backoff and retry on rate limits
+- **Load Balancing**: Distribute requests across multiple providers
+- **Lazy Loading**: Providers initialized only when needed

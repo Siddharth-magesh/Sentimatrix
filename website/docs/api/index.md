@@ -351,12 +351,18 @@ class Review:
     """Platform-specific metadata."""
 ```
 
-### Insights
+### InsightsResult
 
 ```python
 @dataclass
-class Insights:
+class InsightsResult:
     """LLM-generated insights."""
+
+    summary: str
+    """Brief overview."""
+
+    key_points: list[str]
+    """Main takeaways."""
 
     pros: list[str]
     """List of positive aspects."""
@@ -367,26 +373,202 @@ class Insights:
     themes: list[str]
     """Common themes mentioned."""
 
-    recommendation: str
-    """Overall recommendation."""
+    recommendations: list[str]
+    """Actionable suggestions."""
 
-    summary: str | None = None
-    """Brief summary."""
+    raw_response: str
+    """Full LLM response."""
+```
+
+### LLMResponse
+
+```python
+@dataclass
+class LLMResponse:
+    """Response from LLM provider."""
+
+    content: str
+    """Generated text content."""
+
+    model: str
+    """Model used for generation."""
+
+    provider: str
+    """Provider name."""
+
+    usage: TokenUsage
+    """Token usage statistics."""
+
+    finish_reason: str
+    """Why generation stopped."""
+
+    response_time_ms: float
+    """Response time in milliseconds."""
+
+    raw_response: Optional[dict]
+    """Raw API response."""
+
+    tool_calls: Optional[list]
+    """Function/tool calls if any."""
+```
+
+### TokenUsage
+
+```python
+@dataclass
+class TokenUsage:
+    """Token usage for LLM request."""
+
+    prompt_tokens: int
+    """Tokens in prompt."""
+
+    completion_tokens: int
+    """Tokens in response."""
+
+    total_tokens: int
+    """Total tokens used."""
+```
+
+### ReviewAnalysisResult
+
+```python
+@dataclass
+class ReviewAnalysisResult:
+    """Aggregated analysis of multiple reviews."""
+
+    reviews: list[AnalysisResult]
+    """Individual review results."""
+
+    sentiment_summary: Optional[dict]
+    """Aggregated sentiment stats."""
+
+    emotion_summary: Optional[dict]
+    """Aggregated emotion stats."""
+
+    total_count: int
+    """Number of reviews analyzed."""
+
+    @property
+    def positive_ratio(self) -> float:
+        """Ratio of positive reviews."""
+
+    @property
+    def negative_ratio(self) -> float:
+        """Ratio of negative reviews."""
+
+    @property
+    def average_polarity(self) -> float:
+        """Average polarity score (-1 to 1)."""
+```
+
+### ComparisonResult
+
+```python
+@dataclass
+class ComparisonResult:
+    """Product/service comparison result."""
+
+    product_a_id: str
+    """First product identifier."""
+
+    product_b_id: str
+    """Second product identifier."""
+
+    analysis_a: ReviewAnalysisResult
+    """Analysis of first product."""
+
+    analysis_b: ReviewAnalysisResult
+    """Analysis of second product."""
+
+    comparison_summary: str
+    """LLM-generated comparison."""
+
+    winner: Optional[str]
+    """Recommended product (if clear winner)."""
 ```
 
 ## Exceptions
 
+Sentimatrix provides a comprehensive exception hierarchy with 30+ exception types and 50+ error codes:
+
 ```python
 from sentimatrix.exceptions import (
-    SentimatrixError,      # Base exception
-    ConfigurationError,     # Invalid configuration
-    ProviderError,          # LLM provider error
-    ScraperError,           # Scraping error
-    RateLimitError,         # Rate limit exceeded
-    BlockedError,           # IP/access blocked
-    ParseError,             # Failed to parse response
-    TimeoutError,           # Operation timed out
+    # Base
+    SentimatrixError,           # Base exception
+
+    # Configuration
+    ConfigurationError,         # Invalid configuration
+    ConfigNotFoundError,        # Config file not found
+
+    # Validation
+    ValidationError,            # Validation failed
+    InvalidInputError,          # Invalid input data
+
+    # Provider errors
+    ProviderError,              # Base provider error
+    ProviderNotFoundError,      # Provider not registered
+
+    # LLM errors
+    LLMProviderError,           # LLM provider error
+    AuthenticationError,        # Invalid API key
+    TokenLimitExceededError,    # Context too long
+    QuotaExceededError,         # API quota exceeded
+
+    # Scraper errors
+    ScraperError,               # Base scraper error
+    ScraperBlockedError,        # IP/access blocked
+    CaptchaDetectedError,       # CAPTCHA encountered
+    RateLimitError,             # Rate limit exceeded
+
+    # Model errors
+    ModelError,                 # Base model error
+    ModelLoadError,             # Failed to load model
+    ModelInferenceError,        # Inference failed
+
+    # Cache errors
+    CacheError,                 # Cache operation failed
+    CacheReadError,             # Read from cache failed
+    CacheWriteError,            # Write to cache failed
+
+    # Pipeline errors
+    PipelineError,              # Pipeline execution failed
+    PipelineStepError,          # Step failed
 )
+```
+
+### Error Codes
+
+Error codes are standardized for programmatic handling:
+
+```python
+from sentimatrix.exceptions import ErrorCode
+
+# Configuration errors: 1000-1099
+ErrorCode.CONFIG_NOT_FOUND      # 1001
+ErrorCode.CONFIG_INVALID        # 1002
+
+# Validation errors: 1100-1199
+ErrorCode.VALIDATION_ERROR      # 1100
+ErrorCode.INVALID_INPUT         # 1101
+
+# Provider errors: 1200-1299
+ErrorCode.PROVIDER_NOT_FOUND    # 1200
+ErrorCode.PROVIDER_ERROR        # 1201
+
+# LLM errors: 1300-1399
+ErrorCode.LLM_ERROR             # 1300
+ErrorCode.AUTHENTICATION_ERROR  # 1301
+ErrorCode.TOKEN_LIMIT_EXCEEDED  # 1302
+ErrorCode.RATE_LIMIT_EXCEEDED   # 1303
+
+# Scraper errors: 1400-1499
+ErrorCode.SCRAPER_ERROR         # 1400
+ErrorCode.BLOCKED_ERROR         # 1401
+ErrorCode.CAPTCHA_DETECTED      # 1402
+
+# Model errors: 1500-1599
+ErrorCode.MODEL_ERROR           # 1500
+ErrorCode.MODEL_LOAD_ERROR      # 1501
 ```
 
 ## Usage Patterns

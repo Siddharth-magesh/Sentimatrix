@@ -234,14 +234,26 @@ async with Sentimatrix(config) as sm:
     result = await sm.analyze("Bonjour le monde")
 ```
 
-### Available Models
+### Available Models (7 Implemented)
 
-| Model | Languages | Classes | Accuracy |
+| Model | Languages | Classes | Best For |
 |-------|-----------|---------|----------|
-| `twitter-roberta-base-sentiment` | English | 3 | 94.8% |
-| `bert-base-multilingual-sentiment` | 100+ | 5 | 89.2% |
-| `distilbert-base-sentiment` | English | 2 | 91.3% |
-| `xlm-roberta-sentiment` | 100+ | 3 | 92.1% |
+| `cardiffnlp/twitter-roberta-base-sentiment-latest` | English | 3 | Default, general use |
+| `cardiffnlp/twitter-roberta-base-sentiment` | English | 3 | Social media |
+| `nlptown/bert-base-multilingual-uncased-sentiment` | 100+ | 5 | Multi-language |
+| `distilbert-base-uncased-finetuned-sst-2-english` | English | 2 | Fast binary |
+| `finiteautomata/bertweet-base-sentiment-analysis` | English | 3 | Twitter/social |
+| `siebert/sentiment-roberta-large-english` | English | 2 | High accuracy |
+| `lxyuan/distilbert-base-multilingual-cased-sentiments-student` | 100+ | 3 | Fast multi-language |
+
+### Domain-Specific Models (4 Implemented)
+
+| Model | Domain | Use Case |
+|-------|--------|----------|
+| `ProsusAI/finbert` | Financial | Stock news, earnings |
+| `yiyanghkust/finbert-tone` | Financial | Sentiment tone |
+| `nlpaueb/legal-bert-base-uncased` | Legal | Legal documents |
+| `allenai/scibert_scivocab_uncased` | Scientific | Research papers |
 
 ## Performance Tips
 

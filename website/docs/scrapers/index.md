@@ -198,6 +198,53 @@ async with Sentimatrix() as sm:
         print(f"Scraping failed: {e}")
 ```
 
+## Scraping Infrastructure
+
+Sentimatrix includes a robust scraping infrastructure with:
+
+### Rate Limiting
+
+Built-in token bucket rate limiter with configurable strategies:
+
+```python
+from sentimatrix.config import RateLimitConfig
+
+rate_limit = RateLimitConfig(
+    requests_per_second=2,      # Base rate
+    concurrent_requests=5,      # Max concurrent
+    backoff_factor=2.0,         # Exponential backoff
+)
+```
+
+### Retry Handler
+
+Automatic retry with exponential backoff:
+
+```python
+from sentimatrix.config import RetryConfig
+
+retry = RetryConfig(
+    max_retries=3,
+    initial_delay=1.0,
+    exponential_base=2.0,
+    jitter=True,  # Add randomness to prevent thundering herd
+)
+```
+
+### Proxy Support
+
+Rotate proxies to avoid blocks:
+
+```python
+from sentimatrix.config import ProxyConfig
+
+proxy = ProxyConfig(
+    enabled=True,
+    rotation=True,
+    country="us",
+)
+```
+
 ## Best Practices
 
 1. **Respect Rate Limits**
