@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sentimatrix"
-version = "0.2.1"
+version = "0.2.2"
 description = "Advanced sentiment analysis toolkit with multi-provider LLM support and web scraping capabilities"
 readme = "README.md"
 license = {text = "MIT"}
