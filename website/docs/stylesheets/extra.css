@@ -1,0 +1,435 @@
+/* Sentimatrix Documentation Custom Styles */
+
+:root {
+  --md-primary-fg-color: #6200ea;
+  --md-primary-fg-color--light: #7c4dff;
+  --md-primary-fg-color--dark: #4a148c;
+  --md-accent-fg-color: #ffc400;
+  --md-accent-fg-color--transparent: rgba(255, 196, 0, 0.1);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #b388ff;
+  --md-primary-fg-color--light: #e7b9ff;
+  --md-primary-fg-color--dark: #805acb;
+  --md-accent-fg-color: #ffd740;
+}
+
+/* Hero Section */
+.md-typeset .hero {
+  text-align: center;
+  padding: 2rem 0 3rem;
+}
+
+.md-typeset .hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.md-typeset .hero .tagline {
+  font-size: 1.4rem;
+  color: var(--md-typeset-color);
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+
+/* Feature Cards */
+.md-typeset .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.md-typeset .card {
+  background: var(--md-code-bg-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--md-typeset-table-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.md-typeset .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.md-typeset .card h3 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.md-typeset .card h3 .twemoji {
+  font-size: 1.4rem;
+}
+
+.md-typeset .card p {
+  margin-bottom: 0;
+  opacity: 0.85;
+}
+
+/* Provider Badges */
+.md-typeset .provider-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0.2rem;
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-typeset-table-color);
+}
+
+.md-typeset .provider-badge.cloud {
+  border-color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.md-typeset .provider-badge.inference {
+  border-color: #2196f3;
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.md-typeset .provider-badge.local {
+  border-color: #ff9800;
+  background: rgba(255, 152, 0, 0.1);
+}
+
+.md-typeset .provider-badge.enterprise {
+  border-color: #9c27b0;
+  background: rgba(156, 39, 176, 0.1);
+}
+
+/* Status Indicators */
+.md-typeset .status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.md-typeset .status.stable {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+}
+
+.md-typeset .status.beta {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ff9800;
+}
+
+.md-typeset .status.experimental {
+  background: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+}
+
+/* Stats Section */
+.md-typeset .stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.md-typeset .stat {
+  text-align: center;
+}
+
+.md-typeset .stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--md-primary-fg-color);
+  line-height: 1;
+}
+
+.md-typeset .stat-label {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+/* Quick Actions */
+.md-typeset .actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.md-typeset .action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.md-typeset .action-button.primary {
+  background: var(--md-primary-fg-color);
+  color: white;
+}
+
+.md-typeset .action-button.primary:hover {
+  background: var(--md-primary-fg-color--dark);
+  transform: translateY(-2px);
+}
+
+.md-typeset .action-button.secondary {
+  background: transparent;
+  color: var(--md-typeset-color);
+  border: 2px solid var(--md-typeset-table-color);
+}
+
+.md-typeset .action-button.secondary:hover {
+  border-color: var(--md-primary-fg-color);
+  color: var(--md-primary-fg-color);
+}
+
+/* Code Blocks Enhancement */
+.md-typeset pre > code {
+  border-radius: 8px;
+}
+
+.md-typeset .highlight .filename {
+  background: var(--md-primary-fg-color);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px 8px 0 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Tables */
+.md-typeset table:not([class]) {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--md-primary-fg-color);
+  color: white;
+  font-weight: 600;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+  background: var(--md-primary-fg-color--dark);
+}
+
+/* Comparison Table */
+.md-typeset .comparison-table {
+  overflow-x: auto;
+}
+
+.md-typeset .comparison-table table {
+  min-width: 100%;
+}
+
+.md-typeset .comparison-table .check {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.md-typeset .comparison-table .cross {
+  color: #f44336;
+}
+
+.md-typeset .comparison-table .partial {
+  color: #ff9800;
+}
+
+/* Terminal Styling */
+.md-typeset .terminal {
+  background: #1a1a2e;
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #a0a0a0;
+  overflow-x: auto;
+}
+
+.md-typeset .terminal .prompt {
+  color: #4caf50;
+}
+
+.md-typeset .terminal .command {
+  color: #e0e0e0;
+}
+
+.md-typeset .terminal .output {
+  color: #808080;
+}
+
+/* Version Badge */
+.md-typeset .version-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background: var(--md-primary-fg-color);
+  color: white;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+/* Installation Tabs */
+.md-typeset .tabbed-set {
+  margin: 1.5rem 0;
+}
+
+/* Admonition Enhancements */
+.md-typeset .admonition {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.md-typeset .admonition-title {
+  font-weight: 600;
+}
+
+/* Feature List */
+.md-typeset .feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.md-typeset .feature-list li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.md-typeset .feature-list li::before {
+  content: "check_circle";
+  font-family: "Material Icons";
+  position: absolute;
+  left: 0;
+  color: var(--md-primary-fg-color);
+}
+
+/* Provider Grid */
+.md-typeset .provider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.md-typeset .provider-card {
+  background: var(--md-code-bg-color);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid var(--md-typeset-table-color);
+  transition: all 0.2s ease;
+}
+
+.md-typeset .provider-card:hover {
+  border-color: var(--md-primary-fg-color);
+  transform: translateY(-2px);
+}
+
+.md-typeset .provider-card img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 0.5rem;
+}
+
+.md-typeset .provider-card h4 {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 1rem;
+}
+
+.md-typeset .provider-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Pricing Table */
+.md-typeset .pricing-table {
+  overflow-x: auto;
+}
+
+.md-typeset .pricing-table td:nth-child(3),
+.md-typeset .pricing-table td:nth-child(4) {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.md-typeset .pricing-table .free {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+/* Architecture Diagram */
+.md-typeset .architecture-diagram {
+  background: var(--md-code-bg-color);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .md-typeset .hero h1 {
+    font-size: 2rem;
+  }
+
+  .md-typeset .hero .tagline {
+    font-size: 1.1rem;
+  }
+
+  .md-typeset .stats {
+    gap: 1.5rem;
+  }
+
+  .md-typeset .stat-number {
+    font-size: 2rem;
+  }
+
+  .md-typeset .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .md-typeset .action-button {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .md-typeset .hero {
+    background: none !important;
+  }
+
+  .md-typeset .card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}

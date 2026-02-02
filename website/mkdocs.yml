@@ -1,0 +1,267 @@
+site_name: Sentimatrix
+site_url: https://sentimatrix.dev
+site_author: Sentimatrix Team
+site_description: Advanced sentiment analysis toolkit with multi-provider LLM support and web scraping capabilities
+
+repo_name: sentimatrix/sentimatrix
+repo_url: https://github.com/sentimatrix/sentimatrix
+edit_uri: edit/main/website/docs/
+
+copyright: Copyright &copy; 2024-2025 Sentimatrix Team
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/brain
+
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.tabs.link
+    - content.code.copy
+    - content.code.annotate
+    - content.action.edit
+    - content.action.view
+    - announce.dismiss
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  status:
+    new: Recently added
+    deprecated: Deprecated
+
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/sentimatrix/sentimatrix
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/sentimatrix/
+
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX
+
+  version:
+    provider: mike
+    default: stable
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
+
+nav:
+  - Home: index.md
+
+  - Getting Started:
+    - getting-started/index.md
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quickstart.md
+    - First Analysis: getting-started/first-analysis.md
+    - CLI Usage: getting-started/cli.md
+
+  - LLM Providers:
+    - providers/index.md
+    - Cloud Providers:
+      - OpenAI: providers/openai.md
+      - Anthropic: providers/anthropic.md
+      - Google Gemini: providers/gemini.md
+      - Mistral: providers/mistral.md
+      - Cohere: providers/cohere.md
+      - Groq: providers/groq.md
+    - Inference Providers:
+      - Together AI: providers/together.md
+      - Fireworks: providers/fireworks.md
+      - OpenRouter: providers/openrouter.md
+      - Cerebras: providers/cerebras.md
+      - DeepSeek: providers/deepseek.md
+    - Local Providers:
+      - Ollama: providers/ollama.md
+      - LM Studio: providers/lmstudio.md
+      - vLLM: providers/vllm.md
+      - llama.cpp: providers/llamacpp.md
+      - ExLlamaV2: providers/exllamav2.md
+    - Enterprise:
+      - Azure OpenAI: providers/azure.md
+      - AWS Bedrock: providers/bedrock.md
+    - Provider Selection: providers/selection-guide.md
+
+  - Scrapers:
+    - scrapers/index.md
+    - Core Scrapers:
+      - HTTPX Scraper: scrapers/httpx.md
+      - Playwright Scraper: scrapers/playwright.md
+    - Platform Scrapers:
+      - Amazon: scrapers/amazon.md
+      - Steam: scrapers/steam.md
+      - YouTube: scrapers/youtube.md
+      - Reddit: scrapers/reddit.md
+      - IMDB: scrapers/imdb.md
+      - Yelp: scrapers/yelp.md
+      - Trustpilot: scrapers/trustpilot.md
+      - Google Reviews: scrapers/google-reviews.md
+    - Commercial APIs:
+      - scrapers/commercial/index.md
+      - ScraperAPI: scrapers/commercial/scraperapi.md
+      - Apify: scrapers/commercial/apify.md
+      - Bright Data: scrapers/commercial/brightdata.md
+      - Oxylabs: scrapers/commercial/oxylabs.md
+      - Zyte: scrapers/commercial/zyte.md
+      - ScrapingBee: scrapers/commercial/scrapingbee.md
+      - ScrapingAnt: scrapers/commercial/scrapingant.md
+    - Scraper Selection: scrapers/selection-guide.md
+
+  - Features:
+    - features/index.md
+    - Sentiment Analysis:
+      - features/sentiment/index.md
+      - Quick Sentiment: features/sentiment/quick.md
+      - Structured Analysis: features/sentiment/structured.md
+      - Aspect-Based: features/sentiment/aspect-based.md
+      - Comparative: features/sentiment/comparative.md
+      - Temporal: features/sentiment/temporal.md
+    - Emotion Detection:
+      - features/emotion/index.md
+      - Taxonomies: features/emotion/taxonomies.md
+      - Detection Modes: features/emotion/modes.md
+      - Intensity Analysis: features/emotion/intensity.md
+    - Multi-Modal:
+      - features/multimodal/index.md
+      - Audio Analysis: features/multimodal/audio.md
+      - Image Analysis: features/multimodal/image.md
+      - Video Analysis: features/multimodal/video.md
+    - LLM Features:
+      - features/llm/index.md
+      - Summarization: features/llm/summarization.md
+      - Insights: features/llm/insights.md
+      - Reasoning: features/llm/reasoning.md
+
+  - Configuration:
+    - configuration/index.md
+    - YAML Configuration: configuration/yaml.md
+    - Environment Variables: configuration/environment.md
+    - Python Objects: configuration/python.md
+    - Caching: configuration/caching.md
+    - Logging: configuration/logging.md
+
+  - API Reference:
+    - api/index.md
+    - Core:
+      - Sentimatrix: api/sentimatrix.md
+      - Config: api/config.md
+    - Providers:
+      - Base Provider: api/base-provider.md
+      - Provider Manager: api/provider-manager.md
+    - Scrapers:
+      - Base Scraper: api/base-scraper.md
+      - Scraper Manager: api/scraper-manager.md
+    - Models:
+      - Sentiment: api/sentiment-models.md
+      - Emotion: api/emotion-models.md
+
+  - Examples:
+    - examples/index.md
+    - Basic Usage: examples/basic.md
+    - E-commerce Analysis: examples/ecommerce.md
+    - Social Media: examples/social-media.md
+    - Review Aggregation: examples/review-aggregation.md
+    - Real-time Analysis: examples/realtime.md
+    - Batch Processing: examples/batch.md
+
+  - Contributing:
+    - contributing/index.md
+    - Development Setup: contributing/setup.md
+    - Adding Providers: contributing/providers.md
+    - Adding Scrapers: contributing/scrapers.md
+    - Testing: contributing/testing.md
+    - Documentation: contributing/docs.md
+
+  - Changelog: changelog.md
