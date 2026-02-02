@@ -128,6 +128,7 @@ class AmazonScraper(BasePlatformScraper):
 
         self._playwright_scraper = None
         self._httpx_scraper = None
+        self._playwright_available = False
 
     @property
     def info(self) -> ProviderInfo:
@@ -160,23 +161,47 @@ class AmazonScraper(BasePlatformScraper):
             return
 
         # Import scrapers lazily
-        from sentimatrix.providers.scrapers.playwright_scraper import PlaywrightScraper
         from sentimatrix.providers.scrapers.httpx_scraper import HTTPXScraper
 
-        # Initialize Playwright for JavaScript-rendered content
-        self._playwright_scraper = PlaywrightScraper(
-            config=self._platform_config.to_scraper_config(),
-            rate_limiter=self._rate_limiter,
-            stealth=True,  # Enable stealth mode for Amazon
-        )
-        await self._playwright_scraper.initialize()
-
-        # Initialize HTTPX as fallback
+        # Initialize HTTPX first (always available as fallback)
         self._httpx_scraper = HTTPXScraper(
             config=self._platform_config.to_scraper_config(),
             rate_limiter=self._rate_limiter,
         )
         await self._httpx_scraper.initialize()
+
+        # Try to initialize Playwright for JavaScript-rendered content
+        # But don't fail if Playwright isn't available
+        self._playwright_available = False
+        try:
+            from sentimatrix.providers.scrapers.playwright_scraper import PlaywrightScraper
+            self._playwright_scraper = PlaywrightScraper(
+                config=self._platform_config.to_scraper_config(),
+                rate_limiter=self._rate_limiter,
+                stealth=True,  # Enable stealth mode for Amazon
+            )
+            await self._playwright_scraper.initialize()
+            self._playwright_available = True
+        except ImportError:
+            # Playwright not installed
+            import warnings
+            warnings.warn(
+                "Playwright not installed. Amazon scraper will use HTTPX fallback "
+                "which may not work well with JavaScript-rendered content. "
+                "Install with: pip install playwright && playwright install",
+                UserWarning,
+            )
+            self._playwright_scraper = None
+        except Exception as e:
+            # Playwright initialization failed (e.g., missing browser binaries)
+            import warnings
+            warnings.warn(
+                f"Playwright initialization failed: {e}. "
+                "Amazon scraper will use HTTPX fallback. "
+                "To fix: playwright install chromium",
+                UserWarning,
+            )
+            self._playwright_scraper = None
 
         self._initialized = True
 
@@ -185,6 +210,7 @@ class AmazonScraper(BasePlatformScraper):
         if self._playwright_scraper:
             await self._playwright_scraper.close()
             self._playwright_scraper = None
+        self._playwright_available = False
 
         if self._httpx_scraper:
             await self._httpx_scraper.close()
@@ -325,18 +351,34 @@ class AmazonScraper(BasePlatformScraper):
         # Rate limit
         await self._rate_limiter.acquire(domain=self.platform_domain)
 
-        # Try Playwright first (handles JavaScript)
+        # Try Playwright first if available (handles JavaScript)
+        if self._playwright_available and self._playwright_scraper:
+            try:
+                content = await self._playwright_scraper.scrape(
+                    url,
+                    wait_for="[data-hook='review']",
+                    timeout=self._platform_config.timeout * 1000,
+                )
+
+                return self._parse_reviews_html(content.html or content.content, asin)
+
+            except Exception as e:
+                # Check if we're blocked
+                if "captcha" in str(e).lower() or "robot" in str(e).lower():
+                    raise ScraperBlockedError(
+                        provider=self.platform_name,
+                        url=url,
+                        reason="CAPTCHA or bot detection triggered",
+                        original_error=e,
+                    )
+                # Fall through to HTTPX fallback
+                pass
+
+        # HTTPX fallback (may not work well with JS-rendered content)
         try:
-            content = await self._playwright_scraper.scrape(
-                url,
-                wait_for="[data-hook='review']",
-                timeout=self._platform_config.timeout * 1000,
-            )
-
+            content = await self._httpx_scraper.scrape(url)
             return self._parse_reviews_html(content.html or content.content, asin)
-
         except Exception as e:
-            # Check if we're blocked
             if "captcha" in str(e).lower() or "robot" in str(e).lower():
                 raise ScraperBlockedError(
                     provider=self.platform_name,
@@ -496,11 +538,15 @@ class AmazonScraper(BasePlatformScraper):
 
         await self._rate_limiter.acquire(domain=self.platform_domain)
 
-        content = await self._playwright_scraper.scrape(
-            url,
-            wait_for="#productTitle",
-            timeout=self._platform_config.timeout * 1000,
-        )
+        # Use Playwright if available, otherwise HTTPX
+        if self._playwright_available and self._playwright_scraper:
+            content = await self._playwright_scraper.scrape(
+                url,
+                wait_for="#productTitle",
+                timeout=self._platform_config.timeout * 1000,
+            )
+        else:
+            content = await self._httpx_scraper.scrape(url)
 
         return self._parse_product_html(content.html or content.content, asin, url)
 
@@ -601,11 +647,15 @@ class AmazonScraper(BasePlatformScraper):
 
         await self._rate_limiter.acquire(domain=self.platform_domain)
 
-        content = await self._playwright_scraper.scrape(
-            url,
-            wait_for="[data-component-type='s-search-result']",
-            timeout=self._platform_config.timeout * 1000,
-        )
+        # Use Playwright if available, otherwise HTTPX
+        if self._playwright_available and self._playwright_scraper:
+            content = await self._playwright_scraper.scrape(
+                url,
+                wait_for="[data-component-type='s-search-result']",
+                timeout=self._platform_config.timeout * 1000,
+            )
+        else:
+            content = await self._httpx_scraper.scrape(url)
 
         return self._parse_search_results(
             content.html or content.content,

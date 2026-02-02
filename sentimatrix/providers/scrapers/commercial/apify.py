@@ -174,12 +174,23 @@ class ApifyClient(BaseCommercialClient):
         # Choose actor based on render_js
         actor_id = "apify/playwright-scraper" if render_js else "apify/cheerio-scraper"
 
-        # Build input
+        # Build input with required pageFunction for cheerio-scraper
         actor_input = {
             "startUrls": [{"url": url}],
             "maxRequestsPerCrawl": 1,
             "maxConcurrency": 1,
         }
+
+        # Cheerio-scraper requires pageFunction
+        if not render_js:
+            actor_input["pageFunction"] = """async function pageFunction(context) {
+    const { request, body } = context;
+    return {
+        url: request.url,
+        html: body.toString(),
+        text: body.toString(),
+    };
+}"""
 
         if render_js and wait_for:
             actor_input["waitUntil"] = "domcontentloaded"
@@ -265,15 +276,19 @@ class ApifyClient(BaseCommercialClient):
         if actor_id in POPULAR_ACTORS:
             actor_id = POPULAR_ACTORS[actor_id]
 
-        endpoint = f"{self.BASE_URL}/acts/{actor_id}/runs"
+        # Apify API uses tilde (~) instead of slash (/) in actor IDs
+        # e.g., "apify/web-scraper" becomes "apify~web-scraper"
+        formatted_actor_id = actor_id.replace('/', '~')
+        endpoint = f"{self.BASE_URL}/acts/{formatted_actor_id}/runs"
 
         params = {}
-        if timeout_secs or self._apify_config.timeout_secs:
-            params["timeout"] = timeout_secs or self._apify_config.timeout_secs
-        if memory_mbytes or self._apify_config.memory_mbytes:
-            params["memory"] = memory_mbytes or self._apify_config.memory_mbytes
-        if build or self._apify_config.build:
-            params["build"] = build or self._apify_config.build
+        # Only add optional params if explicitly provided (not defaults)
+        if timeout_secs:
+            params["timeout"] = timeout_secs
+        if memory_mbytes:
+            params["memory"] = memory_mbytes
+        if build:
+            params["build"] = build
 
         wait_secs = wait_for_finish or self._apify_config.wait_for_finish
         if wait_secs:

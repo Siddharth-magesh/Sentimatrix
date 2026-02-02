@@ -32,24 +32,44 @@ Commercial scraping APIs provide reliable, scalable web scraping without the has
 
 ## Quick Start
 
-### Configure Provider
+### Using ScraperAPI
 
 ```python
-from sentimatrix import Sentimatrix
-from sentimatrix.config import SentimatrixConfig, ScraperConfig
+from sentimatrix.providers.scrapers.commercial import ScraperAPIClient
 
-config = SentimatrixConfig(
-    scraper=ScraperConfig(
-        api_provider="scraperapi",
-        api_key="your-api-key"
+async with ScraperAPIClient(api_key="your-api-key") as client:
+    result = await client.scrape("https://example.com")
+    print(f"Status: {result.status_code}")
+    print(f"Content: {result.content[:200]}")
+```
+
+### Using Apify
+
+```python
+from sentimatrix.providers.scrapers.commercial import ApifyClient
+
+async with ApifyClient(api_token="your-token") as client:
+    # Basic scraping (uses cheerio-scraper)
+    result = await client.scrape("https://example.com")
+
+    # Or run specific actors
+    run = await client.run_actor(
+        "apify/web-scraper",
+        input={"startUrls": [{"url": "https://example.com"}]}
     )
-)
+    items = await client.get_dataset_items(run["defaultDatasetId"])
+```
 
-async with Sentimatrix(config) as sm:
-    reviews = await sm.scrape_reviews(
-        url="https://www.amazon.com/dp/B0BSHF7WHW",
-        platform="amazon",
-        max_reviews=500
+### Using ScrapingBee
+
+```python
+from sentimatrix.providers.scrapers.commercial import ScrapingBeeClient
+
+async with ScrapingBeeClient(api_key="your-api-key") as client:
+    result = await client.scrape(
+        "https://example.com",
+        render_js=True,  # Enable JavaScript rendering
+        premium_proxy=True  # Use premium proxies
     )
 ```
 

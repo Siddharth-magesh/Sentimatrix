@@ -5,7 +5,18 @@
 
 ---
 
-## Version 0.2.0 (Current Development)
+## Version 0.2.1 (Current Release - 2026-02-02)
+
+### Bug Fixes & Improvements
+
+- **Apify Integration** - Fixed actor ID URL format, 403 errors, and cheerio-scraper pageFunction
+- **Amazon Scraper** - Added HTTPX fallback when Playwright unavailable
+- **Reddit Scraper** - Improved error handling for rate limits, 403/404, and `t3_` prefix support
+- **Integration Tests** - Added comprehensive live tests for PyPI package and commercial APIs
+
+---
+
+## Version 0.2.0 (Stable Release - 2026-01-29)
 
 ### Summary
 

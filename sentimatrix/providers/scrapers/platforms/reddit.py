@@ -307,15 +307,79 @@ class RedditScraper(BasePlatformScraper):
         if self._access_token:
             headers["Authorization"] = f"Bearer {self._access_token}"
 
-        content = await self._httpx_scraper.scrape(
-            url,
-            headers=headers,
-        )
+        try:
+            content = await self._httpx_scraper.scrape(
+                url,
+                headers=headers,
+            )
+        except Exception as e:
+            error_msg = str(e).lower()
+            if "429" in error_msg or "rate" in error_msg:
+                raise ScraperError(
+                    f"Reddit rate limit exceeded. Please wait before retrying.",
+                    provider=self.platform_name,
+                )
+            if "403" in error_msg or "forbidden" in error_msg:
+                raise ScraperError(
+                    f"Access forbidden. Post may be private or subreddit restricted.",
+                    provider=self.platform_name,
+                )
+            if "404" in error_msg or "not found" in error_msg:
+                raise ScraperError(
+                    f"Post or subreddit not found: {endpoint}",
+                    provider=self.platform_name,
+                )
+            raise ScraperError(
+                f"Failed to fetch Reddit data: {e}",
+                provider=self.platform_name,
+            )
+
+        # Check HTTP status code
+        if hasattr(content, 'status_code'):
+            if content.status_code == 429:
+                raise ScraperError(
+                    f"Reddit rate limit exceeded. Please wait before retrying.",
+                    provider=self.platform_name,
+                )
+            if content.status_code == 403:
+                raise ScraperError(
+                    f"Access forbidden. Post may be private or subreddit restricted.",
+                    provider=self.platform_name,
+                )
+            if content.status_code == 404:
+                raise ScraperError(
+                    f"Post or subreddit not found: {endpoint}",
+                    provider=self.platform_name,
+                )
 
         try:
             import json
-            return json.loads(content.content)
-        except Exception as e:
+            data = json.loads(content.content)
+
+            # Check for Reddit error responses
+            if isinstance(data, dict):
+                if "error" in data:
+                    error_code = data.get("error", "")
+                    message = data.get("message", "Unknown error")
+                    raise ScraperError(
+                        f"Reddit API error ({error_code}): {message}",
+                        provider=self.platform_name,
+                    )
+                # Handle empty/deleted post responses
+                if data.get("kind") == "Listing" and not data.get("data", {}).get("children"):
+                    raise ScraperError(
+                        f"No data found. Post may be deleted or private.",
+                        provider=self.platform_name,
+                    )
+
+            return data
+        except json.JSONDecodeError as e:
+            # Check if the response is HTML (often indicates an error page)
+            if content.content.strip().startswith(("<!DOCTYPE", "<html", "<!doctype")):
+                raise ScraperError(
+                    f"Received HTML instead of JSON. Reddit may be blocking requests or post doesn't exist.",
+                    provider=self.platform_name,
+                )
             raise ScraperParseError(
                 provider=self.platform_name,
                 url=url,
@@ -355,6 +419,9 @@ class RedditScraper(BasePlatformScraper):
                 raise ValueError(f"Could not extract post ID from URL: {identifier}")
         else:
             post_id = identifier
+            # Handle full Reddit ID format (e.g., "t3_abc123" -> "abc123")
+            if post_id.startswith("t3_"):
+                post_id = post_id[3:]
             subreddit = None
 
         # Map sort order
@@ -383,8 +450,15 @@ class RedditScraper(BasePlatformScraper):
         data = await self._fetch_json(endpoint, params)
 
         if not isinstance(data, list) or len(data) < 2:
+            # Check if it's an error response
+            if isinstance(data, dict) and "error" in data:
+                raise ScraperError(
+                    f"Reddit API error: {data.get('message', 'Unknown error')}",
+                    provider=self.platform_name,
+                )
             raise ScraperError(
-                f"Unexpected response format for post: {post_id}",
+                f"Post not found or has no comments: {post_id}. "
+                f"Make sure the post ID is correct and the post is publicly accessible.",
                 provider=self.platform_name,
             )
 
@@ -523,6 +597,9 @@ class RedditScraper(BasePlatformScraper):
                 raise ValueError(f"Could not extract post ID from URL: {identifier}")
         else:
             post_id = identifier
+            # Handle full Reddit ID format (e.g., "t3_abc123" -> "abc123")
+            if post_id.startswith("t3_"):
+                post_id = post_id[3:]
             subreddit = None
 
         # Fetch post

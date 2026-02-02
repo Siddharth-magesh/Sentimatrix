@@ -9,6 +9,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Stage 15: Bug Fixes & Improvements (2026-02-02)
+
+- **Apify Integration Fixes** (`sentimatrix/providers/scrapers/commercial/apify.py`)
+  - Fixed actor ID URL format - Apify API uses tilde (`~`) instead of slash (`/`) in URLs
+  - Fixed 403 errors by only sending optional parameters (timeout, memory, build) when explicitly provided
+  - Added required `pageFunction` for cheerio-scraper actor
+  - Improved error handling for API responses
+
+- **Amazon Scraper Improvements** (`sentimatrix/providers/scrapers/platforms/amazon.py`)
+  - Added graceful fallback to HTTPX-only mode when Playwright isn't available
+  - Playwright initialization failures now emit warnings instead of crashing
+  - Added `_playwright_available` flag to track Playwright status
+  - Updated `_scrape_reviews_page`, `get_product_info`, and `search_products` for HTTPX fallback
+
+- **Reddit Scraper Error Handling** (`sentimatrix/providers/scrapers/platforms/reddit.py`)
+  - Added comprehensive HTTP error handling (429 rate limit, 403 forbidden, 404 not found)
+  - Added detection of Reddit API error responses in JSON
+  - Added detection of HTML error pages instead of JSON responses
+  - Added support for Reddit's full ID format (`t3_` prefix)
+  - Improved user-friendly error messages
+
+- **Integration Tests** (`tests/integration/`)
+  - `test_pypi_live.py` - Live tests for PyPI package (7 tests)
+  - `test_commercial_scrapers.py` - Commercial API tests (7 services)
+  - `test_all_scrapers.py` - Comprehensive scraper tests
+  - `test_scrapers_live.py` - Live scraper tests
+
+**Stage 15 Test Summary:** All core tests passing (7/7 PyPI live tests)
+
+---
+
 #### Stage 14: Commercial Scraping APIs (2026-01-29)
 
 - **Commercial API Clients** (`sentimatrix/providers/scrapers/commercial/`)
@@ -257,6 +288,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Status | Tests |
 |---------|------|--------|-------|
-| 0.2.0 | 2026-01-29 | In Development | 282 |
+| 0.2.1 | 2026-02-02 | Current Release | 282+ |
+| 0.2.0 | 2026-01-29 | Released | 282 |
 | 0.1.7 | 2024 | Previous Release | - |
 | 0.1.0 | 2024 | Initial Release | - |

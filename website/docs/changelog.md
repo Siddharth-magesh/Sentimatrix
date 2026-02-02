@@ -7,7 +7,34 @@ description: Version history and release notes
 
 All notable changes to Sentimatrix are documented here.
 
-## [0.2.0] - 2025-01-29
+## [0.2.1] - 2026-02-02
+
+### Fixed
+
+#### Apify Integration
+- Fixed actor ID URL format - Apify API uses tilde (`~`) instead of slash (`/`)
+- Fixed 403 errors by only sending optional parameters when explicitly provided
+- Added required `pageFunction` for cheerio-scraper actor
+
+#### Amazon Scraper
+- Added graceful fallback to HTTPX-only mode when Playwright isn't available
+- Playwright initialization failures now emit warnings instead of crashing
+
+#### Reddit Scraper
+- Added comprehensive HTTP error handling (rate limits, forbidden, not found)
+- Added support for Reddit's full ID format (`t3_` prefix)
+- Improved user-friendly error messages
+
+### Added
+
+#### Integration Tests
+- `test_pypi_live.py` - Live tests for PyPI package
+- `test_commercial_scrapers.py` - Commercial API tests
+- `test_all_scrapers.py` - Comprehensive scraper tests
+
+---
+
+## [0.2.0] - 2026-01-29
 
 ### Added
 
@@ -148,5 +175,6 @@ Sentimatrix follows [Semantic Versioning](https://semver.org/):
 
 | Version | Date | Python | Status |
 |---------|------|--------|--------|
-| 0.2.0 | 2025-01-29 | 3.10+ | Current |
+| 0.2.1 | 2026-02-02 | 3.10+ | Current |
+| 0.2.0 | 2026-01-29 | 3.10+ | Stable |
 | 0.1.0 | 2024-01-15 | 3.9+ | Deprecated |
