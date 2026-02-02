@@ -3,6 +3,8 @@ site_url: https://siddharth-magesh.github.io/Sentimatrix/
 site_author: Sentimatrix Team
 site_description: Advanced sentiment analysis toolkit with multi-provider LLM support and web scraping capabilities
 
+docs_dir: docs
+
 repo_name: Siddharth-magesh/Sentimatrix
 repo_url: https://github.com/Siddharth-magesh/Sentimatrix
 edit_uri: edit/main/website/docs/
