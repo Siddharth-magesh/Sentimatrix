@@ -122,7 +122,7 @@ extra:
 
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/sentimatrix/sentimatrix
+      link: https://github.com/Siddharth-magesh/Sentimatrix
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/sentimatrix/
 
@@ -133,12 +133,6 @@ extra:
   version:
     provider: mike
     default: stable
-
-extra_css:
-  - stylesheets/extra.css
-
-extra_javascript:
-  - javascripts/extra.js
 
 nav:
   - Home: index.md
