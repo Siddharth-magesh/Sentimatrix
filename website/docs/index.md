@@ -20,6 +20,19 @@ hide:
   </a>
 </div>
 
+<div class="video-container" style="max-width: 800px; margin: 3rem auto; padding: 0 1rem;">
+  <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <iframe 
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+      src="https://www.youtube.com/embed/leKvWW8oyd8" 
+      title="Sentimatrix Project Video" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
 <div class="stats">
   <div class="stat">
     <div class="stat-number">21</div>
